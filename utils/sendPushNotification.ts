@@ -2,7 +2,7 @@ import webpush from "web-push";
 import prisma from "@/lib/prisma";
 
 webpush.setVapidDetails(
-  "mailto:your-email@example.com",
+  "mailto:ranaarju20@gmail.com",
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!
 );
