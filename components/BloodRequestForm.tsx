@@ -96,6 +96,24 @@ export default function BloodRequestForm() {
     // Here you would typically send the form data to your API
   }
 
+  /*
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const response = await fetch("/api/blood-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user.id, bloodType, location }),
+    });
+
+    if (response.ok) {
+      router.push("/dashboard");
+    } else {
+      // Handle error
+      console.error("Failed to submit blood request");
+    }
+  };
+  */
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="space-y-1">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -35,6 +35,16 @@ export default function Header() {
         </Link>
       </li>
       <li>
+        <Link href="/request-blood" className="hover:text-primary">
+          Blood Request
+        </Link>
+      </li>
+      <li>
+        <Link href="/be-donor" className="hover:text-primary">
+          Be a donor
+        </Link>
+      </li>
+      <li>
         <Link href="/about" className="hover:text-primary">
           About
         </Link>
@@ -48,7 +58,7 @@ export default function Header() {
           </li>
           <li>
             <Button onClick={() => signOut()} variant="ghost">
-              Sign Out
+              Log Out
             </Button>
           </li>
         </>
@@ -56,16 +66,14 @@ export default function Header() {
         <>
           <li>
             <Link href="/auth/signin" className="hover:text-primary">
-              Sign In
-            </Link>
-          </li>
-          <li>
-            <Link href="/auth/signup" className="hover:text-primary">
-              Sign Up
+              Login In
             </Link>
           </li>
         </>
       )}
+      <Link href="/notifications" className="text-gray-600 hover:text-primary">
+        <Bell size={24} />
+      </Link>
     </>
   );
 
@@ -73,37 +81,40 @@ export default function Header() {
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-primary">
-          Blood Donation
+          Blood Need
         </Link>
-        {isMobile ? (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Menu className="h-[1.2rem] w-[1.2rem]" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
-                <SheetDescription>
-                  Navigate through our blood donation community
-                </SheetDescription>
-              </SheetHeader>
-              <nav className="mt-6">
-                <ul className="space-y-4">
-                  <NavItems />
-                </ul>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        ) : (
-          <nav>
-            <ul className="flex space-x-4">
-              <NavItems />
-            </ul>
-          </nav>
-        )}
+        <div>
+          {isMobile ? (
+            <div className="flex items-center space-x-4">
+              {!session ? (
+                <>
+                  <Link
+                    href="/auth/signin"
+                    className="text-sm font-medium text-gray-600 hover:text-primary"
+                  >
+                    Login In
+                  </Link>
+                </>
+              ) : (
+                <Button onClick={() => signOut()} variant="ghost" size="sm">
+                  Log Out
+                </Button>
+              )}
+              <Link
+                href="/notifications"
+                className="text-gray-600 hover:text-primary"
+              >
+                <Bell size={24} />
+              </Link>
+            </div>
+          ) : (
+            <nav>
+              <ul className="flex space-x-4">
+                <NavItems />
+              </ul>
+            </nav>
+          )}
+        </div>
       </div>
     </header>
   );
