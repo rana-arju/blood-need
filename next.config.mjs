@@ -1,8 +1,8 @@
-let userConfig = undefined
+let userConfig;
 try {
   userConfig = await import("./v0-user-next.config");
 } catch (e) {
-  // ignore error
+  console.warn("Warning: No user config found, using default settings.");
 }
 
 /** @type {import('next').NextConfig} */
@@ -17,32 +17,32 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
+    appDir: true, // ✅ Ensure App Router is enabled
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-}
+};
 
-mergeConfig(nextConfig, userConfig)
+// Merge user config if available
+export default mergeConfig(nextConfig, userConfig);
 
 function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
+  if (!userConfig) return nextConfig;
 
   for (const key in userConfig) {
     if (
-      typeof nextConfig[key] === 'object' &&
+      typeof nextConfig[key] === "object" &&
       !Array.isArray(nextConfig[key])
     ) {
       nextConfig[key] = {
         ...nextConfig[key],
         ...userConfig[key],
-      }
+      };
     } else {
-      nextConfig[key] = userConfig[key]
+      nextConfig[key] = userConfig[key];
     }
   }
-}
 
-export default nextConfig
+  return nextConfig; // ✅ Return merged config
+}
