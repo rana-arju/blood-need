@@ -13,6 +13,8 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
   const [name, setName] = useState("");
@@ -82,6 +84,29 @@ export default function SignUpForm() {
             Sign Up
           </Button>
         </form>
+        <div className="mt-4 flex items-center justify-between">
+          <hr className="w-full" />
+          <span className="px-2 text-gray-500">or</span>
+          <hr className="w-full" />
+        </div>
+        <div className="mt-4 space-y-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          >
+            <FaGoogle className="mr-2" /> Sign in with Google
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("facebook", { callbackUrl: "/dashboard" })}
+          >
+            <FaFacebook className="mr-2" /> Sign in with Facebook
+          </Button>
+        </div>
       </CardContent>
       <CardFooter>
         <p className="text-sm text-gray-600">

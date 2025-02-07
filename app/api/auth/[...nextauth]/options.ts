@@ -66,6 +66,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
@@ -76,7 +77,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        if ('role' in user) {
+        if ("role" in user) {
           token.role = user.role;
         }
       }
