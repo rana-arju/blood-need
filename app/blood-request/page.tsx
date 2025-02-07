@@ -10,5 +10,5 @@ export default async function BloodRequestPage() {
     redirect("/auth/signin");
   }
 
-  return <BloodRequestForm user={session.user} />;
+  //return <BloodRequestForm user={session.user} />;
 }
