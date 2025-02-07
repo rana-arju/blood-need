@@ -17,7 +17,6 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    appDir: true, // ✅ Ensure App Router is enabled
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
