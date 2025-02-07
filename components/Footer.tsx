@@ -14,7 +14,7 @@ export default function Footer() {
               We are dedicated to making blood donation accessible and saving lives through our community of donors.
             </p>
             <p>
-              <strong>Phone:</strong> +1 (234) 567-8900
+              <strong>Phone:</strong> +8801881-220413
             </p>
           </div>
           <div>
@@ -84,7 +84,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-gray-800">
-        <div className="container py-6 text-center">© {new Date().getFullYear()} Blood Ai. All rights reserved.</div>
+        <div className="container py-6 text-center">©  {new Date().getFullYear()} Rana Arju. All rights reserved.</div>
       </div>
     </footer>
   )

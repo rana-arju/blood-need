@@ -4,12 +4,14 @@ import Welcome from "@/components/Welcome"
 import Statistics from "@/components/Statistics"
 import DonationProcess from "@/components/DonationProcess"
 import News from "@/components/News"
+import DonoteSection from "@/components/DonoteSection"
 
 export default function Home() {
   return (
     <>
       <Hero />
       <Steps />
+      <DonoteSection />
       <Welcome />
       <Statistics />
       <DonationProcess />

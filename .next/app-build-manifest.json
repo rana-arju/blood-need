@@ -1,18 +1,46 @@
 {
   "pages": {
+    "/api/auth/signup/route": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/app/api/auth/signup/route-2d890d99f7380ead.js"
+    ],
+    "/api/auth/[...nextauth]/route": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/app/api/auth/[...nextauth]/route-a682fbe043401390.js"
+    ],
+    "/api/auth/subscribe/route": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/app/api/auth/subscribe/route-4d20a57e98050c75.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/app/not-found-396b25dc9c644c86.js"
+    ],
     "/_not-found/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
       "static/chunks/4bd1b696-907eb324bb0e5861.js",
       "static/chunks/517-a8a898c7e18a53a7.js",
       "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/_not-found/page-d13fb61354092032.js"
+      "static/chunks/app/_not-found/page-fc1b162ecd737452.js"
     ],
     "/layout": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
       "static/chunks/4bd1b696-907eb324bb0e5861.js",
       "static/chunks/517-a8a898c7e18a53a7.js",
       "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/css/b44f4a36810d602b.css",
+      "static/css/5eccadad4d0c44e5.css",
       "static/chunks/365-4cf376d6ae898455.js",
       "static/chunks/919-8125e8d33c9bb9a4.js",
       "static/chunks/615-8f5d471d4cd9a4e6.js",
@@ -20,26 +48,19 @@
       "static/chunks/947-3ae6fa8559ef23b1.js",
       "static/chunks/app/layout-c852757d132ea57b.js"
     ],
-    "/api/auth/[...nextauth]/route": [
+    "/loading": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
       "static/chunks/4bd1b696-907eb324bb0e5861.js",
       "static/chunks/517-a8a898c7e18a53a7.js",
       "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/api/auth/[...nextauth]/route-335390fe7a7ebc1f.js"
+      "static/chunks/app/loading-167431ec8c0c0cb1.js"
     ],
-    "/api/auth/signup/route": [
+    "/about/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
       "static/chunks/4bd1b696-907eb324bb0e5861.js",
       "static/chunks/517-a8a898c7e18a53a7.js",
       "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/api/auth/signup/route-dc55ec5ce233f638.js"
-    ],
-    "/api/auth/subscribe/route": [
-      "static/chunks/webpack-c0a4bd2e567e987c.js",
-      "static/chunks/4bd1b696-907eb324bb0e5861.js",
-      "static/chunks/517-a8a898c7e18a53a7.js",
-      "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/api/auth/subscribe/route-6c11009da82763d7.js"
+      "static/chunks/app/about/page-fa631d17b7609100.js"
     ],
     "/auth/signin/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
@@ -50,16 +71,6 @@
       "static/chunks/365-4cf376d6ae898455.js",
       "static/chunks/615-8f5d471d4cd9a4e6.js",
       "static/chunks/app/auth/signin/page-f17e68121df51a34.js"
-    ],
-    "/auth/signup/page": [
-      "static/chunks/webpack-c0a4bd2e567e987c.js",
-      "static/chunks/4bd1b696-907eb324bb0e5861.js",
-      "static/chunks/517-a8a898c7e18a53a7.js",
-      "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/8e1d74a4-b58b9e9863d5ef79.js",
-      "static/chunks/365-4cf376d6ae898455.js",
-      "static/chunks/615-8f5d471d4cd9a4e6.js",
-      "static/chunks/app/auth/signup/page-09e08fcd9077f63a.js"
     ],
     "/be-donor/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
@@ -73,12 +84,29 @@
       "static/chunks/954-a9620a5d961dfeb8.js",
       "static/chunks/app/be-donor/page-0cc89e67ef20dd1a.js"
     ],
+    "/auth/signup/page": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/8e1d74a4-b58b9e9863d5ef79.js",
+      "static/chunks/365-4cf376d6ae898455.js",
+      "static/chunks/615-8f5d471d4cd9a4e6.js",
+      "static/chunks/app/auth/signup/page-09e08fcd9077f63a.js"
+    ],
     "/blood-request/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
       "static/chunks/4bd1b696-907eb324bb0e5861.js",
       "static/chunks/517-a8a898c7e18a53a7.js",
       "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/blood-request/page-1e786e71e8425f4a.js"
+      "static/chunks/app/blood-request/page-fe398b138a8e24af.js"
+    ],
+    "/offline/page": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/app/offline/page-458fafef856aea1f.js"
     ],
     "/dashboard/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
@@ -88,7 +116,7 @@
       "static/chunks/365-4cf376d6ae898455.js",
       "static/chunks/615-8f5d471d4cd9a4e6.js",
       "static/chunks/554-920ed1971aa533a2.js",
-      "static/chunks/app/dashboard/page-ef3117ccc87b1bef.js"
+      "static/chunks/app/dashboard/page-541af8f122ae2719.js"
     ],
     "/find-blood/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
@@ -107,21 +135,6 @@
       "static/chunks/main-app-69b7192915f5bb3a.js",
       "static/chunks/319-b22d2599145ecc29.js",
       "static/chunks/app/notifications/page-ed2b778826c03e72.js"
-    ],
-    "/offline/page": [
-      "static/chunks/webpack-c0a4bd2e567e987c.js",
-      "static/chunks/4bd1b696-907eb324bb0e5861.js",
-      "static/chunks/517-a8a898c7e18a53a7.js",
-      "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/app/offline/page-458fafef856aea1f.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-c0a4bd2e567e987c.js",
-      "static/chunks/4bd1b696-907eb324bb0e5861.js",
-      "static/chunks/517-a8a898c7e18a53a7.js",
-      "static/chunks/main-app-69b7192915f5bb3a.js",
-      "static/chunks/554-920ed1971aa533a2.js",
-      "static/chunks/app/page-72713dde7ea5464c.js"
     ],
     "/register-donor/page": [
       "static/chunks/webpack-c0a4bd2e567e987c.js",
@@ -144,6 +157,15 @@
       "static/chunks/70-645cc29e5b39f878.js",
       "static/chunks/954-a9620a5d961dfeb8.js",
       "static/chunks/app/request-blood/page-98adeeb38cb15ef1.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-c0a4bd2e567e987c.js",
+      "static/chunks/4bd1b696-907eb324bb0e5861.js",
+      "static/chunks/517-a8a898c7e18a53a7.js",
+      "static/chunks/main-app-69b7192915f5bb3a.js",
+      "static/chunks/554-920ed1971aa533a2.js",
+      "static/chunks/970-8249cc3c7ebc697a.js",
+      "static/chunks/app/page-e852f56b71d4a5ab.js"
     ]
   }
 }

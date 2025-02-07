@@ -1,17 +1,18 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/auth/signup/route": "app/api/auth/signup/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/auth/subscribe/route": "app/api/auth/subscribe/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
   "/auth/signin/page": "app/auth/signin/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js",
   "/be-donor/page": "app/be-donor/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
   "/blood-request/page": "app/blood-request/page.js",
+  "/offline/page": "app/offline/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/find-blood/page": "app/find-blood/page.js",
   "/notifications/page": "app/notifications/page.js",
-  "/offline/page": "app/offline/page.js",
-  "/page": "app/page.js",
   "/register-donor/page": "app/register-donor/page.js",
-  "/request-blood/page": "app/request-blood/page.js"
+  "/request-blood/page": "app/request-blood/page.js",
+  "/page": "app/page.js"
 }
