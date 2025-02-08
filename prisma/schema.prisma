@@ -5,6 +5,8 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+
 }
 
 model User {
@@ -13,8 +15,11 @@ model User {
   email             String             @unique
   password          String
   role              String             @default("user")
-  bloodType         String?
-  location          String?
+  blood             String?
+  division          String?
+  district          String?
+  upzila            String?
+  address           String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   bloodRequests     BloodRequest[]
@@ -26,8 +31,11 @@ model BloodRequest {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  bloodType String
-  location  String
+  blood     String
+   division          String?
+  district          String?
+  upzila            String?
+  address           String?
   status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
