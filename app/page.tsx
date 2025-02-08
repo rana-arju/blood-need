@@ -5,6 +5,7 @@ import Statistics from "@/components/Statistics"
 import DonationProcess from "@/components/DonationProcess"
 import News from "@/components/News"
 import DonoteSection from "@/components/DonoteSection"
+import { ReviewSection } from "@/components/ReviewSection"
 
 export default function Home() {
   return (
@@ -15,8 +16,10 @@ export default function Home() {
       <Welcome />
       <Statistics />
       <DonationProcess />
+      <ReviewSection />
+
       <News />
     </>
-  )
+  );
 }
 
