@@ -7,7 +7,6 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,
@@ -69,7 +68,10 @@ const config = {
         "fall-1": {
           "0%": { transform: "translateY(-50px) rotate(0deg)", opacity: 0 },
           "50%": { opacity: 1 },
-          "100%": { transform: "translateY(100vh) rotate(360deg)", opacity: 0 },
+          "100%": {
+            transform: "translateY(100vh) rotate(360deg)",
+            opacity: 0,
+          },
         },
         "fall-2": {
           "0%": { transform: "translateY(-50px) rotate(0deg)", opacity: 0 },
@@ -82,7 +84,10 @@ const config = {
         "fall-3": {
           "0%": { transform: "translateY(-50px) rotate(0deg)", opacity: 0 },
           "50%": { opacity: 1 },
-          "100%": { transform: "translateY(100vh) rotate(180deg)", opacity: 0 },
+          "100%": {
+            transform: "translateY(100vh) rotate(180deg)",
+            opacity: 0,
+          },
         },
         "fall-4": {
           "0%": { transform: "translateY(-50px) rotate(0deg)", opacity: 0 },
@@ -95,7 +100,20 @@ const config = {
         "fall-5": {
           "0%": { transform: "translateY(-50px) rotate(0deg)", opacity: 0 },
           "50%": { opacity: 1 },
-          "100%": { transform: "translateY(100vh) rotate(90deg)", opacity: 0 },
+          "100%": {
+            transform: "translateY(100vh) rotate(90deg)",
+            opacity: 0,
+          },
+        },
+        "fade-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
         },
       },
       animation: {
@@ -106,10 +124,13 @@ const config = {
         "fall-3": "fall-3 6s linear infinite",
         "fall-4": "fall-4 8s linear infinite",
         "fall-5": "fall-5 9s linear infinite",
+        "fade-up": "fade-up 0.6s ease-out forwards",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
+
+
 
 module.exports = config; // ✅ Use CommonJS syntax

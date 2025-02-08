@@ -4,15 +4,8 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Menu, Bell } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Bell } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -78,7 +71,7 @@ export default function Header() {
   );
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0  backdrop-blur-md  z-50 transition-all duration-200 bg-white shadow-md ">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-primary">
           Blood Need

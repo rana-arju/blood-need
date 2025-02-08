@@ -1,31 +1,101 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client";
+
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {  Pagination, Autoplay, EffectFade } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+const slides = [
+  {
+    id: 1,
+    subtitle: "Donate to blood contribute",
+    title: "Your Blood Can Bring Smile In Any One Person Face",
+    image:
+      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm2.jpg",
+    buttonText: "Get Started",
+    buttonLink: "/donate",
+  },
+  {
+    id: 2,
+    subtitle: "Every Drop Counts",
+    title: "Be a Hero, Save Lives Through Blood Donation",
+    image:
+      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm3.jpg",
+    buttonText: "Donate Now",
+    buttonLink: "/donate",
+  },
+  {
+    id: 3,
+    subtitle: "Join Our Community",
+    title: "Together We Can Make a Difference",
+    image:
+      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm1.png",
+    buttonText: "Learn More",
+    buttonLink: "/about",
+  },
+];
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[600px] flex items-center">
-      <div className="absolute inset-0">
-        <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blood%20donation%202.PNG-qBwi5zOwe68h3MK3Vcq4Fd5PFGtfFm.png"
-          alt="Blood donation background"
-          className="w-full h-full object-cover brightness-50"
-        />
-      </div>
-      <div className="container relative z-10">
-        <div className="max-w-2xl text-white">
-          <h1 className="text-5xl font-bold mb-6">Your Blood Can Bring Smile</h1>
-          <p className="text-xl mb-8">Join our mission to save lives through blood donation</p>
-          <div className="flex gap-4">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-              <Link href="/register">Register Now</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/20">
-              <Link href="/donate">Donate Now</Link>
-            </Button>
-          </div>
-        </div>
-      </div>
+    <section className="relative">
+      <Swiper
+        modules={[Pagination, Autoplay, EffectFade]}
+        pagination={{ clickable: true }}
+        effect="fade"
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+        className="h-[450px] md:h-[550px]"
+        style={
+          {
+            "--swiper-pagination-color": "#FF0000",
+          } as React.CSSProperties
+        }
+      >
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <div className="relative h-full w-full">
+              <div className="absolute inset-0">
+                <img
+                  src={slide.image || "/placeholder.svg"}
+                  alt={slide.title}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50" />
+              </div>
+              <div className="relative h-full flex items-center justify-center">
+                <div className="container mx-auto px-4 text-center text-white">
+                  <p
+                    className="text-lg md:text-xl mb-4 animate-fade-up"
+                    style={{ animationDelay: "0.2s" }}
+                  >
+                    {slide.subtitle}
+                  </p>
+                  <h1
+                    className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 max-w-4xl mx-auto leading-tight animate-fade-up"
+                    style={{ animationDelay: "0.4s" }}
+                  >
+                    {slide.title}
+                  </h1>
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-red-600 hover:bg-red-700 text-white animate-fade-up"
+                    style={{ animationDelay: "0.6s" }}
+                  >
+                    <Link href={slide.buttonLink}>{slide.buttonText}</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
-  )
+  );
 }
-
