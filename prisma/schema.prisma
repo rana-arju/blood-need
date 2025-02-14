@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -5,62 +8,84 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
-
 }
 
 model User {
-  id                String             @id @default(cuid())
-  name              String
-  email             String             @unique
-  password          String
-  role              String             @default("user")
-  blood             String?
-  division          String?
-  district          String?
-  upzila            String?
-  address           String?
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  bloodRequests     BloodRequest[]
-  donations         Donation[]
-  pushSubscriptions PushSubscription[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  image         String?
+  password      String?
+  role          String    @default("user")
+  bloodType     String?
+  donationCount Int       @default(0)
+  rewardBadge   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  donations     Donation[]
 }
 
-model BloodRequest {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  blood     String
-   division          String?
-  district          String?
-  upzila            String?
-  address           String?
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Donation {
   id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  bloodType String
-  amount    Float
-  location  String
   date      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model PushSubscription {
-  id        String   @id @default(cuid())
+  location  String
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  endpoint  String
-  p256dh    String
-  auth      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model BloodRequest {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bloodType String
+  quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model BloodDrive {
+  id        String   @id @default(cuid())
+  title     String
+  date      String
+  location  String
+  organizer String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

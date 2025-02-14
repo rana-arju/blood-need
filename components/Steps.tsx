@@ -21,7 +21,7 @@ export default function Steps() {
     <section className="py-16 bg-gray-50">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step) => (
+          {steps?.map((step) => (
             <div key={step.number} className="text-center">
               <div className="text-4xl font-bold text-primary mb-4">{step.number}</div>
               <h3 className="text-xl font-bold mb-2">{step.title}</h3>

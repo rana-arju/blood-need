@@ -38,6 +38,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRecaptcha } from "@/hooks/useRecaptcha";
+import { toast } from "sonner";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -70,7 +72,8 @@ const formSchema = z.object({
 });
 
 export default function BloodRequestForm() {
-  const [date, setDate] = useState<Date>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { executeRecaptcha } = useRecaptcha();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -91,28 +94,34 @@ export default function BloodRequestForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Here you would typically send the form data to your API
-  }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    const recaptchaToken = await executeRecaptcha();
 
-  /*
-    const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await fetch("/api/blood-request", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user.id, bloodType, location }),
-    });
+    try {
+      const response = await fetch("/api/blood-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...values, recaptchaToken }),
+      });
 
-    if (response.ok) {
-      router.push("/dashboard");
-    } else {
-      // Handle error
-      console.error("Failed to submit blood request");
+      if (response.ok) {
+        toast.success( "Blood Request Submitted",
+       );
+        form.reset();
+      } else {
+        throw new Error("Blood request submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting blood request:", error);
+      toast.error( "Submission Failed",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-  */
+  }
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -402,8 +411,8 @@ export default function BloodRequestForm() {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Submit Blood Request
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit Blood Request"}
             </Button>
           </form>
         </Form>

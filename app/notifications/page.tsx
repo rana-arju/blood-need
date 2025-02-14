@@ -3,20 +3,18 @@
 import { useState, useEffect } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import io from "socket.io-client"
+import { toast } from "sonner"
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState<any[]>([])
-  const { toast } = useToast()
 
   useEffect(() => {
     const socket = io("http://localhost:3001") // Replace with your server URL
 
     socket.on("notification", (notification) => {
       setNotifications((prevNotifications) => [...prevNotifications, notification])
-      toast({
-        title: "New Notification",
-        description: notification.message,
-      })
+      toast.success( "New Notification",
+      )
     })
 
     return () => {

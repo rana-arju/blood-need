@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 
 export default function FindBlood() {
   const [bloodGroup, setBloodGroup] = useState("")
   const [address, setAddress] = useState("")
   const [donors, setDonors] = useState([])
-  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,11 +23,8 @@ export default function FindBlood() {
         throw new Error("Failed to find donors")
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to find donors. Please try again.",
-        variant: "destructive",
-      })
+      toast.error( "Failed to find donors. Please try again.",
+      )
     }
   }
 
