@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
 import { BloodDriveForm } from "@/components/BloodDriveForm";
 
 export default async function AdminBloodDrivesPage() {
@@ -11,9 +10,10 @@ export default async function AdminBloodDrivesPage() {
     redirect("/auth/signin");
   }
 
-  const bloodDrives = await prisma.bloodDrive.findMany({
-    orderBy: { date: "asc" },
+  const res = await fetch("http://localhost:5000/api/v1/bloodDrives", {
+    method: "GET",
   });
+  const bloodDrives = await res.json();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -21,7 +21,7 @@ export default async function AdminBloodDrivesPage() {
       <BloodDriveForm onSuccess={() => {}} />
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-4">Existing Blood Drives</h2>
-        {bloodDrives.map((drive) => (
+        {bloodDrives?.map((drive:any) => (
           <div key={drive.id} className="mb-4 p-4 border rounded">
             <h3 className="text-xl font-semibold">{drive.title}</h3>
             <p>Date: {new Date(drive.date).toLocaleDateString()}</p>
