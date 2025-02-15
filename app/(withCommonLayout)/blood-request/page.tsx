@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/options";
+import { authOptions } from "../../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 import BloodRequestForm from "@/components/BloodRequestForm";
 

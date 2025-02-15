@@ -10,12 +10,9 @@ import ImpactVisualization from "@/components/ImpactVisualization";
 import EducationalResources from "@/components/EducationalResources";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/options";
+
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
-  console.log(session);
 
   return (
     <>
