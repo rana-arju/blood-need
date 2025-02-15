@@ -1,6 +1,7 @@
 import type React from "react";
 import { UserSidebar } from "@/components/user/UserSidebar";
 import Header from "@/components/Header";
+import BottomNavigation from "@/components/BottomNavigation";
 
 export default function UserDashboardLayout({
   children,
@@ -14,6 +15,7 @@ export default function UserDashboardLayout({
       <div className="flex-1 md:ml-64 relative">
         <main className="p-6">{children}</main>
       </div>
+      <BottomNavigation />
     </div>
   );
 }
