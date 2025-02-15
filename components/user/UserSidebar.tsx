@@ -41,22 +41,27 @@ export function UserSidebar() {
       </Button>
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-background border-r transform transition-transform duration-200 ease-in-out md:translate-x-0 mt-16",
+          "fixed inset-y-0 left-0 z-40 w-64 bg-background border-r transform transition-transform duration-200 ease-in-out md:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
-       
-          <nav className="flex-1 overflow-y-auto">
-            <ul className="p-4 space-y-2">
+          <div className="flex items-center justify-center h-16 border-b">
+            <h1 className="text-xl font-bold">User Dashboard</h1>
+          </div>
+          <nav className="flex-1 overflow-y-auto py-4">
+            <ul className="space-y-2 px-4">
               {sidebarItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center p-2 rounded-lg hover:bg-accent",
-                      pathname === item.href && "bg-accent"
+                      "flex items-center p-2 rounded-lg transition-colors",
+                      pathname === item.href
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     )}
+                    onClick={() => setIsOpen(false)}
                   >
                     <item.icon className="w-5 h-5 mr-3" />
                     {item.label}

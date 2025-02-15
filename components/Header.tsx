@@ -37,6 +37,16 @@ export default function Header() {
         </Link>
       </li>
       <li>
+        <Link href="/requests" className="hover:text-primary">
+          All Requests
+        </Link>
+      </li>
+      <li>
+        <Link href="/donors" className="hover:text-primary">
+          All Donors
+        </Link>
+      </li>
+      <li>
         <Link href="/request-blood" className="hover:text-primary">
           Blood Request
         </Link>
@@ -44,11 +54,6 @@ export default function Header() {
       <li>
         <Link href="/be-donor" className="hover:text-primary">
           Be a donor
-        </Link>
-      </li>
-      <li>
-        <Link href="/donate-funds" className="hover:text-primary">
-          Donate Funds
         </Link>
       </li>
       <li>

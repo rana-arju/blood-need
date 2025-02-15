@@ -12,7 +12,7 @@ export default function AdminLayout({
     <div className="flex min-h-screen bg-gray-100 mt-16">
       <Header />
       <Sidebar />
-      <div className="flex-1 md:ml-64 relative">
+      <div className="flex-1 mb-16 md:mb-0 md:ml-64 relative">
         <main className="p-6">{children}</main>
       </div>
       <BottomNavigation />

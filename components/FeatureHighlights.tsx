@@ -30,12 +30,14 @@ const features = [
     icon: Users,
     link: "/donor-recipient-matching",
   },
+  /*
   {
     title: "Gamification & Leaderboard",
     description: "Earn points, climb the ranks, and compete with other donors.",
     icon: Trophy,
     link: "/leaderboard",
   },
+ 
   {
     title: "Emergency Alerts",
     description:
@@ -43,6 +45,7 @@ const features = [
     icon: Bell,
     link: "/emergency-alerts",
   },
+ 
   {
     title: "Community Forum",
     description:
@@ -56,37 +59,7 @@ const features = [
     icon: Bot,
     link: "/chatbot",
   },
-  {
-    title: "Blood Drive Organizer",
-    description: "Plan and manage your own blood drive events.",
-    icon: Calendar,
-    link: "/organize-blood-drive",
-  },
-  {
-    title: "Health Dashboard",
-    description: "Track your health metrics and donation history.",
-    icon: Activity,
-    link: "/health-dashboard",
-  },
-  {
-    title: "Appointment Scheduler",
-    description: "Easily schedule your next blood donation appointment.",
-    icon: Calendar,
-    link: "/schedule-appointment",
-  },
-  {
-    title: "Blood Type Compatibility",
-    description: "Interactive chart to check blood type compatibility.",
-    icon: Droplet,
-    link: "/blood-type-compatibility",
-  },
-  {
-    title: "Donation Achievements",
-    description: "Earn badges and track your donation milestones.",
-    icon: Award,
-    link: "/achievements",
-  },
-  {
+    {
     title: "Community Blood Drive Map",
     description: "Find blood drives near you with our interactive map.",
     icon: Map,
@@ -98,6 +71,20 @@ const features = [
       "Contribute financially to support our blood donation initiatives.",
     icon: DollarSign,
     link: "/donate-funds",
+  },
+   {
+    title: "Blood Drive Organizer",
+    description: "Plan and manage your own blood drive events.",
+    icon: Calendar,
+    link: "/organize-blood-drive",
+  },
+   */
+
+  {
+    title: "Blood Type Compatibility",
+    description: "Interactive chart to check blood type compatibility.",
+    icon: Droplet,
+    link: "/blood-type-compatibility",
   },
 ];
 

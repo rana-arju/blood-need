@@ -84,12 +84,13 @@ export function UserBloodRequests() {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-3xl font-bold">My Blood Requests</h1>
       <Card>
         <CardHeader>
-          <CardTitle>My Blood Requests</CardTitle>
+          <CardTitle>Active Requests</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto rounded-lg border">
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>

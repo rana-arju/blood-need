@@ -13,6 +13,8 @@ import {
   Heart,
   Info,
   User,
+  Droplets,
+  HeartPulse,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -76,13 +78,10 @@ export default function BottomNavigation() {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50">
         <ul className="flex justify-around items-center h-16">
           <NavItem href="/" icon={Home} label="Home" />
-          <NavItem href="/be-donor" icon={Heart} label="Be Donor" />
+          <NavItem href="/donors" icon={Heart} label="Donors" />
+          <NavItem href="/requests" icon={Droplets} label="Requests" />
           <NavItem href="/request-blood" icon={Droplet} label="Request" />
-          {session ? (
-            <NavItem href="/dashboard" icon={User} label="Dashboard" />
-          ) : (
-            <NavItem href="/auth/signin" icon={LogIn} label="Sign In" />
-          )}
+
           <li>
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
               <SheetTrigger asChild>
@@ -101,14 +100,11 @@ export default function BottomNavigation() {
                   <DialogTitle className="sr-only">Menu</DialogTitle>
                   <ul className="space-y-4">
                     <SidebarItem href="/about" icon={Info} label="About" />
-                    {!session && (
-                      <SidebarItem
-                        href="/auth/signup"
-                        icon={UserPlus}
-                        label="Sign Up"
-                      />
-                    )}
-                    {/* Add more menu items here */}
+                    <SidebarItem
+                      href="/be-donor"
+                      icon={HeartPulse}
+                      label="Be a Donor"
+                    />
                   </ul>
                 </nav>
               </SheetContent>

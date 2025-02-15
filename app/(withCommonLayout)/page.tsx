@@ -11,9 +11,7 @@ import EducationalResources from "@/components/EducationalResources";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
 
-
 export default async function Home() {
-
   return (
     <>
       <Hero />

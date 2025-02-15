@@ -32,6 +32,7 @@ const mockAchievements = [
 export function UserAchievements() {
   return (
     <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Achievements</h1>
       <Card>
         <CardHeader>
           <CardTitle>Current Badge</CardTitle>

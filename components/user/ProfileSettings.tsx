@@ -85,9 +85,10 @@ export function ProfileSettings() {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Profile Settings</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Profile Settings</CardTitle>
+          <CardTitle>Personal Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col items-center space-y-4">

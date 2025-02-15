@@ -10,6 +10,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const mockHealthData = [
   { date: "2023-09", hemoglobin: 14.2, pressure: "120/80", weight: 70 },
@@ -22,6 +30,7 @@ const mockHealthData = [
 export function UserHealthHistory() {
   return (
     <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Health History</h1>
       <Card>
         <CardHeader>
           <CardTitle>Hemoglobin Levels</CardTitle>
@@ -51,7 +60,7 @@ export function UserHealthHistory() {
           <CardTitle>Health Records</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto rounded-lg border">
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -78,12 +87,3 @@ export function UserHealthHistory() {
     </div>
   );
 }
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
