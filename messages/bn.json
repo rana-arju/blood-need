@@ -1,13 +1,16 @@
 {
   "common": {
+    "siteTitle": "রক্তের প্রয়োজন",
     "home": "হোম",
+    "allRequests": "সকল অনুরোধ",
+    "allDonors": "সকল রক্তদাতা",
+    "bloodRequest": "রক্তের অনুরোধ",
+    "beADonor": "রক্তদাতা হোন",
     "about": "আমাদের সম্পর্কে",
-    "contact": "যোগাযোগ",
-    "login": "লগইন",
-    "register": "নিবন্ধন",
-    "donate": "রক্ত দান করুন",
-    "request": "রক্তের অনুরোধ",
-    "search": "অনুসন্ধান করুন"
+    "myAccount": "আমার অ্যাকাউন্ট",
+    "dashboard": "ড্যাশবোর্ড",
+    "logOut": "লগ আউট",
+    "login": "লগইন"
   },
   "home": {
     "hero": {

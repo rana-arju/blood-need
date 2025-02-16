@@ -1,3 +1,7 @@
+import createNextIntlPlugin from "next-intl/plugin";
+const withNextIntl = createNextIntlPlugin();
+/** @type {import('next').NextConfig} */
+
 let userConfig;
 try {
   userConfig = await import("./v0-user-next.config");
@@ -24,7 +28,7 @@ const nextConfig = {
 };
 
 // Merge user config if available
-export default mergeConfig(nextConfig, userConfig);
+//export default mergeConfig(nextConfig, userConfig);
 
 function mergeConfig(nextConfig, userConfig) {
   if (!userConfig) return nextConfig;
@@ -45,3 +49,7 @@ function mergeConfig(nextConfig, userConfig) {
 
   return nextConfig; // ✅ Return merged config
 }
+
+const mergedConfig = mergeConfig(nextConfig, userConfig?.default);
+
+export default withNextIntl(mergedConfig);

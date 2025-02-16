@@ -15,10 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export default function Header() {
   const { data: session } = useSession();
   const [isMobile, setIsMobile] = useState(false);
+  const t = useTranslations("common");
 
   useEffect(() => {
     const checkMobile = () => {
@@ -33,32 +36,32 @@ export default function Header() {
     <>
       <li>
         <Link href="/" className="hover:text-primary">
-          Home
+          {t("home")}
         </Link>
       </li>
       <li>
         <Link href="/requests" className="hover:text-primary">
-          All Requests
+          {t("allRequests")}
         </Link>
       </li>
       <li>
         <Link href="/donors" className="hover:text-primary">
-          All Donors
+          {t("allDonors")}
         </Link>
       </li>
       <li>
         <Link href="/request-blood" className="hover:text-primary">
-          Blood Request
+          {t("bloodRequest")}
         </Link>
       </li>
       <li>
         <Link href="/be-donor" className="hover:text-primary">
-          Be a donor
+          {t("beADonor")}
         </Link>
       </li>
       <li>
         <Link href="/about" className="hover:text-primary">
-          About
+          {t("about")}
         </Link>
       </li>
     </>
@@ -133,6 +136,7 @@ export default function Header() {
             <Bell size={24} />
           </Link>
           <ThemeToggle />
+          <LanguageSwitcher />
         </div>
       </div>
     </header>

@@ -37,8 +37,12 @@ const slides = [
     buttonLink: "/about",
   },
 ];
-
-export default function Hero() {
+interface HeroProps {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+}
+export default function Hero({ title, subtitle, ctaText }: HeroProps) {
   return (
     <section className="relative">
       <Swiper
@@ -63,7 +67,7 @@ export default function Hero() {
               <div className="absolute inset-0">
                 <img
                   src={slide.image || "/placeholder.svg"}
-                  alt={slide.title}
+                  alt={title}
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50" />
@@ -74,13 +78,13 @@ export default function Hero() {
                     className="text-lg md:text-xl mb-4 animate-fade-up"
                     style={{ animationDelay: "0.2s" }}
                   >
-                    {slide.subtitle}
+                    {subtitle}
                   </p>
                   <h1
                     className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 max-w-4xl mx-auto leading-tight animate-fade-up"
                     style={{ animationDelay: "0.4s" }}
                   >
-                    {slide.title}
+                    {title}
                   </h1>
                   <Button
                     asChild
@@ -88,7 +92,7 @@ export default function Hero() {
                     className="bg-red-600 hover:bg-red-700 text-white animate-fade-up"
                     style={{ animationDelay: "0.6s" }}
                   >
-                    <Link href={slide.buttonLink}>{slide.buttonText}</Link>
+                    <Link href={slide.buttonLink}>{ctaText}</Link>
                   </Button>
                 </div>
               </div>

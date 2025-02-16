@@ -7,6 +7,9 @@ import Script from "next/script";
 import { authOptions } from "./api/auth/[...nextauth]/options";
 import SessionProvider from "@/components/SessionProvider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { getMessages } from "next-intl/server";
+import NotFound from "./not-found";
+import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,31 +18,41 @@ export const metadata = {
   description: "Connect blood donors with those in need",
   manifest: "/manifest.json",
 };
+interface RootLayoutProps {
+  children: React.ReactNode;
+  params: {
+    locale: string;
+  };
+}
 
 export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  params: { locale },
+}: RootLayoutProps) {
   const session = await getServerSession(authOptions);
+  let messages;
+  try {
+    messages = await getMessages(locale as any);
+  } catch (error) {
+    NotFound();
+  }
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ef4444" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <main>
-              {children}
-            </main>
-            <Script
-              id="register-sw"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
+        <NextIntlClientProvider messages={messages}>
+          <SessionProvider session={session}>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <main>{children}</main>
+              <Script
+                id="register-sw"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                  __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js').then(
@@ -53,10 +66,11 @@ export default async function RootLayout({
                 });
               }
             `,
-              }}
-            />
-          </ThemeProvider>
-        </SessionProvider>
+                }}
+              />
+            </ThemeProvider>
+          </SessionProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

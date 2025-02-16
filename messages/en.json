@@ -1,13 +1,16 @@
 {
-  "common": {
+   "common": {
+    "siteTitle": "Blood Need",
     "home": "Home",
+    "allRequests": "All Requests",
+    "allDonors": "All Donors",
+    "bloodRequest": "Blood Request",
+    "beADonor": "Be a donor",
     "about": "About",
-    "contact": "Contact",
-    "login": "Login",
-    "register": "Register",
-    "donate": "Donate Blood",
-    "request": "Request Blood",
-    "search": "Search"
+    "myAccount": "My Account",
+    "dashboard": "Dashboard",
+    "logOut": "Log Out",
+    "login": "Login"
   },
   "home": {
     "hero": {
