@@ -1,7 +1,8 @@
 {
-  "name": "Blood Find",
-  "short_name": "BloodFind",
+  "name": "Blood Need",
+  "short_name": "BloodNeed",
   "start_url": "/",
+  "id": "bloodNeed",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff0000",
@@ -28,6 +29,12 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/mobile.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpg",
+      "form_factor": "narrow"
     }
   ]
 }
