@@ -1,13 +1,7 @@
 import createNextIntlPlugin from "next-intl/plugin";
-const withNextIntl = createNextIntlPlugin();
-/** @type {import('next').NextConfig} */
+import NextPWA from "next-pwa";
 
-let userConfig;
-try {
-  userConfig = await import("./v0-user-next.config");
-} catch (e) {
-  console.warn("Warning: No user config found, using default settings.");
-}
+const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -27,9 +21,12 @@ const nextConfig = {
   },
 };
 
-// Merge user config if available
-//export default mergeConfig(nextConfig, userConfig);
-
+let userConfig;
+try {
+  userConfig = await import("./v0-user-next.config");
+} catch (e) {
+  console.warn("Warning: No user config found, using default settings.");
+}
 function mergeConfig(nextConfig, userConfig) {
   if (!userConfig) return nextConfig;
 
@@ -47,9 +44,17 @@ function mergeConfig(nextConfig, userConfig) {
     }
   }
 
-  return nextConfig; // ✅ Return merged config
+  return nextConfig;
 }
 
 const mergedConfig = mergeConfig(nextConfig, userConfig?.default);
-
-export default withNextIntl(mergedConfig);
+const withPWA = NextPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === "development",
+  buildExcludes: [/middleware-manifest\.json$/],
+  publicExcludes: ["!icons/**/*"],
+});
+// Apply both withNextIntl and withPWA
+export default withPWA(withNextIntl(nextConfig));

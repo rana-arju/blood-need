@@ -1,23 +1,33 @@
 {
-  "name": "Blood Need",
-  "short_name": "Blood Need",
-  "description": "Connect blood donors with those in need",
+  "name": "Blood Find",
+  "short_name": "BloodFind",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ef4444",
-  "id": "bloodneed",
-  "scope": "/",
+  "theme_color": "#ff0000",
   "icons": [
     {
-      "src": "/1.jpg",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/jpg"
+      "type": "image/png"
     },
     {
-      "src": "/1.jpg",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/jpg"
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }

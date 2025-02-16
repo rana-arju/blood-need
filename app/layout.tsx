@@ -17,6 +17,10 @@ export const metadata = {
   title: "Blood Donation Community",
   description: "Connect blood donors with those in need",
   manifest: "/manifest.json",
+  icons: [
+    { rel: "apple-touch-icon", url: "/icons/icon.png" },
+    { rel: "icon", url: "/icons/icon.png" },
+  ],
 };
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -41,7 +45,11 @@ export default async function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ef4444" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon.png" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
       </head>
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
