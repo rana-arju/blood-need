@@ -8,7 +8,7 @@ type BeforeInstallPromptEvent = Event & {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-export default function InstallPWA() {
+export default function InstallPWA({ pos }: { pos: string }) {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [showButton, setShowButton] = useState(false);
@@ -37,5 +37,23 @@ export default function InstallPWA() {
     }
   };
 
-  return showButton ? <button onClick={installPWA}>Install</button> : null;
+  return showButton && pos === "bottom" ? (
+    <button
+      onClick={installPWA}
+      className="flex flex-col justify-center items-center text-gray-500 cursor-pointer space-x-2"
+    >
+      <Download size={20} />
+      <span className="text-xs">Install</span>
+    </button>
+  ) : (
+    showButton && pos === "header" && (
+      <button
+        onClick={installPWA}
+        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white shadow-lg hover:bg-red-700 transition duration-300 cursor-pointer"
+      >
+        Install
+        <Download size={20} className="text-white" />
+      </button>
+    )
+  );
 }

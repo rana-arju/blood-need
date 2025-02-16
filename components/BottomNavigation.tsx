@@ -69,7 +69,7 @@ export default function BottomNavigation() {
         }`}
         onClick={() => setSidebarOpen(false)}
       >
-        <Icon size={24} />
+        <Icon size={20} />
         <span>{label}</span>
       </Link>
     </li>
@@ -83,11 +83,8 @@ export default function BottomNavigation() {
           <NavItem href="/donors" icon={Heart} label="Donors" />
           <NavItem href="/requests" icon={Droplets} label="Requests" />
           <NavItem href="/request-blood" icon={Droplet} label="Request" />
-          <div className="flex flex-col justify-center items-center text-gray-500">
-            <Download size={20} />
-            <InstallPWA />
-          </div>
 
+          <InstallPWA pos="bottom" />
           <li>
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
               <SheetTrigger asChild>
