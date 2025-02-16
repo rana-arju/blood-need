@@ -1,0 +1,47 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "donate": "Donate Blood",
+    "request": "Request Blood",
+    "search": "Search"
+  },
+  "home": {
+    "hero": {
+      "title": "Your Blood Can Bring Smile In Any One Person Face",
+      "subtitle": "Donate Blood Save Life",
+      "cta": "Get Started"
+    },
+    "features": {
+      "title": "Our Services",
+      "donorRegistration": "Donor Registration",
+      "bloodRequest": "Blood Request",
+      "emergencyService": "Emergency Service"
+    }
+  },
+  "donate": {
+    "title": "Donate Blood",
+    "form": {
+      "name": "Name",
+      "bloodGroup": "Blood Group",
+      "phone": "Phone Number",
+      "address": "Address",
+      "submit": "Submit"
+    }
+  },
+  "request": {
+    "title": "Request Blood",
+    "form": {
+      "patientName": "Patient Name",
+      "bloodGroup": "Blood Group",
+      "units": "Number of Units",
+      "hospital": "Hospital",
+      "date": "Date",
+      "contact": "Contact Number",
+      "submit": "Submit Request"
+    }
+  }
+}

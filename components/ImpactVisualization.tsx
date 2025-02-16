@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-
+const stats = {
+  livesSaved: 230,
+  donationsMade: 500,
+  activeDonors: 29000,
+  goalProgress: 50,
+};
 interface ImpactStats {
   livesSaved: number;
   donationsMade: number;
@@ -12,6 +17,7 @@ interface ImpactStats {
 }
 
 export default function ImpactVisualization() {
+  /*
   const [stats, setStats] = useState<ImpactStats>({
     livesSaved: 0,
     donationsMade: 0,
@@ -33,7 +39,7 @@ export default function ImpactVisualization() {
       console.error("Error fetching impact stats:", error);
     }
   };
-
+*/
   return (
     <section className="py-12 bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto px-4">

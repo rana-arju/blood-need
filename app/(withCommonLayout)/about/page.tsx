@@ -1,4 +1,3 @@
-import Statistics from "@/components/Statistics";
 import Steps from "@/components/Steps";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -37,7 +36,6 @@ export default function AboutPage() {
           </CardContent>
         </Card>
 
-        <Statistics />
         <Steps />
       </div>
     </div>

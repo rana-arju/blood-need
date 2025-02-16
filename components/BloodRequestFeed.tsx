@@ -5,6 +5,88 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+const requests = [
+  {
+    id: "1",
+    patientName: "Rahim Ahmed",
+    bloodType: "A+",
+    location: "Dhaka Medical College, Dhaka, Bangladesh",
+    urgency: "High",
+    postedAt: "2025-02-15T08:30:00Z",
+  },
+  {
+    id: "2",
+    patientName: "Mehedi Hasan",
+    bloodType: "O-",
+    location: "Chittagong General Hospital, Chattogram, Bangladesh",
+    urgency: "Medium",
+    postedAt: "2025-02-14T15:45:00Z",
+  },
+  {
+    id: "3",
+    patientName: "Sultana Begum",
+    bloodType: "B+",
+    location: "Cox's Bazar Sadar Hospital, Cox's Bazar, Bangladesh",
+    urgency: "High",
+    postedAt: "2025-02-15T06:20:00Z",
+  },
+  {
+    id: "4",
+    patientName: "Tanvir Islam",
+    bloodType: "AB-",
+    location: "Rajshahi Medical College, Rajshahi, Bangladesh",
+    urgency: "Low",
+    postedAt: "2025-02-13T10:10:00Z",
+  },
+  {
+    id: "5",
+    patientName: "Farzana Akter",
+    bloodType: "O+",
+    location: "Sylhet MAG Osmani Medical College, Sylhet, Bangladesh",
+    urgency: "Medium",
+    postedAt: "2025-02-14T18:00:00Z",
+  },
+  {
+    id: "6",
+    patientName: "Jamal Uddin",
+    bloodType: "A-",
+    location: "Barisal Sher-e-Bangla Medical College, Barisal, Bangladesh",
+    urgency: "High",
+    postedAt: "2025-02-15T04:45:00Z",
+  },
+  {
+    id: "7",
+    patientName: "Sumaiya Rahman",
+    bloodType: "B-",
+    location: "Mymensingh Medical College, Mymensingh, Bangladesh",
+    urgency: "Low",
+    postedAt: "2025-02-12T22:30:00Z",
+  },
+  {
+    id: "8",
+    patientName: "Md. Rafiq Hossain",
+    bloodType: "AB+",
+    location: "Khulna Medical College, Khulna, Bangladesh",
+    urgency: "Medium",
+    postedAt: "2025-02-14T12:15:00Z",
+  },
+  {
+    id: "9",
+    patientName: "Nazmul Huda",
+    bloodType: "O-",
+    location: "Cumilla Medical College, Cumilla, Bangladesh",
+    urgency: "High",
+    postedAt: "2025-02-15T09:55:00Z",
+  },
+  {
+    id: "10",
+    patientName: "Rina Akhter",
+    bloodType: "A+",
+    location: "Bogura Shaheed Ziaur Rahman Medical College, Bogura, Bangladesh",
+    urgency: "Low",
+    postedAt: "2025-02-11T14:00:00Z",
+  },
+];
 
 interface BloodRequest {
   id: string;
@@ -16,6 +98,8 @@ interface BloodRequest {
 }
 
 export default function BloodRequestFeed() {
+
+  /*
   const [requests, setRequests] = useState<BloodRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +119,7 @@ export default function BloodRequestFeed() {
       setLoading(false);
     }
   };
-
+*/
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case "High":
@@ -48,7 +132,7 @@ export default function BloodRequestFeed() {
         return "bg-gray-500";
     }
   };
-
+/*
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -56,6 +140,7 @@ export default function BloodRequestFeed() {
       </div>
     );
   }
+    */
 
   return (
     <section className="py-12 bg-gray-50 dark:bg-gray-800">

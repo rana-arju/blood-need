@@ -1,17 +1,18 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-gray-900 text-gray-300 mb-16 md:mb-0">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
             <h3 className="text-white text-xl font-bold mb-4">About Us</h3>
             <p className="mb-4">
-              We are dedicated to making blood donation accessible and saving lives through our community of donors.
+              We are dedicated to making blood donation accessible and saving
+              lives through our community of donors.
             </p>
             <p>
               <strong>Phone:</strong> +8801881-220413
@@ -26,13 +27,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-primary">
-                  Our Services
+                <Link href="/be-donor" className="hover:text-primary">
+                  Be a donor
                 </Link>
               </li>
               <li>
-                <Link href="/campaigns" className="hover:text-primary">
-                  Campaigns
+                <Link href="/requests" className="hover:text-primary">
+                  All requests
                 </Link>
               </li>
               <li>
@@ -43,36 +44,47 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-white text-xl font-bold mb-4">Our Services</h3>
+            <h3 className="text-white text-xl font-bold mb-4">Important</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/blood-bank" className="hover:text-primary">
-                  Blood Bank
+                <Link href="/faq" className="hover:text-primary">
+                  FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/blood-test" className="hover:text-primary">
-                  Blood Test
+                <Link href="/awareness" className="hover:text-primary">
+                  Awareness
                 </Link>
               </li>
               <li>
-                <Link href="/donation" className="hover:text-primary">
-                  Blood Donation
+                <Link href="/privacy" className="hover:text-primary">
+                  Privacy & policy
                 </Link>
               </li>
               <li>
-                <Link href="/research" className="hover:text-primary">
-                  Research
+                <Link
+                  href="https://rana-arju.vercel.app"
+                  target="_blank"
+                  className="hover:text-primary"
+                >
+                  About me
                 </Link>
               </li>
             </ul>
           </div>
           <div>
             <h3 className="text-white text-xl font-bold mb-4">Subscribe</h3>
-            <p className="mb-4">Subscribe to our newsletter for updates and news.</p>
+            <p className="mb-4">
+              Subscribe to our newsletter for updates and news.
+            </p>
             <div className="flex gap-2">
-              <Input placeholder="Your email" className="bg-gray-800 border-gray-700" />
-              <Button className="bg-primary hover:bg-primary/90">Subscribe</Button>
+              <Input
+                placeholder="Your email"
+                className="bg-gray-800 border-gray-700"
+              />
+              <Button className="bg-primary hover:bg-primary/90">
+                Subscribe
+              </Button>
             </div>
             <div className="flex gap-4 mt-6">
               <Facebook className="hover:text-primary cursor-pointer" />
@@ -84,9 +96,18 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-gray-800">
-        <div className="container py-6 text-center">©  {new Date().getFullYear()} Rana Arju. All rights reserved.</div>
+        <div className="container py-6 text-center">
+          © {new Date().getFullYear()}{" "}
+          <Link
+            href="https://rana-arju.vercel.app"
+            target="_blank"
+            className="hover:text-primary"
+          >
+           Rana Arju
+          </Link>
+          . All rights reserved.
+        </div>
       </div>
     </footer>
-  )
+  );
 }
-

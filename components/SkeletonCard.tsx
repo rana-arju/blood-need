@@ -1,12 +1,21 @@
-export default function SkeletonCard() {
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export function SkeletonCard() {
   return (
-    <div className="border rounded-lg p-4 shadow-sm animate-pulse">
-      <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-md mb-4"></div>
-      <div className="space-y-2">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
-      </div>
-    </div>
+    <Card>
+      <CardHeader className="space-y-2">
+        <Skeleton className="h-5 w-1/2" />
+        <Skeleton className="h-4 w-4/5" />
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Skeleton className="h-32 w-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-4/6" />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
