@@ -11,12 +11,14 @@ import ImpactVisualization from "@/components/ImpactVisualization";
 import EducationalResources from "@/components/EducationalResources";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
+import InstallPWA from "@/components/InstallPWA";
 
 export default function Home() {
   const t = useTranslations("home");
 
   return (
     <div className="overflow-x-hidden">
+
       <Hero
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}
@@ -28,11 +30,11 @@ export default function Home() {
       <Welcome />
       <DonationProcess />
       <UpcomingDrives />
-
       <FeatureHighlights />
       <EducationalResources />
       <CommunityBloodDriveMap />
       <ReviewSection />
+
       <News />
     </div>
   );

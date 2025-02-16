@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Bell, LayoutDashboard, LogOut } from "lucide-react";
+import { Bell, Download, LayoutDashboard, LogOut } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import {
   DropdownMenu,
@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import InstallPWA from "./InstallPWA";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -63,6 +64,10 @@ export default function Header() {
         <Link href="/about" className="hover:text-primary">
           {t("about")}
         </Link>
+      </li>
+      <li className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl shadow-lg transition duration-300 cursor-pointer">
+        <InstallPWA />
+        <Download size={20} className="text-white" />
       </li>
     </>
   );

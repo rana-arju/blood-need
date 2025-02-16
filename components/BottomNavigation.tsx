@@ -15,10 +15,12 @@ import {
   User,
   Droplets,
   HeartPulse,
+  Download,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { DialogTitle } from "./ui/dialog";
+import InstallPWA from "./InstallPWA";
 
 export default function BottomNavigation() {
   const { data: session } = useSession();
@@ -81,6 +83,10 @@ export default function BottomNavigation() {
           <NavItem href="/donors" icon={Heart} label="Donors" />
           <NavItem href="/requests" icon={Droplets} label="Requests" />
           <NavItem href="/request-blood" icon={Droplet} label="Request" />
+          <div className="flex flex-col justify-center items-center text-gray-500">
+            <Download size={20} />
+            <InstallPWA />
+          </div>
 
           <li>
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
