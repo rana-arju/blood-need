@@ -56,6 +56,22 @@ const withPWA = NextPWA({
   cacheOnFrontEndNav: true,
   runtimeCaching: [
     {
+      urlPattern: /^\/$/, // Homepage caching
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "html-cache",
+        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 }, // 1 day
+      },
+    },
+    {
+      urlPattern: /^\/(about|contact|donors|faq|awareness|privacy)/, // Cache these pages for offline
+      handler: "CacheFirst",
+      options: {
+        cacheName: "pages-cache",
+        expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 3 },
+      },
+    },
+    {
       urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
       handler: "CacheFirst",
       options: {
@@ -64,7 +80,7 @@ const withPWA = NextPWA({
       },
     },
     {
-      urlPattern: /^https:\/\/your-api-domain\.com\/.*/i,
+      urlPattern: /^https:\/\/blood-need\.vercel\.app\/.*/i,
       handler: "NetworkFirst",
       options: {
         cacheName: "api-cache",
