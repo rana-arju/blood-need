@@ -72,7 +72,7 @@ export default function BloodRequestList() {
       </Card>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedRequests.map((request) => (
-          <Link key={request.id} href={`/blood-requests/${request.id}`}>
+          <Link key={request.id} href={`/requests/${request.id}`}>
             <Card className="hover:shadow-lg transition-shadow duration-300">
               <CardContent className="flex items-center p-6">
                 <Avatar className="h-24 w-24 mr-6">

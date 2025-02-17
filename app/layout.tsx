@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { getMessages } from "next-intl/server";
 import NotFound from "./not-found";
 import { NextIntlClientProvider } from "next-intl";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,6 +77,7 @@ export default async function RootLayout({
             `,
                 }}
               />
+              <Toaster richColors position="top-center" />
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>
