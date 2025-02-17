@@ -22,7 +22,6 @@ export default function DonationReminder() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, this would be an API call to set up the reminder
-    console.log({ reminderType, reminderValue, reminderFrequency });
     toast.success( "Reminder Set"
     );
   };

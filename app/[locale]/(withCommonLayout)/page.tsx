@@ -11,11 +11,8 @@ import ImpactVisualization from "@/components/ImpactVisualization";
 import EducationalResources from "@/components/EducationalResources";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
-import InstallPWA from "@/components/InstallPWA";
-
-export default function Home() {
+export default  function Home() {
   const t = useTranslations("home");
-
   return (
     <div className="overflow-x-hidden">
 

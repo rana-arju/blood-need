@@ -14,7 +14,6 @@ export function BlogSearch() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, you would implement the search functionality here
-    console.log("Searching for:", searchQuery);
   };
 
   return (

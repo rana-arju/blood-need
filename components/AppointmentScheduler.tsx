@@ -43,7 +43,6 @@ export default function AppointmentScheduler() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, this would be an API call to schedule the appointment
-    console.log({ date, time, location, name, email, phone });
     alert("Appointment scheduled successfully!");
   };
 

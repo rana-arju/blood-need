@@ -65,8 +65,8 @@ export default function Header() {
           {t("about")}
         </Link>
       </li>
-      <li >
-        <InstallPWA pos = "header" />
+      <li>
+        <InstallPWA pos="header" />
       </li>
     </>
   );
@@ -87,13 +87,18 @@ export default function Header() {
           )}
         </div>
         <div className="flex items-center space-x-4">
-          {!session ? (
+          {session ? (
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:ring-0 focus:outline-none bg-red">
                   <Avatar className="w-7 h-7">
-                    <AvatarImage className="dark:bg-white" src="/profile.png" />
-                    <AvatarFallback>U</AvatarFallback>
+                    <AvatarImage
+                      className="dark:bg-white"
+                      src={session?.user?.image || "/profile.png"}
+                    />
+                    <AvatarFallback>
+                      {(session?.user?.name?.[0] as string) ?? "?"}
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100">
@@ -103,7 +108,13 @@ export default function Header() {
                   <DropdownMenuSeparator className="border-gray-200 dark:border-gray-700" />
                   <DropdownMenuItem>
                     <Link
-                      href="/dashboard"
+                      href={
+                        session?.user?.role == "admin"
+                          ? "/admin"
+                          : session?.user?.role == "user"
+                          ? "/dashboard"
+                          : "/"
+                      }
                       className="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <LayoutDashboard className="w-5 h-5 mr-3" />
@@ -112,7 +123,7 @@ export default function Header() {
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Button
-                      onClick={() => signOut()}
+                      onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                       variant="ghost"
                       size="sm"
                       className="hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -125,20 +136,23 @@ export default function Header() {
               </DropdownMenu>
             </>
           ) : (
-            <>
+            <ul>
               <li>
                 <Link href="/auth/signin" className="hover:text-primary">
-                  Login In
+                  Sign In
                 </Link>
               </li>
-            </>
+            </ul>
           )}
-          <Link
-            href="/notifications"
-            className="text-foreground hover:text-primary"
-          >
-            <Bell size={24} />
-          </Link>
+          {session && (
+            <Link
+              href="/notifications"
+              className="text-foreground hover:text-primary"
+            >
+              <Bell size={24} />
+            </Link>
+          )}
+
           <ThemeToggle />
           <LanguageSwitcher />
         </div>

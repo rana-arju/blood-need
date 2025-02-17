@@ -22,6 +22,23 @@ export const metadata = {
     { rel: "apple-touch-icon", url: "/icons/icon.png" },
     { rel: "icon", url: "/icons/icon.png" },
   ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: process.env.NEXT_PUBLIC_APP_URL,
+    siteName: "Blood Donation Community",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/api/og?title=Blood Donation Community&subtitle=Connect donors with those in need&type=default`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@blooddonationcom",
+  },
 };
 interface RootLayoutProps {
   children: React.ReactNode;

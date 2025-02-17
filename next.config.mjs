@@ -19,6 +19,28 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+
+  async rewrites() {
+    return [
+      // Serve assets without the locale prefix
+      {
+        source: "/:locale/icons/:path*",
+        destination: "/icons/:path*",
+      },
+      {
+        source: "/:locale/manifest.json",
+        destination: "/manifest.json",
+      },
+      {
+        source: "/:locale/screenshots/:path*",
+        destination: "/screenshots/:path*",
+      },
+      {
+        source: "/:locale/leaflet/:path*",
+        destination: "/leaflet/:path*",
+      },
+    ];
+  },
 };
 
 let userConfig;
@@ -27,6 +49,7 @@ try {
 } catch (e) {
   console.warn("Warning: No user config found, using default settings.");
 }
+
 function mergeConfig(nextConfig, userConfig) {
   if (!userConfig) return nextConfig;
 
@@ -105,5 +128,5 @@ const withPWA = NextPWA({
     },
   ],
 });
-// Apply both withNextIntl and withPWA
-export default withPWA(withNextIntl(nextConfig));
+
+export default withPWA(withNextIntl(mergedConfig));

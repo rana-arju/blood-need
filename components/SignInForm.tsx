@@ -5,7 +5,6 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardHeader,
@@ -14,42 +13,51 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
+import SocialLogin from "./SocialLogin";
+import { toast } from "sonner";
+import { useForm, FormProvider } from "react-hook-form"; // Import FormProvider
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+
+// Define validation schema
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 8 characters" }),
+});
 
 export default function SignInForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await signIn("credentials", {
       redirect: false,
-      email,
-      password,
+      email: values.email,
+      password: values.password,
     });
-    if (result?.ok) {
-      router.push("/dashboard");
-    } else {
-      // Handle error
-      console.error("Sign in failed");
-    }
-  };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await signIn("google", {
-        callbackUrl: "/dashboard",
-        redirect: false,
-      });
-      if (result?.error) {
-        console.error("Google sign in error:", result.error);
-        // You can set an error state here and display it to the user
-      } else if (result?.url) {
-        router.push(result.url);
-      }
-    } catch (error) {
-      console.error("Unexpected error during Google sign in:", error);
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      toast.error("Sign in failed");
+      setError("Invalid email or password");
     }
   };
 
@@ -63,32 +71,46 @@ export default function SignInForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Sign in with Email
-            </Button>
-          </form>
+          {/* Wrap the form with FormProvider */}
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="m@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} placeholder="Enter strong password" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              <Button type="submit" className="w-full">
+                Sign in with Email
+              </Button>
+            </form>
+          </FormProvider>
+
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -99,14 +121,7 @@ export default function SignInForm() {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" onClick={handleGoogleSignIn}>
-              <FaGoogle className="mr-2 h-4 w-4" /> Google
-            </Button>
-            <Button variant="outline" onClick={() => signIn("facebook")}>
-              <FaFacebook className="mr-2 h-4 w-4" /> Facebook
-            </Button>
-          </div>
+          <SocialLogin />
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">

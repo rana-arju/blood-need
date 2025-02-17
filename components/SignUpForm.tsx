@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -13,46 +12,78 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
+import SocialLogin from "./SocialLogin";
+import * as z from "zod";
+import { toast } from "sonner";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { signIn } from "next-auth/react";
 
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
+
 export default function SignUpForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
 
-    if (response.ok) {
-      router.push("/auth/signin");
-    } else {
-      const data = await response.json();
-      console.error(data.message);
-    }
-  };
-  const handleGoogleSignIn = async () => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const payload = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      role: "user",
+    };
     try {
-      const result = await signIn("google", {
-        callbackUrl: "/dashboard",
-        redirect: false,
-      });
-      if (result?.error) {
-        console.error("Google sign in error:", result.error);
-        // You can set an error state here and display it to the user
-      } else if (result?.url) {
-        router.push(result.url);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (response.ok) {
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: values?.email,
+          password: values?.password,
+        });
+        
+        if (result?.ok) {
+          toast.success("Registration successfull!");
+          router.push("/");
+        } else {
+          setError("Auto login failed after registration");
+        }
+      } else {
+        setError("Registration failed");
       }
     } catch (error) {
-      console.error("Unexpected error during Google sign in:", error);
+      toast.error("Registration failed");
     }
   };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -62,61 +93,77 @@ export default function SignUpForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="john@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Sign Up
-          </Button>
-        </form>
+        {/* Wrap the form with FormProvider */}
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter full name" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter email" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        {...field}
+                        placeholder="Enter strong password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <Button type="submit" className="w-full">
+              Sign Up
+            </Button>
+          </form>
+        </FormProvider>
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase  my-2">
+          <div className="relative flex justify-center text-xs uppercase my-2">
             <span className="bg-background px-2 text-muted-foreground">
               Or continue with
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" onClick={handleGoogleSignIn}>
-            <FaGoogle className="mr-2 h-4 w-4" /> Google
-          </Button>
-          <Button variant="outline" onClick={() => signIn("facebook")}>
-            <FaFacebook className="mr-2 h-4 w-4" /> Facebook
-          </Button>
-        </div>
+
+        <SocialLogin />
       </CardContent>
       <CardFooter>
         <p className="text-sm text-gray-600">

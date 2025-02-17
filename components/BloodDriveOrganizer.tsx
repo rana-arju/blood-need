@@ -63,7 +63,6 @@ export default function BloodDriveOrganizer() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // In a real application, this would be an API call to submit the blood drive details
-    console.log(values);
     setIsSubmitted(true);
   }
 
