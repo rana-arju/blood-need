@@ -22,7 +22,6 @@ const nextConfig = {
 
   async rewrites() {
     return [
-      // Serve assets without the locale prefix
       {
         source: "/:locale/icons/:path*",
         destination: "/icons/:path*",
@@ -75,19 +74,20 @@ const withPWA = NextPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === "development", // Disable PWA in development mode
+  disable: process.env.NODE_ENV === "development",
   cacheOnFrontEndNav: true,
+  swSrc: "public/custom-sw.js", // 🔥 Add Custom Service Worker
   runtimeCaching: [
     {
-      urlPattern: /^\/$/, // Homepage caching
+      urlPattern: /^\/$/,
       handler: "StaleWhileRevalidate",
       options: {
         cacheName: "html-cache",
-        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 }, // 1 day
+        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 },
       },
     },
     {
-      urlPattern: /^\/(about|contact|donors|faq|awareness|privacy)/, // Cache these pages for offline
+      urlPattern: /^\/(about|contact|donors|faq|awareness|privacy)/,
       handler: "CacheFirst",
       options: {
         cacheName: "pages-cache",
