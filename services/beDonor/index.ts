@@ -17,14 +17,14 @@ export const getAllDonors = async () => {
 };
 
 export const donorAdd = async (data: any) => {
+  console.log(JSON.stringify(data));
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor`,
       {
         method: "POST",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       }
     );
@@ -34,7 +34,7 @@ export const donorAdd = async (data: any) => {
     return Error(error);
   }
 };
-export const donorUpdate = async (data: any,donorId: string) => {
+export const donorUpdate = async (data: any, donorId: string) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/${donorId}`,

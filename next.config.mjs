@@ -76,57 +76,7 @@ const withPWA = NextPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
   cacheOnFrontEndNav: true,
-  swSrc: "public/custom-sw.js", // 🔥 Add Custom Service Worker
-  runtimeCaching: [
-    {
-      urlPattern: /^\/$/,
-      handler: "StaleWhileRevalidate",
-      options: {
-        cacheName: "html-cache",
-        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 },
-      },
-    },
-    {
-      urlPattern: /^\/(about|contact|donors|faq|awareness|privacy)/,
-      handler: "CacheFirst",
-      options: {
-        cacheName: "pages-cache",
-        expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 3 },
-      },
-    },
-    {
-      urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
-      handler: "CacheFirst",
-      options: {
-        cacheName: "google-fonts",
-        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
-      },
-    },
-    {
-      urlPattern: /^https:\/\/blood-need\.vercel\.app\/.*/i,
-      handler: "NetworkFirst",
-      options: {
-        cacheName: "api-cache",
-        networkTimeoutSeconds: 10,
-        expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
-      },
-    },
-    {
-      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
-      handler: "CacheFirst",
-      options: {
-        cacheName: "image-cache",
-        expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 },
-      },
-    },
-    {
-      urlPattern: /\.(?:js|css|html)$/i,
-      handler: "StaleWhileRevalidate",
-      options: {
-        cacheName: "static-resources",
-      },
-    },
-  ],
+  swSrc: "./public/custom-sw.js", // 🔥 Add Custom Service Worker
 });
 
 export default withPWA(withNextIntl(mergedConfig));

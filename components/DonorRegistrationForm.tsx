@@ -40,67 +40,106 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { updateUser } from "@/services/auth";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { donorAdd, donorUpdate } from "@/services/beDonor";
+import { useRouter } from "next/navigation";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const genders = ["Male", "Female", "Other"];
-
 const formSchema = z.object({
-  fullName: z.string().min(2, "Full name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phoneNumber: z.string().regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
+  phone: z.string().regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
   dateOfBirth: z.date({
     required_error: "Date of birth is required",
   }),
   gender: z.enum(genders as [string, ...string[]]),
-  bloodGroup: z.enum(bloodGroups as [string, ...string[]]),
+  blood: z.enum(bloodGroups as [string, ...string[]]),
   weight: z.number().min(50, "Weight must be at least 50 kg"),
   height: z.number().min(100, "Height must be at least 100 cm"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  city: z.string().min(2, "City must be at least 2 characters"),
-  state: z.string().min(2, "State must be at least 2 characters"),
-  postalCode: z.string().min(4, "Postal code must be at least 4 characters"),
-  lastDonationDate: z.date().optional(),
-  medicalConditions: z.string().optional(),
-  medications: z.string().optional(),
+  district: z.string().min(2, "City must be at least 2 characters"),
+  upazila: z.string().min(2, "State must be at least 2 characters"),
+  division: z.string().min(4, "Postal code must be at least 4 characters"),
   emergencyContactName: z
     .string()
-    .min(2, "Emergency contact name must be at least 2 characters"),
-  emergencyContactPhone: z
+    .min(2, "Emergency Contact Name must be at least 2 characters"),
+  lastDonationDate: z.date().optional(),
+  medicalCondition: z.string().optional(),
+  currentMedications: z.string().optional(),
+  facebookId: z.string().min(2, "Enter facebook Id url"),
+  emergencyContact: z
     .string()
     .regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
+  whatsappNumber: z.string().regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
   agreeToTerms: z.boolean().refine((value) => value === true, {
     message: "You must agree to the terms and conditions",
   }),
 });
 
 export default function DonorRegistrationForm() {
-  const [date, setDate] = useState<Date>();
-
+  const { data: session } = useSession();
+  const { user } = session!;
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
+      phone: "",
+      facebookId: "",
       gender: "Male",
-      bloodGroup: "A+",
+      blood: "A+",
       weight: 70,
       height: 170,
       address: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      medicalConditions: "",
-      medications: "",
+      district: "",
+      division: "",
+      upazila: "",
+      medicalCondition: "",
+      currentMedications: "",
+      whatsappNumber: "",
+      emergencyContact: "",
       emergencyContactName: "",
-      emergencyContactPhone: "",
       agreeToTerms: false,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Here you would typically send the form data to your API
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const userData = {
+        blood: values?.blood,
+        dateOfBirth: values?.dateOfBirth,
+        gender: values?.gender,
+        division: values?.division,
+        district: values?.district,
+        upazila: values?.upazila,
+        address: values?.address,
+        lastDonationDate: values?.lastDonationDate,
+      };
+      const donorData = {
+        userId: user?.id,
+        phone: values.phone,
+        whatsappNumber: values?.whatsappNumber,
+        facebookId: values?.facebookId,
+        emergencyContact: values?.emergencyContact,
+        height: values?.height,
+        weight: values?.weight,
+        medicalCondition: values?.medicalCondition,
+        currentMedications: values?.currentMedications,
+      };
+
+      const userUp = await updateUser(userData, user?.id);
+      const res = await donorAdd(donorData);
+
+      if (res.success) {
+        toast.success(res.message);
+        form.reset();
+        router.push("/");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
   }
 
   return (
@@ -120,28 +159,13 @@ export default function DonorRegistrationForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="fullName"
+                name="facebookId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Facebook Id link</FormLabel>
                     <FormControl>
                       <Input
-                        type="email"
-                        placeholder="john@example.com"
+                        placeholder="https://www.facebook.com"
                         {...field}
                       />
                     </FormControl>
@@ -149,10 +173,9 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
@@ -162,8 +185,20 @@ export default function DonorRegistrationForm() {
                     <FormMessage />
                   </FormItem>
                 )}
+              />{" "}
+              <FormField
+                control={form.control}
+                name="whatsappNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="+880XXXXXXXXXX" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-
               <FormField
                 control={form.control}
                 name="dateOfBirth"
@@ -205,7 +240,6 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="gender"
@@ -233,10 +267,9 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="bloodGroup"
+                name="blood"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Blood Group</FormLabel>
@@ -261,7 +294,6 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="weight"
@@ -279,7 +311,6 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="height"
@@ -297,7 +328,45 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="division"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Division</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="district"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>District</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="upazila"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Upazila</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="address"
@@ -311,49 +380,6 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>City</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="state"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>State</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="postalCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postal Code</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="lastDonationDate"
@@ -393,7 +419,6 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="emergencyContactName"
@@ -407,10 +432,9 @@ export default function DonorRegistrationForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="emergencyContactPhone"
+                name="emergencyContact"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Emergency Contact Phone</FormLabel>
@@ -425,7 +449,7 @@ export default function DonorRegistrationForm() {
 
             <FormField
               control={form.control}
-              name="medicalConditions"
+              name="medicalCondition"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Medical Conditions (if any)</FormLabel>
@@ -443,7 +467,7 @@ export default function DonorRegistrationForm() {
 
             <FormField
               control={form.control}
-              name="medications"
+              name="currentMedications"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Current Medications (if any)</FormLabel>
@@ -481,7 +505,11 @@ export default function DonorRegistrationForm() {
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={user ? false : true}
+            >
               Register as Donor
             </Button>
           </form>
