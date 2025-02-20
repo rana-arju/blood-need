@@ -10,9 +10,12 @@ export default async function AdminBloodDrivesPage() {
     redirect("/auth/signin");
   }
 
-  const res = await fetch("http://localhost:5000/api/v1/bloodDrives", {
-    method: "GET",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/bloodDrives`,
+    {
+      method: "GET",
+    }
+  );
   const bloodDrives = await res.json();
 
   return (

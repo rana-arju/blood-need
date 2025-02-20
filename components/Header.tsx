@@ -23,6 +23,7 @@ export default function Header() {
   const { data: session } = useSession();
   const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations("common");
+console.log("Header", session);
 
   useEffect(() => {
     const checkMobile = () => {

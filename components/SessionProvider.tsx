@@ -2,12 +2,9 @@
 
 import { SessionProvider as NextAuthSessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
-import type React from "react"; // Added import for React
+import type React from "react";
 import { useEffect } from "react";
-import {
-  registerBackgroundSync,
-  subscribeToPushNotifications,
-} from "@/utils/pushNotifications";
+import { subscribeToPushNotifications } from "@/utils/pushNotifications";
 
 export default function SessionProvider({
   children,
@@ -17,9 +14,11 @@ export default function SessionProvider({
   session: Session | null;
 }) {
   useEffect(() => {
-    subscribeToPushNotifications();
-    registerBackgroundSync();
-  }, []);
+    if (session?.user?.id) {
+      subscribeToPushNotifications(session.user.id);
+    }
+  }, [session]);
+
   return (
     <NextAuthSessionProvider session={session}>
       {children}

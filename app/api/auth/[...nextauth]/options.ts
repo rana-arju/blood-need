@@ -19,9 +19,9 @@ export const authOptions: NextAuthOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              name: profile.name,
-              email: profile.email,
-              image: profile?.picture,
+              name: profile.name || "",
+              email: profile.email || "",
+              image: profile?.picture || "",
               provider: "google",
               providerId: profile.sub,
             }),
@@ -34,12 +34,38 @@ export const authOptions: NextAuthOptions = {
           email: user?.data?.email,
           image: user?.data?.image,
           role: user?.data?.role,
+          status: user?.data?.status,
         };
       },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+      async profile(profile) {
+        const userResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: profile.name || "",
+              email: profile.email || "",
+              image: profile?.picture || "",
+              provider: "facebook", // Fix: Changed provider to 'facebook'
+              providerId: profile.id, // Fix: Corrected 'providerId'
+            }),
+          }
+        );
+        const user = await userResponse.json();
+        return {
+          id: user?.data?.id,
+          name: user?.data?.name,
+          email: user?.data?.email,
+          image: user?.data?.image,
+          role: user?.data?.role,
+          status: user?.data?.status,
+        };
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -67,6 +93,7 @@ export const authOptions: NextAuthOptions = {
             email: user?.data?.email,
             image: user?.data?.image,
             role: user?.data?.role,
+            status: user?.data?.status,
           };
         }
         // Return null if user data could not be retrieved
@@ -80,7 +107,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-
       if (user) {
         token.id = user.id;
         token.role = (user as any).role || "user";
@@ -88,7 +114,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -40,84 +40,86 @@ import {
 } from "@/components/ui/card";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { bloodRequest } from "@/services/bloodRegister";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const formSchema = z.object({
   patientName: z.string().min(2, "Patient name must be at least 2 characters"),
-  bloodGroup: z.enum(bloodGroups as [string, ...string[]]),
+  blood: z.enum(bloodGroups as [string, ...string[]]),
   district: z.string().min(2, "District must be at least 2 characters"),
   upazila: z.string().min(2, "Upazila must be at least 2 characters"),
-  area: z.string().min(2, "Area must be at least 2 characters"),
-  donationCenter: z
+  division: z.string().min(2, "Area must be at least 2 characters"),
+  hospitalName: z
     .string()
     .min(2, "Donation center or hospital name must be at least 2 characters"),
   contactNumber: z.string().regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
-  facebookId: z.string().optional(),
+  address: z.string().optional(),
   whatsappNumber: z
     .string()
     .regex(/^\+?[0-9]{10,14}$/, "Invalid WhatsApp number"),
-  patientProblem: z
-    .string()
-    .min(10, "Please provide more details about the patient's problem"),
-  amountOfBlood: z.number().min(1, "Amount of blood must be at least 1 unit"),
-  dateOfDonation: z.date({
+  patientProblem: z.string().optional(),
+  bloodAmount: z.number().min(1, "Amount of blood must be at least 1 unit"),
+  requiredDate: z.date({
     required_error: "Please select a date for donation",
   }),
-  timeOfDonation: z.string({
+  requireTime: z.date({
     required_error: "Please select a time for donation",
   }),
-  hemoglobin: z.number().min(1, "Hemoglobin must be at least 1 g/dL"),
+  hemoglobin: z.number().optional(),
   reference: z.string().optional(),
 });
 
 export default function BloodRequestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { executeRecaptcha } = useRecaptcha();
-
+  const { data: session } = useSession();
+  const { user } = session || {};
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       patientName: "",
-      bloodGroup: "A+",
-      district: "",
-      upazila: "",
-      area: "",
-      donationCenter: "",
-      contactNumber: "",
-      facebookId: "",
-      whatsappNumber: "",
       patientProblem: "",
-      amountOfBlood: 1,
-      hemoglobin: 12,
+      blood: "A+",
+      district: "",
+      address: "",
+      upazila: "",
+      division: "",
+      hospitalName: "",
+      contactNumber: "",
+      whatsappNumber: "",
+      bloodAmount: 1,
+      hemoglobin: 1,
       reference: "",
+      requireTime: new Date(),
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    const recaptchaToken = await executeRecaptcha();
+    //const recaptchaToken = await executeRecaptcha();
 
     try {
-      const response = await fetch("/api/blood-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...values, recaptchaToken }),
-      });
+      if (!user?.id) {
+        throw new Error("Please sign in");
+      }
+      const modifiedValues = {
+        ...values,
+        userId: user?.id,
+      }
+      const response = await bloodRequest(modifiedValues, user.id);
+      console.log("response", response);
 
-      if (response.ok) {
-        toast.success( "Blood Request Submitted",
-       );
+      if (response.success) {
+        toast.success("Blood Request Successfully Submitted");
         form.reset();
       } else {
-        throw new Error("Blood request submission failed");
+        toast.error("Blood request submission failed");
       }
     } catch (error) {
       console.error("Error submitting blood request:", error);
-      toast.error( "Submission Failed",
-      );
+      toast.error("Submission Failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -154,7 +156,7 @@ export default function BloodRequestForm() {
 
               <FormField
                 control={form.control}
-                name="bloodGroup"
+                name="blood"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Blood Group</FormLabel>
@@ -179,7 +181,19 @@ export default function BloodRequestForm() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="division"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Division</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="district"
@@ -207,15 +221,14 @@ export default function BloodRequestForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
-                name="area"
+                name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Area</FormLabel>
+                    <FormLabel>Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter area" {...field} />
+                      <Input placeholder="Enter address" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,7 +237,7 @@ export default function BloodRequestForm() {
 
               <FormField
                 control={form.control}
-                name="donationCenter"
+                name="hospitalName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Donation Center/Hospital</FormLabel>
@@ -269,24 +282,10 @@ export default function BloodRequestForm() {
 
               <FormField
                 control={form.control}
-                name="facebookId"
+                name="bloodAmount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Facebook ID (Optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter Facebook ID" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="amountOfBlood"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Amount of Blood (units)</FormLabel>
+                    <FormLabel>Amount of Blood (Bag)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -301,7 +300,7 @@ export default function BloodRequestForm() {
 
               <FormField
                 control={form.control}
-                name="dateOfDonation"
+                name="requiredDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Date of Donation</FormLabel>
@@ -347,12 +346,23 @@ export default function BloodRequestForm() {
 
               <FormField
                 control={form.control}
-                name="timeOfDonation"
+                name="requireTime"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Time of Donation</FormLabel>
                     <FormControl>
-                      <Input type="time" {...field} />
+                      <Input
+                        type="time"
+                        value={field.value ? format(field.value, "HH:mm") : ""}
+                        onChange={(e) =>
+                          field.onChange(
+                            new Date(`1970-01-01T${e.target.value}:00`)
+                          )
+                        }
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -398,7 +408,7 @@ export default function BloodRequestForm() {
               name="patientProblem"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Patient Problem</FormLabel>
+                  <FormLabel>Patient Problem (optional)</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Describe the patient's condition"
@@ -410,10 +420,16 @@ export default function BloodRequestForm() {
                 </FormItem>
               )}
             />
-
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Submit Blood Request"}
-            </Button>
+            {isSubmitting ? (
+              <Button disabled>
+                <Loader2 className="animate-spin" />
+                Requesting Blood...
+              </Button>
+            ) : (
+              <Button type="submit" disabled={!user}>
+                {!user ? "First Signin/Signup" : "Submit Blood Request"}
+              </Button>
+            )}
           </form>
         </Form>
       </CardContent>

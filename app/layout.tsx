@@ -58,6 +58,7 @@ export default async function RootLayout({
   } catch (error) {
     NotFound();
   }
+   
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -81,7 +82,7 @@ export default async function RootLayout({
                   __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(
+                  navigator.serviceWorker.register('/custom-sw.js').then(
                     function(registration) {
                       console.log('Service Worker registration successful with scope: ', registration.scope);
                     },

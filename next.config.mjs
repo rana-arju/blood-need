@@ -38,6 +38,10 @@ const nextConfig = {
         source: "/:locale/leaflet/:path*",
         destination: "/leaflet/:path*",
       },
+      {
+        source: "/custom-sw.js",
+        destination: "/_next/static/worker/custom-sw.js",
+      },
     ];
   },
 };
@@ -76,7 +80,7 @@ const withPWA = NextPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
   cacheOnFrontEndNav: true,
-  swSrc: "./public/custom-sw.js", // 🔥 Add Custom Service Worker
+  sw: "/custom-sw.js",
 });
 
 export default withPWA(withNextIntl(mergedConfig));

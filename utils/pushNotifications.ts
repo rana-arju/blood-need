@@ -1,62 +1,61 @@
-export async function subscribeToPushNotifications() {
-  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-    console.warn("Push Notifications are not supported in this browser.");
-    return;
-  }
+export async function subscribeToPushNotifications(userId: string) {
+  if ("serviceWorker" in navigator && "PushManager" in window) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+        ),
+      });
 
-  try {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-      ),
-    });
+    const subs = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/subscribe`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ subscription, userId }),
+        }
+      );
 
-    await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/subscribe`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(subscription),
-      }
-    );
-
-    console.log("Push notification subscription successful");
-  } catch (error) {
-    console.error("Error subscribing to push notifications:", error);
-  }
-}
-
-// ✅ Fix: Declare `SyncManager` to prevent TypeScript errors
-declare global {
-  interface ServiceWorkerRegistration {
-    sync?: {
-      register(tag: string): Promise<void>;
-    };
-  }
-}
-
-export async function registerBackgroundSync() {
-  if (!("serviceWorker" in navigator)) {
-    console.warn("Service Workers are not supported in this browser.");
-    return;
-  }
-
-  try {
-    const registration = await navigator.serviceWorker.ready;
-
-    if (registration.sync) {
-      await registration.sync.register("sync-notifications");
-      console.log("Background sync registered");
-    } else {
-      console.warn("Background Sync API is not supported in this browser.");
+      console.log("Push notification subscription successful", subs);
+      return true;
+    } catch (error) {
+      console.error("Error subscribing to push notifications:", error);
+      return false;
     }
-  } catch (error) {
-    console.error("Error registering background sync:", error);
   }
+  return false;
+}
+
+export async function unsubscribeFromPushNotifications(userId: string) {
+  if ("serviceWorker" in navigator && "PushManager" in window) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      if (subscription) {
+        await subscription.unsubscribe();
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/unsubscribe`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        console.log("Unsubscribed from push notifications");
+        return true;
+      }
+    } catch (error) {
+      console.error("Error unsubscribing from push notifications:", error);
+    }
+  }
+  return false;
 }
 
 function urlBase64ToUint8Array(base64String: string) {

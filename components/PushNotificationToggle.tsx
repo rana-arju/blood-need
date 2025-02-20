@@ -3,10 +3,16 @@
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { subscribeToPushNotifications } from "@/utils/notifications";
+import {
+  subscribeToPushNotifications,
+  unsubscribeFromPushNotifications,
+} from "@/utils/pushNotifications";
+import { useSession } from "next-auth/react";
 
 export function PushNotificationToggle() {
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { data: session } = useSession();
+console.log(isSubscribed);
 
   useEffect(() => {
     // Check if the user is already subscribed
@@ -20,12 +26,16 @@ export function PushNotificationToggle() {
   }, []);
 
   const handleToggle = async (checked: boolean) => {
+    if (!session?.user?.id) return;
+
     if (checked) {
-      await subscribeToPushNotifications();
-      setIsSubscribed(true);
+      const subscribed = await subscribeToPushNotifications(session.user.id);
+      setIsSubscribed(subscribed);
     } else {
-      // Unsubscribe logic (to be implemented)
-      setIsSubscribed(false);
+      const unsubscribed = await unsubscribeFromPushNotifications(
+        session.user.id
+      );
+      setIsSubscribed(!unsubscribed);
     }
   };
 

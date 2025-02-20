@@ -33,9 +33,9 @@ export default function Welcome() {
           >
             <div className="rounded-lg overflow-hidden">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blood%20donation%202.PNG-qBwi5zOwe68h3MK3Vcq4Fd5PFGtfFm.png"
+                src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1739977063/ravi25_may_5_1_kxg8rj.jpg"
                 alt="Medical team"
-                className="w-full h-[400px] object-cover"
+                className="w-full h-[400px] object-contain"
               />
             </div>
           </motion.div>

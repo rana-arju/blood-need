@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -43,7 +41,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { updateUser } from "@/services/auth";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import { donorAdd, donorUpdate } from "@/services/beDonor";
+import { donorAdd } from "@/services/beDonor";
 import { useRouter } from "next/navigation";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -80,6 +78,7 @@ const formSchema = z.object({
 export default function DonorRegistrationForm() {
   const { data: session } = useSession();
   const { user } = session!;
+  if (!user) return null;
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -127,8 +126,8 @@ export default function DonorRegistrationForm() {
         currentMedications: values?.currentMedications,
       };
 
-      const userUp = await updateUser(userData, user?.id);
-      const res = await donorAdd(donorData);
+      await updateUser(userData, user?.id);
+      const res = await donorAdd(donorData, user?.id);
 
       if (res.success) {
         toast.success(res.message);

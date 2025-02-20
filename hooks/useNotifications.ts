@@ -24,7 +24,9 @@ export function useNotifications() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch("/api/notifications");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications`
+      );
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
@@ -36,9 +38,12 @@ export function useNotifications() {
 
   const markAsRead = async (id: string) => {
     try {
-      const response = await fetch(`/api/notifications/${id}`, {
-        method: "PATCH",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/${id}`,
+        {
+          method: "PATCH",
+        }
+      );
       if (response.ok) {
         setNotifications(
           notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
