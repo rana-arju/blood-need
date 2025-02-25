@@ -27,6 +27,11 @@ export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   const { pathname } = req.nextUrl;
+
+    // Exclude /custom-sw.js from locale handling
+    if (pathname === "/custom-sw.js") {
+      return NextResponse.next();
+    }
   const segments = pathname.split("/").filter(Boolean);
   const lang = segments[0];
   const cleanedPath = `/${segments.slice(1).join("/")}`;

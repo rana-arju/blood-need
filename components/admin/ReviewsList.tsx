@@ -42,15 +42,15 @@ export function ReviewsList() {
   const [reviews, setReviews] = useState(mockReviews);
   const [editingReview, setEditingReview] = useState(null);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string| number) => {
     setReviews(reviews.filter((review) => review.id !== id));
   };
 
-  const handleEdit = (review) => {
+  const handleEdit = (review: any) => {
     setEditingReview(review);
   };
 
-  const handleUpdate = (updatedReview) => {
+  const handleUpdate = (updatedReview: any) => {
     setReviews(
       reviews.map((review) =>
         review.id === updatedReview.id ? updatedReview : review
@@ -109,13 +109,21 @@ export function ReviewsList() {
   );
 }
 
-function EditReviewDialog({ review, onUpdate, onClose }) {
+function EditReviewDialog({
+  review,
+  onUpdate,
+  onClose,
+}: {
+  review: any;
+  onUpdate: any;
+  onClose: any;
+}) {
   const [user, setUser] = useState(review?.user || "");
   const [rating, setRating] = useState(review?.rating || 0);
   const [comment, setComment] = useState(review?.comment || "");
   const [date, setDate] = useState(review?.date || "");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     onUpdate({ ...review, user, rating, comment, date });
   };

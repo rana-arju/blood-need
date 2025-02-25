@@ -62,6 +62,8 @@ export default function BloodDriveOrganizer() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    
     // In a real application, this would be an API call to submit the blood drive details
     setIsSubmitted(true);
   }
@@ -72,8 +74,8 @@ export default function BloodDriveOrganizer() {
         <CardContent className="pt-6">
           <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
           <p>
-            Your blood drive has been submitted for review. We'll contact you
-            soon with next steps.
+            Your blood drive has been submitted for review. We&apos;ll contact
+            you soon with next steps.
           </p>
         </CardContent>
       </Card>

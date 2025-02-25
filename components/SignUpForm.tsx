@@ -79,7 +79,7 @@ export default function SignUpForm() {
       } else {
         setError("Registration failed");
       }
-    } catch (error) {
+    } catch  {
       toast.error("Registration failed");
     }
   };

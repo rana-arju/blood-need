@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 const stats = {
@@ -9,13 +8,14 @@ const stats = {
   activeDonors: 29000,
   goalProgress: 50,
 };
+/*
 interface ImpactStats {
   livesSaved: number;
   donationsMade: number;
   activeDonors: number;
   goalProgress: number;
 }
-
+*/
 export default function ImpactVisualization() {
   /*
   const [stats, setStats] = useState<ImpactStats>({

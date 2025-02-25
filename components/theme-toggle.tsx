@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+console.log(theme);
 
   // Ensure this component only renders on the client
   useEffect(() => {

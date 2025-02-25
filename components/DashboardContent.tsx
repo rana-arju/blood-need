@@ -3,12 +3,9 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { subscribeToPushNotifications } from "@/utils/notifications";
 
 export default function DashboardContent({ user }: { user: any }) {
-  const handleSubscribe = async () => {
-    await subscribeToPushNotifications();
-  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -38,7 +35,7 @@ export default function DashboardContent({ user }: { user: any }) {
             <Link href="/blood-requests">
               <Button className="w-full">View Blood Requests</Button>
             </Link>
-            <Button onClick={handleSubscribe} className="w-full">
+            <Button  className="w-full">
               Subscribe to Notifications
             </Button>
           </div>

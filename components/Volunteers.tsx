@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const volunteers = [
   {
     name: "Maria Khazova",
@@ -28,7 +30,7 @@ export default function Volunteers() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {volunteers.map((volunteer, index) => (
             <div key={index} className="text-center">
-              <img
+              <Image
                 src={volunteer.image || "/placeholder.svg"}
                 alt={volunteer.name}
                 className="w-48 h-48 rounded-full mx-auto mb-4 object-cover"

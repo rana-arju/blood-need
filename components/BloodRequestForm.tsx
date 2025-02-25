@@ -38,7 +38,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRecaptcha } from "@/hooks/useRecaptcha";
+// import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { bloodRequest } from "@/services/bloodRegister";
@@ -73,7 +73,7 @@ const formSchema = z.object({
 
 export default function BloodRequestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { executeRecaptcha } = useRecaptcha();
+  // const { executeRecaptcha } = useRecaptcha();
   const { data: session } = useSession();
   const { user } = session || {};
   const form = useForm<z.infer<typeof formSchema>>({
@@ -170,8 +170,8 @@ export default function BloodRequestForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {bloodGroups.map((group) => (
-                          <SelectItem key={group} value={group}>
+                        {bloodGroups && bloodGroups?.map((group, index) => (
+                          <SelectItem key={index} value={group}>
                             {group}
                           </SelectItem>
                         ))}

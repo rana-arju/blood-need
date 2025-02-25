@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
 const passwordFormSchema = z
   .object({
@@ -29,7 +29,6 @@ const passwordFormSchema = z
   });
 
 export function SecuritySettings() {
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof passwordFormSchema>>({
     resolver: zodResolver(passwordFormSchema),
@@ -43,17 +42,12 @@ export function SecuritySettings() {
   async function onSubmit(values: z.infer<typeof passwordFormSchema>) {
     try {
       // Update password
-      toast({
-        title: "Success",
-        description: "Password updated successfully",
-      });
+      console.log(values);
+      
+      toast("Password updated successfully");
       form.reset();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update password",
-        variant: "destructive",
-      });
+    } catch {
+      toast("Failed to update password");
     }
   }
 

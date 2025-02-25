@@ -1,61 +1,105 @@
-export async function subscribeToPushNotifications(userId: string) {
-  if ("serviceWorker" in navigator && "PushManager" in window) {
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+
+export function useNotificationSubscription() {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+
+    const checkSubscription = async () => {
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        setIsSubscribed(!!subscription);
+      }
+    };
+
+    checkSubscription();
+  }, [session]);
+
+  const subscribe = async () => {
+    if (!session?.user?.id) return;
+
     try {
       const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.subscribe({
+      const existingSubscription =
+        await registration.pushManager.getSubscription();
+
+      if (existingSubscription) {
+        console.log("Already subscribed:", existingSubscription);
+        setIsSubscribed(true);
+        return;
+      }
+
+      const newSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-        ),
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+        ,
       });
 
-    const subs = await fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/subscribe`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session.user.id}`,
           },
-          body: JSON.stringify({ subscription, userId }),
+          body: JSON.stringify({ subscription: newSubscription }),
         }
       );
 
-      console.log("Push notification subscription successful", subs);
-      return true;
+      if (response.ok) {
+        console.log("Subscription saved on the server.");
+        setIsSubscribed(true);
+         return true;
+      } else {
+        console.error("Failed to save subscription on the server.");
+        return false;
+      }
     } catch (error) {
-      console.error("Error subscribing to push notifications:", error);
-      return false;
+      console.error("Error during subscription:", error);
+       return false;
     }
-  }
-  return false;
-}
+  };
 
-export async function unsubscribeFromPushNotifications(userId: string) {
-  if ("serviceWorker" in navigator && "PushManager" in window) {
+  const unsubscribe = async () => {
+    if (!session?.user?.id) return;
+
     try {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
 
       if (subscription) {
         await subscription.unsubscribe();
-        await fetch(
+        const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/unsubscribe`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${session.user.id}`,
             },
-            body: JSON.stringify({ userId }),
           }
         );
-        console.log("Unsubscribed from push notifications");
-        return true;
+
+        if (response.ok) {
+          console.log("Unsubscribed from push notifications");
+          setIsSubscribed(false);
+        } else {
+          console.error("Failed to unsubscribe on the server");
+        }
       }
     } catch (error) {
       console.error("Error unsubscribing from push notifications:", error);
     }
-  }
-  return false;
+  };
+
+  return { isSubscribed, subscribe, unsubscribe };
 }
 
 function urlBase64ToUint8Array(base64String: string) {

@@ -48,15 +48,15 @@ export function BloodRequestsList() {
   const [requests, setRequests] = useState(mockBloodRequests);
   const [editingRequest, setEditingRequest] = useState(null);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string | number) => {
     setRequests(requests.filter((request) => request.id !== id));
   };
 
-  const handleEdit = (request) => {
+  const handleEdit = (request: any) => {
     setEditingRequest(request);
   };
 
-  const handleUpdate = (updatedRequest) => {
+  const handleUpdate = (updatedRequest: any) => {
     setRequests(
       requests.map((request) =>
         request.id === updatedRequest.id ? updatedRequest : request
@@ -115,13 +115,21 @@ export function BloodRequestsList() {
   );
 }
 
-function EditRequestDialog({ request, onUpdate, onClose }) {
+function EditRequestDialog({
+  request,
+  onUpdate,
+  onClose,
+}: {
+  request: any,
+  onUpdate: any,
+  onClose: any
+}) {
   const [requester, setRequester] = useState(request?.requester || "");
   const [bloodType, setBloodType] = useState(request?.bloodType || "");
   const [status, setStatus] = useState(request?.status || "");
   const [date, setDate] = useState(request?.date || "");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     onUpdate({ ...request, requester, bloodType, status, date });
   };

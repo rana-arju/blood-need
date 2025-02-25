@@ -2,20 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import {
   Home,
   Droplet,
-  UserPlus,
-  LogIn,
+
   Menu,
   Heart,
   Info,
-  User,
+
   Droplets,
   HeartPulse,
-  Download,
+
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -23,7 +21,6 @@ import { DialogTitle } from "./ui/dialog";
 import InstallPWA from "./InstallPWA";
 
 export default function BottomNavigation() {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

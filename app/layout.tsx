@@ -55,16 +55,18 @@ export default async function RootLayout({
   let messages;
   try {
     messages = await getMessages(locale as any);
-  } catch (error) {
+  } catch {
     NotFound();
   }
-   
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ef4444" />
         <link rel="apple-touch-icon" href="/icons/icon.png" />
+        <meta name="google" content="notranslate" />
+
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
@@ -80,21 +82,22 @@ export default async function RootLayout({
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
                   __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/custom-sw.js').then(
-                    function(registration) {
-                      console.log('Service Worker registration successful with scope: ', registration.scope);
-                    },
-                    function(err) {
-                      console.log('Service Worker registration failed: ', err);
+                    if ('serviceWorker' in navigator) {
+                      window.addEventListener('load', function() {
+                        navigator.serviceWorker.register('/custom-sw.js', { scope: '/' }).then(
+                          function(registration) {
+                            console.log('Service Worker registration successful with scope: ', registration.scope);
+                          },
+                          function(err) {
+                            console.log('Service Worker registration failed: ', err);
+                          }
+                        );
+                      });
                     }
-                  );
-                });
-              }
-            `,
+                  `,
                 }}
               />
+
               <Toaster richColors position="top-center" />
             </ThemeProvider>
           </SessionProvider>

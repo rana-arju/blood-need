@@ -15,10 +15,11 @@ export default function NotFound() {
           404 - Page Not Found
         </h1>
         <p className="mt-2 text-lg text-gray-600">
-          Oops! It seems we couldn't find the page you're looking for.
+          Oops! It seems we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <p className="mt-2 text-md text-gray-500">
-          But don't worry, your willingness to help can still make a difference!
+          But don&apos;t worry, your willingness to help can still make a
+          difference!
         </p>
         <div className="mt-8 space-y-4">
           <Button asChild className="w-full">

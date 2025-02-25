@@ -2,11 +2,9 @@ import React from "react";
 import { Button } from "./ui/button";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const SocialLogin = () => {
-  const router = useRouter();
 
   const handleSocialSignIn = async (provider: string) => {
     try {
@@ -22,7 +20,7 @@ const SocialLogin = () => {
           redirect: false,
         });
       }
-    } catch (error) {
+    } catch  {
       toast.error("Something error. Try again!");
     }
   };

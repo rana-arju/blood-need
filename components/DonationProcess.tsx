@@ -67,7 +67,7 @@ export default function DonationProcess() {
           >
             {steps.map((step, index) => (
               <motion.div
-                key={step.number}
+                key={index}
                 variants={item}
                 className="bg-white p-6 rounded-lg shadow-lg relative z-10"
               >

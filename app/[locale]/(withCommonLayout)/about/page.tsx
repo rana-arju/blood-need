@@ -21,7 +21,7 @@ export default function AboutPage() {
           <CardContent className="prose dark:prose-invert max-w-none">
             <p>
               Every day, thousands of people need blood transfusions. Whether
-              it's for planned surgeries, emergency procedures, or ongoing
+              it&apos;s for planned surgeries, emergency procedures, or ongoing
               treatments, the need for blood is constant.
             </p>
             <ul>

@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -43,17 +43,13 @@ export function ContactForm() {
     setIsSubmitting(true);
     try {
       // Submit form logic here
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you as soon as possible.",
-      });
+      console.log(values);
+      
+      toast("We'll get back to you as soon as possible.",
+      );
       form.reset();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
+    } catch  {
+      toast("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

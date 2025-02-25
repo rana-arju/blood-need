@@ -1,7 +1,7 @@
 export function registerServiceWorker() {
-  if ("serviceWorker" in navigator) {
+  if (typeof window !== "undefined" && "serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      const swUrl = "/custom-sw.js";
+      const swUrl ="/custom-sw.js";
       navigator.serviceWorker
         .register(swUrl, { scope: "/" })
         .then((registration) => {
@@ -9,9 +9,25 @@ export function registerServiceWorker() {
             "ServiceWorker registration successful with scope: ",
             registration.scope
           );
+
+          // Check for updates
+          registration.addEventListener("updatefound", () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener("statechange", () => {
+                if (
+                  newWorker.state === "installed" &&
+                  navigator.serviceWorker.controller
+                ) {
+                  console.log("New content is available; please refresh.");
+                  // You can show a notification to the user here
+                }
+              });
+            }
+          });
         })
         .catch((err) => {
-          console.log("ServiceWorker registration failed: ", err);
+          console.error("ServiceWorker registration failed: ", err);
         });
     });
   }

@@ -36,22 +36,22 @@ export function UsersList() {
   const [users, setUsers] = useState(mockUsers);
   const [editingUser, setEditingUser] = useState(null);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string | number) => {
     setUsers(users.filter((user) => user.id !== id));
   };
 
-  const handleEdit = (user) => {
+  const handleEdit = (user: any) => {
     setEditingUser(user);
   };
 
-  const handleUpdate = (updatedUser) => {
+  const handleUpdate = (updatedUser: any) => {
     setUsers(
       users.map((user) => (user.id === updatedUser.id ? updatedUser : user))
     );
     setEditingUser(null);
   };
 
-  const handleMakeAdmin = (id) => {
+  const handleMakeAdmin = (id: string | number) => {
     setUsers(
       users.map((user) => (user.id === id ? { ...user, role: "admin" } : user))
     );
@@ -114,12 +114,20 @@ export function UsersList() {
   );
 }
 
-function EditUserDialog({ user, onUpdate, onClose }) {
+function EditUserDialog({
+  user,
+  onUpdate,
+  onClose,
+}: {
+  user: any;
+  onUpdate: any;
+  onClose: any;
+}) {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [role, setRole] = useState(user?.role || "user");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     onUpdate({ ...user, name, email, role });
   };

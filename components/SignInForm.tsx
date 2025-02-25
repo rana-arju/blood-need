@@ -97,7 +97,11 @@ export default function SignInForm() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" {...field} placeholder="Enter strong password" />
+                        <Input
+                          type="password"
+                          {...field}
+                          placeholder="Enter strong password"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -125,7 +129,7 @@ export default function SignInForm() {
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a href="/auth/signup" className="text-primary hover:underline">
               Sign up
             </a>

@@ -1,5 +1,5 @@
 import createNextIntlPlugin from "next-intl/plugin";
-import NextPWA from "next-pwa";
+import withPWA from "next-pwa";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -19,7 +19,6 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-
   async rewrites() {
     return [
       {
@@ -40,47 +39,21 @@ const nextConfig = {
       },
       {
         source: "/custom-sw.js",
-        destination: "/_next/static/worker/custom-sw.js",
+        destination: "/custom-sw.js",
       },
     ];
   },
 };
 
-let userConfig;
-try {
-  userConfig = await import("./v0-user-next.config");
-} catch (e) {
-  console.warn("Warning: No user config found, using default settings.");
-}
-
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) return nextConfig;
-
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === "object" &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      };
-    } else {
-      nextConfig[key] = userConfig[key];
-    }
-  }
-
-  return nextConfig;
-}
-
-const mergedConfig = mergeConfig(nextConfig, userConfig?.default);
-const withPWA = NextPWA({
+const withPWAConfig = withPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-  cacheOnFrontEndNav: true,
   sw: "/custom-sw.js",
 });
 
-export default withPWA(withNextIntl(mergedConfig));
+// Combine configurations
+const combinedConfig = withPWAConfig(withNextIntl(nextConfig));
+
+export default combinedConfig;

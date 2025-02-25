@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 interface Notification {
   id: string;
@@ -15,7 +16,9 @@ interface Notification {
 export function useNotifications() {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
+  if (!session?.user.id) {
+    toast.error("You need to be logged in to view notifications.");
+  }
   useEffect(() => {
     if (session) {
       fetchNotifications();
@@ -25,8 +28,16 @@ export function useNotifications() {
   const fetchNotifications = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user?.id}`,
+          },
+        }
       );
+      
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
@@ -42,6 +53,10 @@ export function useNotifications() {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/${id}`,
         {
           method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user?.id}`,
+          },
         }
       );
       if (response.ok) {

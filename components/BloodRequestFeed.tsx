@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 const requests = [
   {
     id: "1",
@@ -87,7 +85,7 @@ const requests = [
     postedAt: "2025-02-11T14:00:00Z",
   },
 ];
-
+/*
 interface BloodRequest {
   id: string;
   patientName: string;
@@ -96,7 +94,7 @@ interface BloodRequest {
   urgency: "Low" | "Medium" | "High";
   postedAt: string;
 }
-
+*/
 export default function BloodRequestFeed() {
 
   /*

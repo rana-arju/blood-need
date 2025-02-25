@@ -48,15 +48,15 @@ export function DonorsList() {
   const [donors, setDonors] = useState(mockDonors);
   const [editingDonor, setEditingDonor] = useState(null);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string | number) => {
     setDonors(donors.filter((donor) => donor.id !== id));
   };
 
-  const handleEdit = (donor) => {
+  const handleEdit = (donor: any) => {
     setEditingDonor(donor);
   };
 
-  const handleUpdate = (updatedDonor) => {
+  const handleUpdate = (updatedDonor: any) => {
     setDonors(
       donors.map((donor) =>
         donor.id === updatedDonor.id ? updatedDonor : donor
@@ -115,13 +115,21 @@ export function DonorsList() {
   );
 }
 
-function EditDonorDialog({ donor, onUpdate, onClose }) {
+function EditDonorDialog({
+  donor,
+  onUpdate,
+  onClose,
+}: {
+  donor: any,
+  onUpdate: any,
+  onClose: any
+}) {
   const [name, setName] = useState(donor?.name || "");
   const [bloodType, setBloodType] = useState(donor?.bloodType || "");
   const [lastDonation, setLastDonation] = useState(donor?.lastDonation || "");
   const [donationCount, setDonationCount] = useState(donor?.donationCount || 0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     onUpdate({ ...donor, name, bloodType, lastDonation, donationCount });
   };

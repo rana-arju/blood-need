@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Bell, Download, LayoutDashboard, LogOut } from "lucide-react";
+import { Bell, LayoutDashboard, LogOut } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import {
   DropdownMenu,
@@ -18,22 +18,34 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import InstallPWA from "./InstallPWA";
+import { useNotificationSubscription } from "@/utils/pushNotifications";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
+
   const { data: session } = useSession();
   const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations("common");
-console.log("Header", session);
-
+  const { isSubscribed, subscribe } = useNotificationSubscription();
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
+  useEffect(() => {
+    if (session?.user?.id && !isSubscribed) {
+      subscribe();
+    }
+  }, [session, isSubscribed, subscribe]);
+  const handleSignOut = async () => {
+    const data = await signOut({
+      redirect: false,
+      callbackUrl: "/auth/signin",
+    });
+    router.push(data.url);
+  };
   const NavItems = () => (
     <>
       <li>
@@ -79,13 +91,13 @@ console.log("Header", session);
           Blood Need
         </Link>
         <div className="flex items-center space-x-4">
-          {!isMobile && (
-            <nav>
+          <nav className="invisible sm:visible">
+            {!isMobile && (
               <ul className="flex space-x-4 items-center">
                 <NavItems />
               </ul>
-            </nav>
-          )}
+            )}
+          </nav>
         </div>
         <div className="flex items-center space-x-4">
           {session ? (
@@ -124,7 +136,7 @@ console.log("Header", session);
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Button
-                      onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+                      onClick={handleSignOut}
                       variant="ghost"
                       size="sm"
                       className="hover:bg-gray-100 dark:hover:bg-gray-700"

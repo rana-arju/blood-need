@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import Image from "next/image";
 
 const container = {
   hidden: { opacity: 0 },
@@ -32,7 +33,7 @@ export default function Welcome() {
             className="relative"
           >
             <div className="rounded-lg overflow-hidden">
-              <img
+              <Image
                 src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1739977063/ravi25_may_5_1_kxg8rj.jpg"
                 alt="Medical team"
                 className="w-full h-[400px] object-contain"

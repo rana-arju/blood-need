@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 
 const mockRequests = [
   {
@@ -37,22 +37,15 @@ const mockRequests = [
 export function UserBloodRequests() {
   const [requests, setRequests] = useState(mockRequests);
   const [editingRequest, setEditingRequest] = useState(null);
-  const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
     try {
       // Delete request logic
       setRequests(requests.filter((request) => request.id !== id));
-      toast({
-        title: "Success",
-        description: "Request deleted successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete request",
-        variant: "destructive",
-      });
+      toast( "Request deleted successfully",
+      );
+    } catch {
+      toast("Failed to delete request");
     }
   };
 
@@ -69,16 +62,9 @@ export function UserBloodRequests() {
         )
       );
       setEditingRequest(null);
-      toast({
-        title: "Success",
-        description: "Request updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update request",
-        variant: "destructive",
-      });
+      toast("Request updated successfully");
+    } catch {
+      toast("Failed to update request");
     }
   };
 

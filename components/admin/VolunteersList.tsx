@@ -41,15 +41,15 @@ export function VolunteersList() {
   const [volunteers, setVolunteers] = useState(mockVolunteers);
   const [editingVolunteer, setEditingVolunteer] = useState(null);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string | number) => {
     setVolunteers(volunteers.filter((volunteer) => volunteer.id !== id));
   };
 
-  const handleEdit = (volunteer) => {
+  const handleEdit = (volunteer: any) => {
     setEditingVolunteer(volunteer);
   };
 
-  const handleUpdate = (updatedVolunteer) => {
+  const handleUpdate = (updatedVolunteer: any) => {
     setVolunteers(
       volunteers.map((volunteer) =>
         volunteer.id === updatedVolunteer.id ? updatedVolunteer : volunteer
@@ -108,7 +108,15 @@ export function VolunteersList() {
   );
 }
 
-function EditVolunteerDialog({ volunteer, onUpdate, onClose }) {
+function EditVolunteerDialog({
+  volunteer,
+  onUpdate,
+  onClose,
+}: {
+  volunteer: any;
+  onUpdate: any;
+  onClose: any;
+}) {
   const [name, setName] = useState(volunteer?.name || "");
   const [email, setEmail] = useState(volunteer?.email || "");
   const [phone, setPhone] = useState(volunteer?.phone || "");
@@ -116,7 +124,7 @@ function EditVolunteerDialog({ volunteer, onUpdate, onClose }) {
     volunteer?.availability || ""
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     onUpdate({ ...volunteer, name, email, phone, availability });
   };

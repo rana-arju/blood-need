@@ -3,16 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
   Droplet,
-  Users,
-  Trophy,
-  Bell,
-  MessageCircle,
-  Bot,
-  Calendar,
-  Activity,
-  Map,
-  Award,
-  DollarSign,
+  Users
 } from "lucide-react";
 
 const features = [

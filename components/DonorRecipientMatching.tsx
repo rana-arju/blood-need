@@ -20,6 +20,7 @@ export default function DonorRecipientMatching() {
   const [bloodType, setBloodType] = useState("");
   const [location, setLocation] = useState("");
   const [matches, setMatches] = useState<any[]>([]);
+console.log(bloodType);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

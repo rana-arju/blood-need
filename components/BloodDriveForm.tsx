@@ -14,8 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -71,23 +71,16 @@ export function BloodDriveForm({ bloodDrive, onSuccess }: BloodDriveFormProps) {
         throw new Error("Failed to save blood drive");
       }
 
-      toast({
-        title: "Success",
-        description: `Blood drive ${
+      toast(`Blood drive ${
           bloodDrive ? "updated" : "created"
-        } successfully.`,
-      });
+        } successfully.`);
       onSuccess();
       router.refresh();
     } catch (error) {
       console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: `Failed to ${
+      toast( `Failed to ${
           bloodDrive ? "update" : "create"
-        } blood drive. Please try again.`,
-        variant: "destructive",
-      });
+        } blood drive. Please try again.`);
     } finally {
       setIsSubmitting(false);
     }

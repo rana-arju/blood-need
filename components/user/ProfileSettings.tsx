@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { toast } from "sonner";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -31,7 +31,6 @@ const profileFormSchema = z.object({
 
 export function ProfileSettings() {
   const [isUploading, setIsUploading] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
@@ -51,17 +50,13 @@ export function ProfileSettings() {
     try {
       setIsUploading(true);
       const imageUrl = await uploadToCloudinary(file);
+      console.log(imageUrl);
+      
       // Update user profile with new image URL
-      toast({
-        title: "Success",
-        description: "Profile image updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive",
-      });
+      toast( "Profile image updated successfully");
+    } catch  {
+      toast("Failed to upload image");
+
     } finally {
       setIsUploading(false);
     }
@@ -70,16 +65,12 @@ export function ProfileSettings() {
   async function onSubmit(values: z.infer<typeof profileFormSchema>) {
     try {
       // Update user profile
-      toast({
-        title: "Success",
-        description: "Profile updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update profile",
-        variant: "destructive",
-      });
+      console.log(values);
+      
+      toast("Profile updated successfully",
+      );
+    } catch {
+      toast( "Failed to update profile");
     }
   }
 
