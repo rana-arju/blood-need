@@ -31,6 +31,8 @@ export default function Volunteers() {
           {volunteers.map((volunteer, index) => (
             <div key={index} className="text-center">
               <Image
+                width = {80}
+                height={80}
                 src={volunteer.image || "/placeholder.svg"}
                 alt={volunteer.name}
                 className="w-48 h-48 rounded-full mx-auto mb-4 object-cover"

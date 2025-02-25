@@ -43,6 +43,8 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { donorAdd } from "@/services/beDonor";
 import { useRouter } from "next/navigation";
+import LocationSelector from "./LocationSelector";
+import { useEffect } from "react";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const genders = ["Male", "Female", "Other"];
@@ -56,9 +58,9 @@ const formSchema = z.object({
   weight: z.number().min(50, "Weight must be at least 50 kg"),
   height: z.number().min(100, "Height must be at least 100 cm"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  district: z.string().min(2, "City must be at least 2 characters"),
-  upazila: z.string().min(2, "State must be at least 2 characters"),
-  division: z.string().min(4, "Postal code must be at least 4 characters"),
+  division: z.string().min(1, "Division is required"),
+  district: z.string().min(1, "District is required"),
+  upazila: z.string().min(1, "Upazila is required"),
   emergencyContactName: z
     .string()
     .min(2, "Emergency Contact Name must be at least 2 characters"),
@@ -77,9 +79,13 @@ const formSchema = z.object({
 
 export default function DonorRegistrationForm() {
   const { data: session } = useSession();
-  const { user } = session!;
-  if (!user) return null;
   const router = useRouter();
+  const { user } = session!;
+  if (!user?.id) {
+    toast.error("Please sign in");
+    router.push("auth/signin");
+    return;
+  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,8 +96,8 @@ export default function DonorRegistrationForm() {
       weight: 70,
       height: 170,
       address: "",
-      district: "",
       division: "",
+      district: "",
       upazila: "",
       medicalCondition: "",
       currentMedications: "",
@@ -101,7 +107,20 @@ export default function DonorRegistrationForm() {
       agreeToTerms: false,
     },
   });
+  const watchDivision = form.watch("division");
+  const watchDistrict = form.watch("district");
+  useEffect(() => {
+    if (watchDivision) {
+      form.setValue("district", "");
+      form.setValue("upazila", "");
+    }
+  }, [watchDivision, form]);
 
+  useEffect(() => {
+    if (watchDistrict) {
+      form.setValue("upazila", "");
+    }
+  }, [watchDistrict, form]);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const userData = {
@@ -334,7 +353,14 @@ export default function DonorRegistrationForm() {
                   <FormItem>
                     <FormLabel>Division</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <LocationSelector
+                        type="division"
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("division");
+                        }}
+                        value={field.value}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -347,7 +373,16 @@ export default function DonorRegistrationForm() {
                   <FormItem>
                     <FormLabel>District</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <LocationSelector
+                        type="district"
+                        division={watchDivision}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("district");
+                        }}
+                        value={field.value}
+                        disabled={!watchDivision}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -360,7 +395,16 @@ export default function DonorRegistrationForm() {
                   <FormItem>
                     <FormLabel>Upazila</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <LocationSelector
+                        type="upazila"
+                        district={watchDistrict}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("upazila");
+                        }}
+                        value={field.value}
+                        disabled={!watchDistrict}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

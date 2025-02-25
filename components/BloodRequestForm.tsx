@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,24 +38,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { useRecaptcha } from "@/hooks/useRecaptcha";
-import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import LocationSelector from "./LocationSelector";
 import { bloodRequest } from "@/services/bloodRegister";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const formSchema = z.object({
   patientName: z.string().min(2, "Patient name must be at least 2 characters"),
   blood: z.enum(bloodGroups as [string, ...string[]]),
-  district: z.string().min(2, "District must be at least 2 characters"),
-  upazila: z.string().min(2, "Upazila must be at least 2 characters"),
-  division: z.string().min(2, "Area must be at least 2 characters"),
+  division: z.string().min(1, "Division is required"),
+  district: z.string().min(1, "District is required"),
+  upazila: z.string().min(1, "Upazila is required"),
+  address: z.string().optional(),
   hospitalName: z
     .string()
     .min(2, "Donation center or hospital name must be at least 2 characters"),
   contactNumber: z.string().regex(/^\+?[0-9]{10,14}$/, "Invalid phone number"),
-  address: z.string().optional(),
   whatsappNumber: z
     .string()
     .regex(/^\+?[0-9]{10,14}$/, "Invalid WhatsApp number"),
@@ -73,8 +74,8 @@ const formSchema = z.object({
 
 export default function BloodRequestForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const { executeRecaptcha } = useRecaptcha();
   const { data: session } = useSession();
+  const router = useRouter();
   const { user } = session || {};
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,10 +83,10 @@ export default function BloodRequestForm() {
       patientName: "",
       patientProblem: "",
       blood: "A+",
-      district: "",
-      address: "",
-      upazila: "",
       division: "",
+      district: "",
+      upazila: "",
+      address: "",
       hospitalName: "",
       contactNumber: "",
       whatsappNumber: "",
@@ -96,19 +97,37 @@ export default function BloodRequestForm() {
     },
   });
 
+  const watchDivision = form.watch("division");
+  const watchDistrict = form.watch("district");
+
+  useEffect(() => {
+    if (watchDivision) {
+      form.setValue("district", "");
+      form.setValue("upazila", "");
+    }
+  }, [watchDivision, form]);
+
+  useEffect(() => {
+    if (watchDistrict) {
+      form.setValue("upazila", "");
+    }
+  }, [watchDistrict, form]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     //const recaptchaToken = await executeRecaptcha();
 
     try {
       if (!user?.id) {
-        throw new Error("Please sign in");
+        toast.error("Please sign in");
+        router.push("auth/signin");
+        return;
       }
       const modifiedValues = {
         ...values,
         userId: user?.id,
-      }
-      const response = await bloodRequest(modifiedValues, user.id);
+      };
+      const response = await bloodRequest(modifiedValues, user?.id);
       console.log("response", response);
 
       if (response.success) {
@@ -170,8 +189,8 @@ export default function BloodRequestForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {bloodGroups && bloodGroups?.map((group, index) => (
-                          <SelectItem key={index} value={group}>
+                        {bloodGroups.map((group) => (
+                          <SelectItem key={group} value={group}>
                             {group}
                           </SelectItem>
                         ))}
@@ -181,6 +200,7 @@ export default function BloodRequestForm() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="division"
@@ -188,12 +208,20 @@ export default function BloodRequestForm() {
                   <FormItem>
                     <FormLabel>Division</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <LocationSelector
+                        type="division"
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("division");
+                        }}
+                        value={field.value}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="district"
@@ -201,7 +229,16 @@ export default function BloodRequestForm() {
                   <FormItem>
                     <FormLabel>District</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter district" {...field} />
+                      <LocationSelector
+                        type="district"
+                        division={watchDivision}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("district");
+                        }}
+                        value={field.value}
+                        disabled={!watchDivision}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -215,18 +252,28 @@ export default function BloodRequestForm() {
                   <FormItem>
                     <FormLabel>Upazila</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter upazila" {...field} />
+                      <LocationSelector
+                        type="upazila"
+                        district={watchDistrict}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("upazila");
+                        }}
+                        value={field.value}
+                        disabled={!watchDistrict}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>Address (optional)</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter address" {...field} />
                     </FormControl>
@@ -420,16 +467,19 @@ export default function BloodRequestForm() {
                 </FormItem>
               )}
             />
-            {isSubmitting ? (
-              <Button disabled>
-                <Loader2 className="animate-spin" />
-                Requesting Blood...
-              </Button>
-            ) : (
-              <Button type="submit" disabled={!user}>
-                {!user ? "First Signin/Signup" : "Submit Blood Request"}
-              </Button>
-            )}
+
+            <Button type="submit" disabled={!user || isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Requesting Blood...
+                </>
+              ) : !user ? (
+                "First Signin/Signup"
+              ) : (
+                "Submit Blood Request"
+              )}
+            </Button>
           </form>
         </Form>
       </CardContent>

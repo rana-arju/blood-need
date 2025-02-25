@@ -26,7 +26,10 @@ const profileFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 characters"),
   bloodType: z.string(),
-  address: z.string().min(5, "Address must be at least 5 characters"),
+  city: z.string().min(2, "City must be at least 2 characters"),
+  district: z.string().min(2, "District must be at least 2 characters"),
+  union: z.string().min(2, "Union must be at least 2 characters"),
+  address: z.string().min(2, "Address must be at least 2 characters"),
 });
 
 export function ProfileSettings() {
@@ -39,6 +42,9 @@ export function ProfileSettings() {
       email: "",
       phone: "",
       bloodType: "",
+      city: "",
+      district: "",
+      union: "",
       address: "",
     },
   });
