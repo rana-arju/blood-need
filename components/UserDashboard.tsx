@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
+import BloodDropLoader from "./BloodDropLoader";
 
 interface UserProfile {
   name: string;
@@ -84,11 +85,7 @@ export function UserDashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <BloodDropLoader />
   }
 
   if (!profile) {

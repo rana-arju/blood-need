@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SkeletonCard } from "@/components/SkeletonCard";
+import BloodDropLoader from "../BloodDropLoader";
 
 const container = {
   hidden: { opacity: 0 },
@@ -26,13 +27,7 @@ export function BlogList() {
   const isLoading = false;
 
   if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {[...Array(4)].map((_, i) => (
-          <SkeletonCard key={i} />
-        ))}
-      </div>
-    );
+    return <BloodDropLoader />
   }
 
   const posts = [

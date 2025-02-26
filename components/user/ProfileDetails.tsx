@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { getMyProfile } from "@/services/auth";
 import { ProfileSettings } from "./ProfileSettings";
 import { getLocationName } from "@/utils/locationUtils";
+import BloodDropLoader from "../BloodDropLoader";
 
 export function ProfileDetails() {
   const [userData, setUserData] = useState<any>(null);
@@ -56,7 +57,7 @@ export function ProfileDetails() {
   }
 
   if (!userData && !isEditing) {
-    return <div>Loading...</div>;
+    return <BloodDropLoader />;
   }
 
   const handleProfileUpdate = async (updatedData: any) => {

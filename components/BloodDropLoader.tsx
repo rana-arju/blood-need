@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function BloodDropLoader() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-red-50 to-red-100">
+    <div className="w-full h-screen flex items-center justify-center bg-gradient-to-b from-red-50 to-red-100 z-50">
       <motion.div
         className="relative flex flex-col items-center"
         initial={{ y: -20, opacity: 0 }}
