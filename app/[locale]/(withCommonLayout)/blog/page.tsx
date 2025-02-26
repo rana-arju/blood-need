@@ -1,7 +1,7 @@
 import { BlogCategories } from "@/components/blog/BlogCategories";
 import { BlogList } from "@/components/blog/BlogList";
 import { BlogSearch } from "@/components/blog/BlogSearch";
-import { LoadingDrop } from "@/components/LoadingDrop";
+import LoadingDrop from "@/components/LoadingDrop";
 import { Suspense } from "react";
 
 export default function BlogPage() {

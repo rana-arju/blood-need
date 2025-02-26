@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { BlogContent } from "@/components/blog/BlogContent";
-import { LoadingDrop } from "@/components/LoadingDrop";
+import  LoadingDrop  from "@/components/LoadingDrop";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
 
 
