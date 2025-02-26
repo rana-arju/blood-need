@@ -17,7 +17,7 @@ export default function AuthError() {
   }, [error]);
 
   return (
-    <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+    <div className="px-1 sm:container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center text-red-600">

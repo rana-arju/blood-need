@@ -113,6 +113,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role || "user";
+        // token.accessToken = user?.access_token; // Removed as access_token does not exist on User type
       }
       return token;
     },

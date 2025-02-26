@@ -59,7 +59,7 @@ export const getSingleDonor = async (donorId: string): Promise<any> => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/blood-donor/${donorId}`,
       {
-        method: "DELETE",
+        method: "GET",
         headers: {
           Authorization: (await cookies()).get("accessToken")!.value,
         },

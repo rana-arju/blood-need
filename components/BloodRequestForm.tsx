@@ -128,7 +128,6 @@ export default function BloodRequestForm() {
         userId: user?.id,
       };
       const response = await bloodRequest(modifiedValues, user?.id);
-      console.log("response", response);
 
       if (response.success) {
         toast.success("Blood Request Successfully Submitted");

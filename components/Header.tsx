@@ -63,16 +63,21 @@ export default function Header() {
           {t("allDonors")}
         </Link>
       </li>
-      <li>
-        <Link href="/request-blood" className="hover:text-primary">
-          {t("bloodRequest")}
-        </Link>
-      </li>
-      <li>
-        <Link href="/be-donor" className="hover:text-primary">
-          {t("beADonor")}
-        </Link>
-      </li>
+      {session && session?.user && (
+        <>
+          <li>
+            <Link href="/request-blood" className="hover:text-primary">
+              {t("bloodRequest")}
+            </Link>
+          </li>
+          <li>
+            <Link href="/be-donor" className="hover:text-primary">
+              {t("beADonor")}
+            </Link>
+          </li>
+        </>
+      )}
+
       <li>
         <Link href="/about" className="hover:text-primary">
           {t("about")}

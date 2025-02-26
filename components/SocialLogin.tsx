@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const SocialLogin = () => {
 
@@ -27,10 +28,15 @@ const SocialLogin = () => {
   return (
     <div className="grid grid-cols-2 gap-4">
       <Button variant="outline" onClick={() => handleSocialSignIn("google")}>
-        <FaGoogle className="mr-2 h-4 w-4" /> Google
+        {
+          //<FaGoogle className="mr-2 h-4 w-4" />
+        }
+        <Image src="/icons/google.png" alt="google" width={22} height={22} />
+        Google
       </Button>
       <Button variant="outline" onClick={() => handleSocialSignIn("facebook")}>
-        <FaFacebook className="mr-2 h-4 w-4" /> Facebook
+        <Image src="/icons/facebook.png" alt="facebook" width={22} height={22} />
+        Facebook
       </Button>
     </div>
   );

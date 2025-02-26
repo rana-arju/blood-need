@@ -39,7 +39,6 @@ export default function AppointmentScheduler() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-console.log(time, location);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

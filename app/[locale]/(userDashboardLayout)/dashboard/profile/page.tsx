@@ -1,5 +1,5 @@
-import { ProfileSettings } from "@/components/user/ProfileSettings";
+import { ProfileDetails } from "@/components/user/ProfileDetails";
 
 export default function ProfilePage() {
-  return <ProfileSettings />;
+  return <ProfileDetails />;
 }
