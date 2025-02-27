@@ -19,10 +19,13 @@ import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import InstallPWA from "./InstallPWA";
 import { useNotificationSubscription } from "@/utils/pushNotifications";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname.endsWith(path);
 
   const { data: session } = useSession();
   const [isMobile, setIsMobile] = useState(false);
@@ -49,29 +52,54 @@ export default function Header() {
   const NavItems = () => (
     <>
       <li>
-        <Link href="/" className="hover:text-primary">
+        <Link
+          href="/"
+          className={`hover:text-primary ${
+            (pathname === "/en" || pathname === "/bn") && "text-primary"
+          }`}
+        >
           {t("home")}
         </Link>
       </li>
       <li>
-        <Link href="/requests" className="hover:text-primary">
+        <Link
+          href="/requests"
+          className={`hover:text-primary ${
+            isActive("/requests") && "text-primary"
+          }`}
+        >
           {t("allRequests")}
         </Link>
       </li>
       <li>
-        <Link href="/donors" className="hover:text-primary">
+        <Link
+          href="/donors"
+          className={`hover:text-primary ${
+            isActive("/donors") && "text-primary"
+          }`}
+        >
           {t("allDonors")}
         </Link>
       </li>
       {session && session?.user && (
         <>
           <li>
-            <Link href="/request-blood" className="hover:text-primary">
+            <Link
+              href="/request-blood"
+              className={`hover:text-primary ${
+                isActive("/request-blood") && "text-primary"
+              }`}
+            >
               {t("bloodRequest")}
             </Link>
           </li>
           <li>
-            <Link href="/be-donor" className="hover:text-primary">
+            <Link
+              href="/be-donor"
+              className={`hover:text-primary ${
+                isActive("/be-donor") && "text-primary"
+              }`}
+            >
               {t("beADonor")}
             </Link>
           </li>
@@ -79,7 +107,12 @@ export default function Header() {
       )}
 
       <li>
-        <Link href="/about" className="hover:text-primary">
+        <Link
+          href="/about"
+          className={`hover:text-primary ${
+            isActive("/about") && "text-primary"
+          }`}
+        >
           {t("about")}
         </Link>
       </li>
@@ -111,8 +144,10 @@ export default function Header() {
                 <DropdownMenuTrigger className="focus:ring-0 focus:outline-none bg-red">
                   <Avatar className="w-7 h-7">
                     <AvatarImage
-                      className="dark:bg-white"
+                      className="dark:bg-white object-cover"
                       src={session?.user?.image || "/profile.png"}
+                      
+                      
                     />
                     <AvatarFallback>
                       {(session?.user?.name?.[0] as string) ?? "?"}

@@ -6,14 +6,11 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Droplet,
-
   Menu,
   Heart,
   Info,
-
   Droplets,
   HeartPulse,
-
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -24,7 +21,7 @@ export default function BottomNavigation() {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => pathname.endsWith(path);
 
   const NavItem = ({
     href,

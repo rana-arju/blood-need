@@ -1,7 +1,8 @@
 "use server";
 import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
-
+import axios from "axios";
+/*
 export const getAllRequest = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blood-donor`, {
@@ -15,6 +16,50 @@ export const getAllRequest = async () => {
     return Error(error.message);
   }
 };
+*/
+
+
+interface BloodRequestResponse {
+  success: boolean;
+  data: any[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export const getAllBloodRequests = async (params: any) => {
+  try {
+    const response = await axios.get<BloodRequestResponse>(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests`,
+      { params }
+    );
+    return {
+      requests: response.data.data,
+      totalPages: response.data.meta.totalPages,
+      currentPage: response.data.meta.page,
+      total: response.data.meta.total,
+    };
+  } catch (error) {
+    console.error("Error fetching blood requests:", error);
+    throw error;
+  }
+};
+
+export const getBloodRequestById = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching blood request details:", error);
+    throw error;
+  }
+};
+
 
 export const bloodRequest = async (data: any, token: string) => {
   console.log(JSON.stringify(data));

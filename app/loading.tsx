@@ -86,7 +86,7 @@ export default function BloodDropLoader() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          Loading
+          Loading...
         </motion.div>
       </motion.div>
     </div>

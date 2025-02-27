@@ -1,4 +1,5 @@
 import { BloodRequestDetails } from "@/components/BloodRequestDetails";
+import { getBloodRequestById } from "@/services/bloodRegister";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -7,18 +8,28 @@ interface PageProps {
   };
 }
 
+// Fetch actual blood request details from backend API
+async function getBloodRequestDetails(id: string) {
+  const response: any = await getBloodRequestById(id)
+
+  return response;
+}
+
+// Generate dynamic metadata based on fetched data
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  // Fetch blood request details (replace with your actual data fetching logic)
-  const bloodRequest = await getBloodRequestDetails(params.id);
+  const {id} = await params;
+
+  
+  const bloodRequest = await getBloodRequestDetails(id);
 
   return {
-    title: `Blood Request: ${bloodRequest.bloodType} needed in ${bloodRequest.location}`,
-    description: `Urgent blood request for ${bloodRequest.bloodType} in ${bloodRequest.location}. Please help if you can!`,
+    title: `Blood Request: ${bloodRequest.blood} needed in ${bloodRequest.address}`,
+    description: `Urgent blood request for ${bloodRequest.blood} in ${bloodRequest.address}. Please help if you can!`,
     openGraph: {
-      title: `Blood Request: ${bloodRequest.bloodType} needed in ${bloodRequest.location}`,
-      description: `Urgent blood request for ${bloodRequest.bloodType} in ${bloodRequest.location}. Please help if you can!`,
+      title: `Blood Request: ${bloodRequest.blood} needed in ${bloodRequest.address}`,
+      description: `Urgent blood request for ${bloodRequest.blood} in ${bloodRequest.address}. Please help if you can!`,
       images: [
         {
           url: `${
@@ -36,21 +47,12 @@ export async function generateMetadata({
   };
 }
 
-export default function BloodRequestPage({ params }: PageProps) {
+// Blood Request Page Component
+export default async function BloodRequestPage({ params }: PageProps) {
+  const {id} = await params
   return (
     <div className="container mx-auto px-4 py-8">
-      <BloodRequestDetails id={params.id} />
+      <BloodRequestDetails id={id} />
     </div>
   );
-}
-
-// Mock function to fetch blood request details (replace with your actual data fetching logic)
-async function getBloodRequestDetails(id: string) {
-  return {
-    id,
-    bloodType: "A+",
-    location: "City Hospital, Downtown",
-    urgency: "High",
-    postedAt: new Date().toISOString(),
-  };
 }

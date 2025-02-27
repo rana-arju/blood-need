@@ -69,7 +69,6 @@ const formSchema = z.object({
     required_error: "Please select a time for donation",
   }),
   hemoglobin: z.number().optional(),
-  reference: z.string().optional(),
 });
 
 export default function BloodRequestForm() {
@@ -92,7 +91,7 @@ export default function BloodRequestForm() {
       whatsappNumber: "",
       bloodAmount: 1,
       hemoglobin: 1,
-      reference: "",
+
       requireTime: new Date(),
     },
   });
@@ -434,19 +433,7 @@ export default function BloodRequestForm() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="reference"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Reference (Optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter reference" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+         
             </div>
 
             <FormField

@@ -31,11 +31,21 @@ const SocialLogin = () => {
         {
           //<FaGoogle className="mr-2 h-4 w-4" />
         }
-        <Image src="/icons/google.png" alt="google" width={22} height={22} />
+        <Image
+          src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1740683517/google_oweld1.png"
+          alt="google"
+          width={22}
+          height={22}
+        />
         Google
       </Button>
       <Button variant="outline" onClick={() => handleSocialSignIn("facebook")}>
-        <Image src="/icons/facebook.png" alt="facebook" width={22} height={22} />
+        <Image
+          src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1740683517/facebook_jd4xb2.png"
+          alt="facebook"
+          width={22}
+          height={22}
+        />
         Facebook
       </Button>
     </div>

@@ -28,6 +28,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  const isActive = (path: string) => pathname.endsWith(path);
   return (
     <>
       <Button
@@ -52,7 +53,7 @@ export function Sidebar() {
                     href={item.href}
                     className={cn(
                       "flex items-center p-2 rounded-lg transition-colors",
-                      pathname === item.href
+                      isActive(item.href)
                         ? "bg-primary text-primary-foreground"
                         : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     )}

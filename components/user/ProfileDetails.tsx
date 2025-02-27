@@ -27,15 +27,15 @@ export function ProfileDetails() {
           const profileData = profile?.data;
 
           // Convert location IDs to names
-          profileData.divisionName = await getLocationName(
+          profileData.division = await getLocationName(
             "division",
             profileData.division
           );
-          profileData.districtName = await getLocationName(
+          profileData.district = await getLocationName(
             "district",
             profileData.district
           );
-          profileData.upazilaName = await getLocationName(
+          profileData.upazila = await getLocationName(
             "upazila",
             profileData.upazila
           );
@@ -65,9 +65,9 @@ export function ProfileDetails() {
     setUserData({
       ...userData,
       ...updatedData,
-      divisionName: await getLocationName("division", updatedData.division),
-      districtName: await getLocationName("district", updatedData.district),
-      upazilaName: await getLocationName("upazila", updatedData.upazila),
+      division: await getLocationName("division", updatedData.division),
+      district: await getLocationName("district", updatedData.district),
+      upazila: await getLocationName("upazila", updatedData.upazila),
     });
 
     // Update the session
@@ -102,6 +102,7 @@ export function ProfileDetails() {
                 <AvatarImage
                   src={userData.image || "/placeholder-avatar.jpg"}
                   alt="Profile"
+                  className="object-cover"
                 />
                 <AvatarFallback>
                   {userData.name?.charAt(0) || "U"}
@@ -143,15 +144,15 @@ export function ProfileDetails() {
               </div>
               <div>
                 <h3 className="font-semibold">Division</h3>
-                <p>{userData.divisionName || "Not provided"}</p>
+                <p>{userData.division || "Not provided"}</p>
               </div>
               <div>
                 <h3 className="font-semibold">District</h3>
-                <p>{userData.districtName || "Not provided"}</p>
+                <p>{userData.district || "Not provided"}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Upazila</h3>
-                <p>{userData.upazilaName || "Not provided"}</p>
+                <p>{userData.upazila || "Not provided"}</p>
               </div>
               <div>
                 <h3 className="font-semibold">Address</h3>
