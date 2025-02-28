@@ -1,5 +1,5 @@
 {
-   "common": {
+  "common": {
     "siteTitle": "Blood Need",
     "home": "Home",
     "allRequests": "All Requests",
@@ -46,5 +46,44 @@
       "contact": "Contact Number",
       "submit": "Submit Request"
     }
+  },
+  "BloodRequestPage": {
+    "title": "Blood Request Form",
+    "switchToVoiceMode": "Switch to Voice Mode",
+    "switchToTextMode": "Switch to Text Mode"
+  },
+  "BloodRequestForm": {
+    "title": "Blood Request Form",
+    "currentPrompt": "Please provide {field}",
+    "startListening": "Start Listening",
+    "stopListening": "Stop Listening",
+    "submit": "Submit",
+    "currentInput": "Current Input",
+    "formPreview": "Form Preview",
+    "patientName": "Patient Name",
+    "bloodGroup": "Blood Group",
+    "requiredUnits": "Required Units",
+    "needDate": "Date Needed",
+    "needTime": "Time Needed",
+    "hospitalName": "Hospital Name",
+    "division": "Division",
+    "district": "District",
+    "upazila": "Upazila",
+    "fullAddress": "Full Address",
+    "contactName": "Contact Name",
+    "contactNumber": "Contact Number",
+    "relation": "Relation to Patient",
+    "patientGender": "Patient Gender",
+    "patientAge": "Patient Age",
+    "reasonForBlood": "Reason for Blood",
+    "additionalInfo": "Additional Information"
+  },
+  "LocationSelector": {
+    "division": "Division",
+    "district": "District",
+    "upazila": "Upazila",
+    "selectDivision": "Select Division",
+    "selectDistrict": "Select District",
+    "selectUpazila": "Select Upazila"
   }
 }

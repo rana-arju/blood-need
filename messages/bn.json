@@ -46,5 +46,50 @@
       "contact": "যোগাযোগের নম্বর",
       "submit": "অনুরোধ করুন"
     }
+  },
+
+  "BloodRequestPage": {
+    "title": "রক্তের অনুরোধ ফর্ম",
+    "switchToVoiceMode": "কণ্ঠস্বর মোডে যান",
+    "switchToTextMode": "টেক্সট মোডে ফিরে যান"
+  },
+  "BloodRequestForm": {
+    "title": "রক্তের অনুরোধ ফর্ম",
+    "pleaseProvide": "অনুগ্রহ করে {field} প্রদান করুন",
+    "formComplete": "ফর্ম সম্পূর্ণ হয়েছে। জমা দিতে চান?",
+    "currentPrompt": "অনুগ্রহ করে {field} প্রদান করুন",
+    "startListening": "শোনা শুরু করুন",
+    "stopListening": "শোনা বন্ধ করুন",
+    "submit": "জমা দিন",
+    "currentInput": "বর্তমান ইনপুট",
+    "formPreview": "ফর্মের প্রিভিউ",
+    "patientName": "রোগীর নাম",
+    "bloodGroup": "রক্তের গ্রুপ",
+    "requiredUnits": "প্রয়োজনীয় ইউনিট সংখ্যা",
+    "needDate": "রক্ত প্রয়োজনের তারিখ",
+    "needTime": "রক্ত প্রয়োজনের সময়",
+    "hospitalName": "হাসপাতালের নাম",
+    "division": "বিভাগ",
+    "district": "জেলা",
+    "upazila": "উপজেলা",
+    "fullAddress": "পূর্ণ ঠিকানা",
+    "contactName": "যোগাযোগের নাম",
+    "contactNumber": "যোগাযোগের নম্বর",
+    "relation": "রোগীর সাথে সম্পর্ক",
+    "patientGender": "রোগীর লিঙ্গ",
+    "patientAge": "রোগীর বয়স",
+    "reasonForBlood": "রক্তের প্রয়োজনের কারণ",
+    "additionalInfo": "অতিরিক্ত তথ্য"
+  },
+  "LocationSelector": {
+    "division": "বিভাগ",
+    "district": "জেলা",
+    "upazila": "উপজেলা",
+    "selectDivision": "বিভাগ নির্বাচন করুন",
+    "selectDistrict": "জেলা নির্বাচন করুন",
+    "selectUpazila": "উপজেলা নির্বাচন করুন"
   }
 }
+
+
+

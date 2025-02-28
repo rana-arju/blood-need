@@ -76,7 +76,7 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
         const data = await getBloodRequestById(id);
         const requestData = data?.data;
         console.log(requestData);
-        
+
         // Convert location IDs to names
         requestData.division = await getLocationName(
           "division",
@@ -127,7 +127,7 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
           </CardTitle>
           <ShareButton
             url={`/requests/${id}`}
-            title={`Blood Request: ${request.blood} needed in ${request.hospitalName}`}
+            title={`Blood Request: ${request?.blood} needed in ${request?.hospitalName}`}
           />
         </div>
       </CardHeader>
@@ -137,7 +137,7 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Droplet className="w-5 h-5 text-red-500" />
-            <span className="font-semibold">Blood Type: {request.blood}</span>
+            <span className="font-semibold">Blood Type: {request?.blood}</span>
           </div>
           <Badge className={urgencyColor[urgency]}>
             <AlertCircle className="w-4 h-4 mr-1" />

@@ -141,7 +141,21 @@ export default function BloodRequestForm() {
       setIsSubmitting(false);
     }
   }
+  {
+    /*  <div className="flex justify-center items-center gap-4">
+          <p className={cn("text-semibold", isVoiceMode && "text-primary")}>
+            ভয়েজের মাধ্যমে ফর্মটি পূরণ করুন
+          </p>
 
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setIsVoiceMode(!isVoiceMode)}
+          >
+            <Mic className={cn("h-4 w-4", isVoiceMode && "text-primary")} />
+          </Button>
+        </div> */
+  }
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="space-y-1">
@@ -432,8 +446,6 @@ export default function BloodRequestForm() {
                   </FormItem>
                 )}
               />
-
-         
             </div>
 
             <FormField
