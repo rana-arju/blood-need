@@ -34,8 +34,8 @@ export default function Welcome() {
           >
             <div className="rounded-lg overflow-hidden">
               <Image
-              width={50}
-              height={50}
+              width={600}
+              height={600}
                 src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1739977063/ravi25_may_5_1_kxg8rj.jpg"
                 alt="Medical team"
                 className="w-full h-[400px] object-contain"
