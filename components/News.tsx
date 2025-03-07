@@ -14,19 +14,19 @@ const news = [
   {
     title: "Donation is hope for poor helpless children",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blood%20donation%203.PNG-GiAd5vRa5pae1TR8TKpjDJWaqKzoBy.png",
+      "https://zahrah.creedcreatives.net/donors/wp-content/uploads/sites/31/2025/02/blood-transfusion-2024-12-04-15-30-30-utc.jpg",
     category: "Blood Tips",
   },
   {
     title: "Don't Do This After You Donating Your Blood",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blood%20donation%203.PNG-GiAd5vRa5pae1TR8TKpjDJWaqKzoBy.png",
+      "https://zahrah.creedcreatives.net/donors/wp-content/uploads/sites/31/2025/02/cheerful-young-female-person-visiting-her-doctor-2023-11-27-05-36-14-utc.jpg",
     category: "Donation",
   },
   {
     title: "Don't Do This After You Donating Your Blood",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blood%20donation%203.PNG-GiAd5vRa5pae1TR8TKpjDJWaqKzoBy.png",
+      "https://zahrah.creedcreatives.net/donors/wp-content/uploads/sites/31/2025/02/multiracial-doctor-in-white-coat-medical-mask-and-2024-11-07-22-07-16-utc.jpg",
     category: "Blood Bank",
   },
 ];

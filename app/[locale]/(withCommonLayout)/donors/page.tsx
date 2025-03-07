@@ -1,124 +1,172 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Pagination } from "@/components/Pagination";
-import { FilterForm, type FilterValues } from "@/components/FilterForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+import { useState, useEffect, useCallback } from "react";
 
-type Donor = {
-  id: number;
-  name: string;
-  bloodGroup: string;
-  location: string;
-  lastDonationDate: string;
-  donationCount: number;
-  imageUrl: string;
-};
-export default function DonorList() {
-  const [mockDonors, setMockDonors] = useState<Donor[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState<FilterValues>({
-    bloodGroup: "",
-    division: "",
-    district: "",
-    upazila: "",
-    union: "",
-  });
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import useMediaQuery from "@/utils/useMediaQuery";
+import { getAllDonors } from "@/services/beDonor";
+import DonorSearchBar from "@/components/Donor/DonorSearchBar";
+import DonorFilterDrawer from "@/components/Donor/DonorFilterDrawer";
+import DonorFilterSidebar from "@/components/Donor/DonorFilterSidebar";
+import DonorCardSkeleton from "@/components/Donor/DonorCardSkeleton";
+import DonorCard from "@/components/Donor/DonorCard";
+import { Pagination } from "@/components/Pagination";
+export default function DonorsPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+    const initialSearchTerm = searchParams.get("searchTerm") || "";
+
+  const [donors, setDonors] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [currentPage, setCurrentPage] = useState(
+    Number.parseInt(searchParams.get("page") || "1", 10)
+  );
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  const fetchDonors = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Combine search term and filters
+      const params = {
+        ...filters,
+        searchTerm: searchTerm,
+        page: currentPage,
+        limit: 10,
+      };
+
+      const {
+        donors: donorsList,
+        totalPages: pages,
+        currentPage: page,
+        total: totalItems,
+      } = await getAllDonors(params);
+      setDonors(donorsList);
+      setTotalPages(pages);
+      setCurrentPage(page);
+      setTotal(totalItems);
+
+      // Update URL with search params
+      const urlParams = new URLSearchParams();
+     if (searchTerm) urlParams.set("searchTerm", searchTerm);
+     if (currentPage > 1) urlParams.set("page", currentPage.toString());
+
+      // Add filter params to URL
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          urlParams.set(key, value.toString());
+        }
+      });
+
+      const url = urlParams.toString() ? `?${urlParams.toString()}` : "";
+      router.push(`/donors${url}`, { scroll: false });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while fetching donors"
+      );
+      setDonors([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [filters, searchTerm, currentPage, router]);
 
   useEffect(() => {
-    // Generate mock donors on the client side
-    const generatedDonors = Array.from({ length: 50 }, (_, i) => ({
-      id: i + 1,
-      name: `Donor ${i + 1}`,
-      bloodGroup: ["A+", "B+", "O-", "AB+"][Math.floor(Math.random() * 4)],
-      location: `City ${i + 1}`,
-      lastDonationDate: new Date(
-        Date.now() - Math.random() * 10000000000
-      ).toLocaleDateString(),
-      donationCount: Math.floor(Math.random() * 10),
-      imageUrl: `https://source.unsplash.com/random/200x200?face&${i + 50}`,
-    }));
-    setMockDonors(generatedDonors);
-  }, []);
+    fetchDonors();
+  }, [fetchDonors]);
 
-  const itemsPerPage = 12;
-  const filteredDonors = mockDonors.filter((donor) => {
-    return (
-      (!filters.bloodGroup || donor.bloodGroup === filters.bloodGroup) &&
-      (!filters.division || donor.location.includes(filters.division)) &&
-      (!filters.district || donor.location.includes(filters.district)) &&
-      (!filters.upazila || donor.location.includes(filters.upazila)) &&
-      (!filters.union || donor.location.includes(filters.union))
-    );
-  });
-
-  const totalPages = Math.ceil(filteredDonors.length / itemsPerPage);
-  const paginatedDonors = filteredDonors.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
   };
 
-  const handleFilter = (newFilters: FilterValues) => {
+  const handleFilterChange = (newFilters: Record<string, any>) => {
     setFilters(newFilters);
     setCurrentPage(1);
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Donor List</h1>
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Filter Donors</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FilterForm onFilter={handleFilter} />
-        </CardContent>
-      </Card>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paginatedDonors.map((donor) => (
-          <Link key={donor.id} href={`/donors/${donor.id}`}>
-            <Card className="hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="flex items-center p-6">
-                <Avatar className="h-24 w-24 mr-6">
-                  <AvatarImage src={donor.imageUrl} alt={donor.name} />
-                  <AvatarFallback>{donor.name.slice(0, 2)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">{donor.name}</h3>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Blood Group:</span>{" "}
-                    {donor.bloodGroup}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Location:</span>{" "}
-                    {donor.location}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-2">
-                    <span className="font-medium">Last Donation:</span>{" "}
-                    {donor.lastDonationDate}
-                  </p>
-                  <Badge variant="secondary">
-                    {donor.donationCount} Donations
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
-      <div className="mt-8">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Blood Donors Directory
+      </h1>
+
+      <div className="mb-6">
+        <DonorSearchBar
+          onSearch={handleSearch}
+          initialSearchTerm={searchTerm}
         />
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-6">
+        {isDesktop ? (
+          <div className="lg:w-1/4">
+            <DonorFilterSidebar onFilterChange={handleFilterChange} />
+          </div>
+        ) : (
+          <div className="mb-4">
+            <DonorFilterDrawer onFilterChange={handleFilterChange} />
+          </div>
+        )}
+
+        <div className="lg:w-3/4">
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {!isLoading && donors.length === 0 && !error && (
+            <div className="text-center py-8 bg-muted rounded-lg">
+              <h3 className="text-xl font-medium">No donors found</h3>
+              <p className="text-muted-foreground mt-2">
+                Try adjusting your search or filters
+              </p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <DonorCardSkeleton key={index} />
+                ))
+              : donors.map((donor) => (
+                  <DonorCard key={donor.id} donor={donor} />
+                ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
+
+          {!isLoading && donors.length > 0 && (
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Showing {donors.length} of {total} donors
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

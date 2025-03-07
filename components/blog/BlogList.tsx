@@ -36,7 +36,8 @@ export function BlogList() {
       title: "The Importance of Regular Blood Donation",
       excerpt:
         "Learn why regular blood donation is crucial for maintaining a healthy blood supply...",
-      image: "https://source.unsplash.com/random/800x600?medical",
+      image:
+        "https://zahrah.creedcreatives.net/donors/wp-content/uploads/sites/31/2025/02/cheerful-young-female-person-visiting-her-doctor-2023-11-27-05-36-14-utc.jpg",
       date: "2024-02-15",
       category: "Health",
       slug: "importance-of-blood-donation",

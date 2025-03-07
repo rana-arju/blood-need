@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type React from "react";
 import BottomNavigation from "@/components/BottomNavigation";
+import ChatBot from "@/components/ChatBot";
 
 export const metadata = {
   title: "Blood Donation Community",
@@ -25,6 +26,7 @@ export default async function RootLayout({
       </div>
       <BottomNavigation />
       <Footer />
+      <ChatBot />
     </div>
   );
 }

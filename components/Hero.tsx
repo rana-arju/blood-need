@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import { Heart } from "lucide-react";
 const slides = [
   {
     id: 1,
@@ -16,7 +17,7 @@ const slides = [
     image:
       "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm2.jpg",
     buttonText: "Get Started",
-    buttonLink: "/donate",
+    buttonLink: "/be-donor",
   },
   {
     id: 2,
@@ -25,7 +26,7 @@ const slides = [
     image:
       "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm3.jpg",
     buttonText: "Donate Now",
-    buttonLink: "/donate",
+    buttonLink: "/be-donor",
   },
   {
     id: 3,
@@ -34,7 +35,7 @@ const slides = [
     image:
       "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm1.png",
     buttonText: "Learn More",
-    buttonLink: "/about",
+    buttonLink: "/be-donor",
   },
 ];
 interface HeroProps {
@@ -92,8 +93,13 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
                     className="bg-red-600 hover:bg-red-700 text-white animate-fade-up"
                     style={{ animationDelay: "0.6s" }}
                   >
-                    <Link href={slide.buttonLink}>{ctaText}</Link>
+                    <Link href={slide.buttonLink}>
+                    
+                      <Heart className="h-5 w-5 mr-2" />
+                      {ctaText}
+                    </Link>
                   </Button>
+               
                 </div>
               </div>
             </div>

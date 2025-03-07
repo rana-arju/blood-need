@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Bell, LayoutDashboard, LogOut } from "lucide-react";
+import { Bell, Droplet, LayoutDashboard, LogOut } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import {
   DropdownMenu,
@@ -125,9 +125,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 transition-all duration-200 bg-background/80 border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          Blood Need
-        </Link>
+        <div className="flex items-center">
+          <Droplet className="h-8 w-8 text-blood-600 mr-2 text-primary" />
+          <span className="text-xl font-bold text-blood-700">
+            <span className="text-primary"> Blood</span> <span className="text-gray-800 dark:text-white">Need</span>
+          </span>
+        </div>
         <div className="flex items-center space-x-4">
           <nav className="invisible sm:visible">
             {!isMobile && (
@@ -146,8 +149,6 @@ export default function Header() {
                     <AvatarImage
                       className="dark:bg-white object-cover"
                       src={session?.user?.image || "/profile.png"}
-                      
-                      
                     />
                     <AvatarFallback>
                       {(session?.user?.name?.[0] as string) ?? "?"}
