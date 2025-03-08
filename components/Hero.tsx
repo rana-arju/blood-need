@@ -9,13 +9,23 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Heart } from "lucide-react";
+import Image from "next/image";
 const slides = [
+  {
+    id: 4,
+    subtitle: "Donate to blood contribute",
+    title: "Your Blood Can Bring Smile In Any One Person Face",
+    image:
+      "https://res.cloudinary.com/db8l1ulfq/image/upload/v1741454406/hm3_1_p7owbi.jpg",
+    buttonText: "Get Started",
+    buttonLink: "/be-donor",
+  },
   {
     id: 1,
     subtitle: "Donate to blood contribute",
     title: "Your Blood Can Bring Smile In Any One Person Face",
     image:
-      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm2.jpg",
+      "https://res.cloudinary.com/db8l1ulfq/image/upload/v1741453211/blood-need-hero-3_ykwpzu.jpg",
     buttonText: "Get Started",
     buttonLink: "/be-donor",
   },
@@ -24,7 +34,7 @@ const slides = [
     subtitle: "Every Drop Counts",
     title: "Be a Hero, Save Lives Through Blood Donation",
     image:
-      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm3.jpg",
+      "https://res.cloudinary.com/db8l1ulfq/image/upload/v1741453211/blood-need-hero2_qjbuqi.jpg",
     buttonText: "Donate Now",
     buttonLink: "/be-donor",
   },
@@ -33,7 +43,7 @@ const slides = [
     subtitle: "Join Our Community",
     title: "Together We Can Make a Difference",
     image:
-      "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm1.png",
+      "https://res.cloudinary.com/db8l1ulfq/image/upload/v1741453224/blood-need-hero1_cadgpe.jpg",
     buttonText: "Learn More",
     buttonLink: "/be-donor",
   },
@@ -66,9 +76,11 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
           <SwiperSlide key={slide.id}>
             <div className="relative h-full w-full">
               <div className="absolute inset-0">
-                <img
-                  src={slide.image || "/placeholder.svg"}
+                <Image
+                  src={slide.image}
                   alt={title}
+                  width={700}
+                  height={500}
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50" />
@@ -76,13 +88,13 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
               <div className="relative h-full flex items-center justify-center">
                 <div className="container mx-auto px-4 text-center text-white">
                   <p
-                    className="text-lg md:text-xl mb-4 animate-fade-up"
+                    className="text-md sm:text-lg md:text-xl mb-4 animate-fade-up"
                     style={{ animationDelay: "0.2s" }}
                   >
                     {subtitle}
                   </p>
                   <h1
-                    className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 max-w-4xl mx-auto leading-tight animate-fade-up"
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 max-w-4xl mx-auto leading-tight animate-fade-up"
                     style={{ animationDelay: "0.4s" }}
                   >
                     {title}

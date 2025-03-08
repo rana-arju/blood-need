@@ -60,17 +60,20 @@ const StatItem = ({ icon, value, label, color, delay }: StatItemProps) => {
 };
 
 interface ImpactStatisticsProps {
-  stats?: {
-    users: number;
-    donors: number;
-    requests: number;
-    events: number;
-  };
+  users: number;
+  donors: number;
+  requests: number;
+  events: number;
 }
 
-export default function ImpactStatistics({ stats }: ImpactStatisticsProps) {
+export default function ImpactStatistics() {
   const t = useTranslations("Statistics");
-  const [data, setData] = useState<ImpactStatisticsProps["stats"] | null>(null);
+  const [data, setData] = useState<ImpactStatisticsProps>({
+    users: 0,
+    donors: 0,
+    requests: 0,
+    events: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,15 +90,15 @@ export default function ImpactStatistics({ stats }: ImpactStatisticsProps) {
 
     fetchData();
   }, []);
-
+  /*
   const defaultStats = {
     users: 1578000, // 1.57M
     donors: 10450, // 10.4K
     requests: 123400, // 123.4K
     events: 320, // 320
   };
-
-  const finalStats = data || defaultStats;
+*/
+  const finalStats = data;
 
   return (
     <section className="py-16 px-1 md:px-6 container mx-auto">
