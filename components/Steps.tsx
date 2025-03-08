@@ -1,80 +1,77 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { UserPlus, HelpCircle, Heart, ArrowRight } from "lucide-react";
 
-const steps = [
-  {
-    number: "01",
-    title: "Become a Donor",
-    description: "Register to become a blood donor and help save lives",
-    href: "/be-a-donor",
-    buttonText: "Register Now",
-  },
-  {
-    number: "02",
-    title: "Why Give Blood?",
-    description: "Learn about the importance of blood donation",
-    href: "/about",
-    buttonText: "Learn More",
-  },
-  {
-    number: "03",
-    title: "How Donations Help",
-    description: "Discover how your donation makes a difference",
-    href: "/impact",
-    buttonText: "See Impact",
-  },
-];
+export default function DonationSteps() {
+  const t = useTranslations("DonationSteps");
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
+  const steps = [
+    {
+      number: "01",
+      title: t("step1.title"),
+      description: t("step1.description"),
+      icon: <UserPlus className="w-6 h-6" />,
+      action: {
+        label: t("step1.action"),
+        href: "/register-donor",
+      },
     },
-  },
-};
+    {
+      number: "02",
+      title: t("step2.title"),
+      description: t("step2.description"),
+      icon: <HelpCircle className="w-6 h-6" />,
+      action: {
+        label: t("step2.action"),
+        href: "/why-donate",
+      },
+    },
+    {
+      number: "03",
+      title: t("step3.title"),
+      description: t("step3.description"),
+      icon: <Heart className="w-6 h-6" />,
+      action: {
+        label: t("step3.action"),
+        href: "/impact",
+      },
+    },
+  ];
 
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
-export default function Steps() {
   return (
-    <section className="py-16 bg-background">
-      <div className="container px-4 md:px-6">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        >
-          {steps.map((step) => (
-            <motion.div key={step.number} variants={item}>
-              <Card className="h-full transition-shadow hover:shadow-lg">
-                <CardHeader>
-                  <span className="text-4xl font-bold text-primary mb-4">
-                    {step.number}
-                  </span>
-                  <h3 className="text-xl font-bold">{step.title}</h3>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">{step.description}</p>
-                  <Button asChild>
-                    <Link href={step.href}>{step.buttonText}</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+    <div className="w-full max-w-7xl mx-auto px-2 md:p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {steps.map((step) => (
+          <Card
+            key={step.number}
+            className="relative overflow-hidden group hover:shadow-lg transition-shadow duration-300"
+          >
+            <div className="absolute top-4 right-4 text-4xl font-bold text-primary/10">
+              {step.number}
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="p-3 bg-primary/5 rounded-full w-fit">
+                {step.icon}
+              </div>
+              <h3 className="text-xl font-semibold">{step.title}</h3>
+              <p className="text-muted-foreground">{step.description}</p>
+              <Button
+                variant="ghost"
+                className="group-hover:translate-x-2 transition-transform duration-300"
+                asChild
+              >
+                <a href={step.action.href}>
+                  {step.action.label}
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
+              </Button>
+            </div>
+          </Card>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }

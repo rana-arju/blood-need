@@ -97,8 +97,8 @@
   "education": {
     "title": "Learn About Blood Donation",
     "tabs": {
-      "resources": "Educational Resources",
-      "quiz": "Blood Donation Quiz"
+      "resources": "Resources",
+      "quiz": "Blood Quiz"
     },
     "basics": {
       "title": "Blood Donation 101",
@@ -191,6 +191,60 @@
           "bandage": "Keep the bandage on for several hours"
         }
       }
+    }
+  },
+
+  "Welcome": {
+    "title": "Welcome to Blood Donors Community",
+    "subtitle": "Join our lifesaving mission to make blood donation accessible and efficient. Every drop counts in our journey to save lives together.",
+    "features": {
+      "service": "24/7 Service",
+      "bloodBank": "Blood Bank",
+      "support": "Donor Support",
+      "health": "Health Check"
+    },
+    "buttons": {
+      "donate": "Donate Now",
+      "learn": "Learn More"
+    },
+    "tabs": {
+      "about": "About Us",
+      "mission": "Mission & Vision"
+    },
+    "about": {
+      "title": "About Our Community",
+      "content": "We are a dedicated network of volunteers, medical professionals, and community members working together to ensure a stable and safe blood supply. Since our establishment, we have helped thousands of patients through the generous contributions of our donors."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "content": "To create a sustainable and efficient blood donation ecosystem that connects donors with those in need, while promoting awareness about the importance of regular blood donation."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "To build a world where no life is lost due to blood shortage, fostering a community where blood donation becomes a regular part of people's lives."
+    }
+  },
+  "BloodChart": {
+    "title": "Blood Type Compatibility Chart",
+    "subtitle": "Select a blood type to see donation compatibility",
+    "canGiveTo": "Can Give Blood To",
+    "canReceiveFrom": "Can Receive Blood From"
+  },
+  "DonationSteps": {
+    "step1": {
+      "title": "Become a Donor",
+      "description": "Register to become a blood donor and help save lives",
+      "action": "Register Now"
+    },
+    "step2": {
+      "title": "Why Give Blood?",
+      "description": "Learn about the importance of blood donation",
+      "action": "Learn More"
+    },
+    "step3": {
+      "title": "How Donations Help",
+      "description": "Discover how your donation makes a difference",
+      "action": "See Impact"
     }
   }
 }

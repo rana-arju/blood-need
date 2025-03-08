@@ -11,6 +11,7 @@ import EducationalResources from "@/components/EducationalResources";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
 import ImpactStatistics from "@/components/ImpactStatistics";
+import WelcomeSection from "@/components/welcome/welcome-section";
 export default function Home() {
   const t = useTranslations("home");
   return (
@@ -22,7 +23,7 @@ export default function Home() {
       />
       <ImpactStatistics />
 
-      <Welcome />
+      <WelcomeSection />
       <BloodRequestFeed />
       <EducationalResources />
       <Steps />

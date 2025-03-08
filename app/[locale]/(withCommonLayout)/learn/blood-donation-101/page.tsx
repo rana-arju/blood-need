@@ -9,7 +9,7 @@ export default function BloodDonation101Page() {
   const t = useTranslations("education.content.basics");
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-1 md:px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

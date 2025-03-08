@@ -1,26 +1,19 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Book, FlaskRoundIcon as Flask, HeartPulse, Brain } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useLocale, useTranslations } from "next-intl"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Book, FlaskRoundIcon as Flask, HeartPulse, Brain } from "lucide-react"
+import { motion } from "framer-motion"
 
 const EducationalResources = () => {
-  const t = useTranslations("education");
-  const router = useRouter();
-  const locale = useLocale();
-  const [activeTab, setActiveTab] = useState("resources");
+  const t = useTranslations("education")
+  const router = useRouter()
+  const locale = useLocale()
+  const [activeTab, setActiveTab] = useState("resources")
 
   const container = {
     hidden: { opacity: 0 },
@@ -30,20 +23,20 @@ const EducationalResources = () => {
         staggerChildren: 0.1,
       },
     },
-  };
+  }
 
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
-  };
+  }
 
   const handleReadMore = (path: string) => {
-    router.push(`/${locale}/learn/${path}`);
-  };
+    router.push(`/${locale}/learn/${path}`)
+  }
 
   return (
-    <section className="py-16 px-4 bg-background">
-      <div className="container mx-auto">
+    <section className="py-16 px-1 md:px-4 bg-background">
+      <div className="container mx-auto px-1 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -51,7 +44,7 @@ const EducationalResources = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-primary">
             {t("title")}
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
@@ -202,6 +195,7 @@ const EducationalResources = () => {
       </div>
     </section>
   );
-};
+}
 
-export default EducationalResources;
+export default EducationalResources
+

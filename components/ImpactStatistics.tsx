@@ -98,8 +98,8 @@ export default function ImpactStatistics({ stats }: ImpactStatisticsProps) {
   const finalStats = data || defaultStats;
 
   return (
-    <section className="py-16 px-4">
-      <div className="container mx-auto">
+    <section className="py-16 px-1 md:px-6 container mx-auto">
+      <div>
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">

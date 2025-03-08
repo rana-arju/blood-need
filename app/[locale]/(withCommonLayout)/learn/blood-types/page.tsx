@@ -11,14 +11,14 @@ export default function BloodTypesPage() {
   const t = useTranslations("education.content.bloodTypes");
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="py-8 px-1 md:px-4 container mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-primary">
           {t("title")}
         </h1>
         <div className="w-24 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
@@ -33,7 +33,7 @@ export default function BloodTypesPage() {
           >
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>{t("introduction")}</CardTitle>
+                <CardTitle className="text-lg sm:text-xl md:text-2xl">{t("introduction")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-6">
@@ -114,11 +114,11 @@ export default function BloodTypesPage() {
 
                 <Tabs defaultValue="compatibility">
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="compatibility">
-                      Blood Type Compatibility
+                    <TabsTrigger value="compatibility" >
+                      Compatibility
                     </TabsTrigger>
-                    <TabsTrigger value="systems">
-                      Blood Group Systems
+                    <TabsTrigger value="systems" >
+                      Group Systems
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="compatibility" className="pt-4">
@@ -314,7 +314,7 @@ export default function BloodTypesPage() {
           >
             <Card>
               <CardHeader>
-                <CardTitle>{t("compatibility.title")}</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">{t("compatibility.title")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-6">{t("compatibility.description")}</p>
