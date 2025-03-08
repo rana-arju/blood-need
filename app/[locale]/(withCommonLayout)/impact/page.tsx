@@ -1,7 +1,6 @@
 import DonationProcess from "@/components/DonationProcess";
-import ImpactVisualization from "@/components/ImpactVisualization";
+import ImpactStatistics from "@/components/ImpactStatistics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 
 export default function ImpactPage() {
   return (
@@ -22,7 +21,7 @@ export default function ImpactPage() {
             <CardTitle>Our Impact</CardTitle>
           </CardHeader>
           <CardContent>
-            <ImpactVisualization />
+            <ImpactStatistics />
           </CardContent>
         </Card>
 

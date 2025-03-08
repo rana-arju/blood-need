@@ -18,28 +18,10 @@ interface DonorCardProps {
 
 export default function DonorCard({ donor }: DonorCardProps) {
   const user = donor.user;
+  //user.district = getLocationName("district", user.district);
   const lastDonation = user.lastDonationDate
     ? formatDistanceToNow(new Date(user.lastDonationDate), { addSuffix: true })
     : "No donation record";
-
-  // Get initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
-
-  // Get location from division, district, upazila
-  const getLocation = () => {
-    const parts = [];
-    if (user.upazila) parts.push(user.upazila);
-    if (user.district) parts.push(user.district);
-    if (user.division) parts.push(user.division);
-    return parts.join(", ");
-  };
-console.log("user", donor);
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md dark:bg-gray-800">
@@ -78,10 +60,11 @@ console.log("user", donor);
             <Phone className="h-4 w-4 text-muted-foreground" />
             <span>{donor.phone}</span>
           </div>
-          <div className="flex items-center gap-2">
+          {/*   <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-muted-foreground" />
-            <span>{getLocation()}</span>
+            <span>{user.district}</span>
           </div>
+          */}
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <span>Last donation: {lastDonation}</span>

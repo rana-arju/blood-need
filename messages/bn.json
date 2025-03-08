@@ -88,6 +88,14 @@
     "selectDivision": "বিভাগ নির্বাচন করুন",
     "selectDistrict": "জেলা নির্বাচন করুন",
     "selectUpazila": "উপজেলা নির্বাচন করুন"
+  },
+  "Statistics": {
+    "title": "আমাদের প্রভাব",
+    "description": "রক্তদানের মাধ্যমে জীবন বাঁচাতে আমরা একসাথে পার্থক্য তৈরি করছি",
+    "totalUsers": "নিবন্ধিত ব্যবহারকারী",
+    "totalDonors": "সক্রিয় রক্তদাতা",
+    "totalRequests": "রক্তের অনুরোধ",
+    "totalEvents": "রক্তদান শিবির"
   }
 }
 

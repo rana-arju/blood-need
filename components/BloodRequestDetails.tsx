@@ -75,7 +75,7 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
       try {
         const data = await getBloodRequestById(id);
         const requestData = data?.data;
-        console.log(requestData);
+       
 
         // Convert location IDs to names
         requestData.division = await getLocationName(

@@ -27,7 +27,7 @@ const BloodRequestCard: React.FC<BloodRequestCardProps> = ({
   hospitalName,
   requiredDate,
 }) => {
-  console.log(user?.image);
+  
 
   return (
     <Link href={`/requests/${id}`}>

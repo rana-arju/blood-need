@@ -16,7 +16,7 @@ import { Pagination } from "@/components/Pagination";
 export default function DonorsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-    const initialSearchTerm = searchParams.get("searchTerm") || "";
+  const initialSearchTerm = searchParams.get("searchTerm") || "";
 
   const [donors, setDonors] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,8 +56,8 @@ export default function DonorsPage() {
 
       // Update URL with search params
       const urlParams = new URLSearchParams();
-     if (searchTerm) urlParams.set("searchTerm", searchTerm);
-     if (currentPage > 1) urlParams.set("page", currentPage.toString());
+      if (searchTerm) urlParams.set("searchTerm", searchTerm);
+      if (currentPage > 1) urlParams.set("page", currentPage.toString());
 
       // Add filter params to URL
       Object.entries(filters).forEach(([key, value]) => {
