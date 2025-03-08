@@ -21,16 +21,17 @@ export default function Home() {
         ctaText={t("hero.cta")}
       />
       <ImpactStatistics />
-    
+
       <Welcome />
       <BloodRequestFeed />
+      <EducationalResources />
       <Steps />
       <DonationProcess />
       <UpcomingDrives />
-      <FeatureHighlights />
-      <EducationalResources />
+     
       <CommunityBloodDriveMap />
       <ReviewSection />
+      <FeatureHighlights />
 
       <News />
     </div>

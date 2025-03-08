@@ -93,5 +93,104 @@
     "totalDonors": "Active Donors",
     "totalRequests": "Blood Requests",
     "totalEvents": "Blood Drives"
+  },
+  "education": {
+    "title": "Learn About Blood Donation",
+    "tabs": {
+      "resources": "Educational Resources",
+      "quiz": "Blood Donation Quiz"
+    },
+    "basics": {
+      "title": "Blood Donation 101",
+      "description": "Learn about the basics of blood donation, including eligibility criteria and the donation process.",
+      "readMore": "Read More"
+    },
+    "bloodTypes": {
+      "title": "Blood Types Explained",
+      "description": "Understand different blood types and their compatibility for transfusions.",
+      "readMore": "Read More"
+    },
+    "preparation": {
+      "title": "Preparing for Your Donation",
+      "description": "Tips on how to prepare for your blood donation to ensure a smooth and comfortable experience.",
+      "readMore": "Read More"
+    },
+    "content": {
+      "basics": {
+        "title": "Understanding Blood Donation",
+        "whatIsBloodDonation": "What is Blood Donation?",
+        "whatIsBloodDonationContent": "Blood donation is a voluntary procedure that can help save lives. There are several types of blood donation:",
+        "donationTypes": {
+          "whole": "Whole Blood Donation",
+          "wholeDescription": "The most common type of donation where we collect about a pint of whole blood.",
+          "plasma": "Plasma Donation",
+          "plasmaDescription": "Collects the liquid portion of blood that carries blood cells.",
+          "platelets": "Platelet Donation",
+          "plateletsDescription": "Collects platelets which help blood clot and are essential for cancer patients."
+        },
+        "eligibility": {
+          "title": "Basic Eligibility Requirements",
+          "age": "Age: 16-65 years old (varies by location)",
+          "weight": "Weight: At least 50kg",
+          "health": "Good general health",
+          "hemoglobin": "Adequate hemoglobin levels"
+        },
+        "process": {
+          "title": "The Donation Process",
+          "registration": "1. Registration and basic health check",
+          "screening": "2. Medical screening and hemoglobin test",
+          "donation": "3. The actual donation (8-10 minutes)",
+          "recovery": "4. Short recovery period with refreshments"
+        }
+      },
+      "bloodTypes": {
+        "title": "Blood Types and Compatibility",
+        "introduction": "Understanding blood types is crucial for safe transfusions. There are 8 main blood types:",
+        "types": {
+          "aPositive": "A+: Can receive from A+, A-, O+, O-",
+          "aNegative": "A-: Can receive from A-, O-",
+          "bPositive": "B+: Can receive from B+, B-, O+, O-",
+          "bNegative": "B-: Can receive from B-, O-",
+          "abPositive": "AB+: Universal recipient",
+          "abNegative": "AB-: Can receive from all negative types",
+          "oPositive": "O+: Can receive from O+, O-",
+          "oNegative": "O-: Universal donor"
+        },
+        "rhFactor": {
+          "title": "Rh Factor",
+          "description": "The positive or negative sign after your blood type refers to the Rh factor. This is important for preventing complications during transfusions and pregnancy."
+        },
+        "compatibility": {
+          "title": "Compatibility Chart",
+          "description": "Use this chart to understand which blood types are compatible for transfusions."
+        }
+      },
+      "preparation": {
+        "title": "How to Prepare for Blood Donation",
+        "beforeDonation": {
+          "title": "Before Your Donation",
+          "sleep": "Get adequate sleep (at least 6 hours)",
+          "eat": "Eat a healthy meal within 3 hours of donation",
+          "drink": "Drink plenty of water",
+          "iron": "Eat iron-rich foods in the weeks before donation",
+          "avoid": "Avoid fatty foods and alcohol"
+        },
+        "dayOf": {
+          "title": "On Donation Day",
+          "wear": "Wear comfortable clothing with sleeves that roll up easily",
+          "bring": "Bring valid ID and list of medications",
+          "schedule": "Allow about an hour for the whole process",
+          "relax": "Stay relaxed and positive"
+        },
+        "afterDonation": {
+          "title": "After Donation Care",
+          "rest": "Rest for 10-15 minutes after donation",
+          "hydrate": "Keep drinking fluids",
+          "avoid": "Avoid strenuous activities for 24 hours",
+          "eat": "Eat well and avoid alcohol",
+          "bandage": "Keep the bandage on for several hours"
+        }
+      }
+    }
   }
 }
