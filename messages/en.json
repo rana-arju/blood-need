@@ -7,7 +7,8 @@
     "bloodRequest": "Blood Request",
     "beADonor": "Be a donor",
     "about": "About",
-    "blog": "Blogs",
+    "blog": "Blogs", 
+    "bloodTest": "Blood Test",
     "myAccount": "My Account",
     "dashboard": "Dashboard",
     "logOut": "Log Out",
@@ -231,30 +232,27 @@
     "canGiveTo": "Can Give Blood To",
     "canReceiveFrom": "Can Receive Blood From"
   },
- "DonationSteps": {
-  "title": "Blood Donation Steps",
-  "subtitle": "Three simple steps to save a life",
-  "steps": {
-    "become": {
-      "title": "Become a Donor",
-      "description": "Register as a blood donor and help save lives",
-      "button": "Register Now"
-    },
-    "why": {
-      "title": "Why Donate?",
-      "description": "Learn about the importance of blood donation",
-      "button": "Learn More"
-    },
-    "impact": {
-      "title": "Your Impact",
-      "description": "See how your donation makes a difference",
-      "button": "See Impact"
+  "DonationSteps": {
+    "title": "Blood Donation Steps",
+    "subtitle": "Three simple steps to save a life",
+    "steps": {
+      "become": {
+        "title": "Become a Donor",
+        "description": "Register as a blood donor and help save lives",
+        "button": "Register Now"
+      },
+      "why": {
+        "title": "Why Donate?",
+        "description": "Learn about the importance of blood donation",
+        "button": "Learn More"
+      },
+      "impact": {
+        "title": "Your Impact",
+        "description": "See how your donation makes a difference",
+        "button": "See Impact"
+      }
     }
-  }
-}
-,
-
-
+  },
   "Features": {
     "title": "Explore Our Features",
     "subtitle": "Discover our advanced features to make the blood donation process easier and more efficient",
@@ -283,10 +281,7 @@
       "description": "View your donation history and impact"
     },
     "learnMore": "Learn More"
-  }
-
-,
- 
+  },
 
   "WhyGiveBlood": {
     "hero": {
@@ -508,6 +503,297 @@
       },
       "6": {
         "name": "Lisa Thompson"
+      }
+    }
+  },
+  "UserDashboard": {
+    "sidebar": {
+      "overview": "Dashboard",
+      "donations": "Donations",
+      "requests": "Blood Requests",
+      "health": "Health History",
+      "achievements": "Achievements",
+      "settings": "Settings",
+      "logout": "Log Out",
+      "userAvatar": "User Avatar",
+      "userName": "John Doe",
+      "userRole": "Regular Donor"
+    },
+    "overview": {
+      "welcome": "Welcome, John",
+      "donateNow": "Donate Now",
+      "requestBlood": "Request Blood",
+      "totalDonations": "Total Donations",
+      "lastDonation": "Last donation on {date}",
+      "livesSaved": "Lives Saved",
+      "impactDescription": "Each donation can save up to 3 lives",
+      "nextEligible": "Next Eligible",
+      "eligibleNow": "Eligible Now",
+      "eligibleDescription": "You can donate again",
+      "donorRank": "Donor Rank",
+      "rankDescription": "3 more donations until Gold",
+      "donationHistory": "Donation History",
+      "impact": "Your Impact",
+      "healthMetrics": "Health Metrics",
+      "viewHealthDetails": "View Health Details",
+      "activities": "Activities"
+    },
+    "tabs": {
+      "upcoming": "Upcoming",
+      "recent": "Recent"
+    },
+    "events": {
+      "bloodDrive": "Community Blood Drive",
+      "cityHospital": "City Hospital",
+      "healthCheckup": "Donor Health Checkup",
+      "medicalCenter": "Medical Center"
+    },
+    "activity": {
+      "donationCompleted": "You completed a blood donation",
+      "achievementUnlocked": "You unlocked the 'Regular Donor' achievement",
+      "requestFulfilled": "Your blood request was fulfilled"
+    }
+  },
+  "UserAchievements": {
+    "title": "Achievements",
+    "currentBadge": {
+      "title": "Current Badge",
+      "badge": "Silver Donor",
+      "nextLevel": "3 more donations until Gold"
+    },
+    "achievementsList": {
+      "title": "Achievements",
+      "completed": "Completed",
+      "progress": "{percent}% Complete"
+    },
+    "achievements": {
+      "firstTime": {
+        "name": "First Time Donor",
+        "description": "Complete your first blood donation"
+      },
+      "regular": {
+        "name": "Regular Donor",
+        "description": "Donate blood 5 times"
+      },
+      "silver": {
+        "name": "Silver Donor",
+        "description": "Donate blood 10 times"
+      },
+      "gold": {
+        "name": "Gold Donor",
+        "description": "Donate blood 20 times"
+      }
+    }
+  },
+  "UserDonations": {
+    "title": "Donation History",
+    "subtitle": "My Donations",
+    "table": {
+      "date": "Date",
+      "location": "Location",
+      "type": "Type",
+      "status": "Status"
+    },
+    "donations": {
+      "locations": {
+        "cityHospital": "City Hospital",
+        "redCross": "Red Cross Center"
+      },
+      "types": {
+        "wholeBlood": "Whole Blood",
+        "platelets": "Platelets",
+        "plasma": "Plasma"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "cancelled": "Cancelled"
+      }
+    }
+  },
+  "UserHealth": {
+    "title": "Health History",
+    "hemoglobin": {
+      "title": "Hemoglobin Levels",
+      "label": "Hemoglobin (g/dL)"
+    },
+    "records": {
+      "title": "Health Records",
+      "date": "Date",
+      "hemoglobin": "Hemoglobin",
+      "bloodPressure": "Blood Pressure",
+      "weight": "Weight (kg)"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
+  "UserRequests": {
+    "title": "My Blood Requests",
+    "subtitle": "Active Requests",
+    "table": {
+      "bloodType": "Blood Type",
+      "status": "Status",
+      "date": "Date",
+      "location": "Location",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "editDialog": {
+      "title": "Edit Blood Request",
+      "bloodType": "Blood Type",
+      "location": "Location",
+      "update": "Update Request"
+    },
+    "notifications": {
+      "updateSuccess": "Request updated successfully",
+      "updateError": "Failed to update request",
+      "deleteSuccess": "Request deleted successfully",
+      "deleteError": "Failed to delete request"
+    },
+    "locations": {
+      "cityHospital": "City Hospital",
+      "medicalCenter": "Medical Center"
+    }
+  },
+  "Forms": {
+    "donor": {
+      "title": "Donor Registration Form",
+      "description": "Thank you for your interest in becoming a blood donor. Please fill out the form below.",
+      "labels": {
+        "facebookId": "Facebook Profile Link",
+        "phone": "Phone Number",
+        "whatsapp": "WhatsApp Number",
+        "weight": "Weight (kg)",
+        "height": "Height (cm)",
+        "emergencyContactName": "Emergency Contact Name",
+        "emergencyContact": "Emergency Contact Phone",
+        "medicalCondition": "Medical Conditions (if any)",
+        "medicalConditionPlaceholder": "List any medical conditions you have",
+        "currentMedications": "Current Medications (if any)",
+        "medicationsPlaceholder": "List any medications you are currently taking",
+        "agreeToTerms": "I agree to the terms and conditions",
+        "termsDescription": "By checking this box, you agree to our Terms of Service and Privacy Policy"
+      },
+      "buttons": {
+        "register": "Register as Donor",
+        "signin": "First Signin/Signup"
+      },
+      "validation": {
+        "weight": "Weight must be at least 50 kg",
+        "height": "Height must be at least 100 cm",
+        "emergencyName": "Emergency Contact Name must be at least 2 characters",
+        "phone": "Invalid phone number",
+        "terms": "You must agree to the terms and conditions"
+      }
+    },
+    "bloodRequest": {
+      "title": "Blood Request Form",
+      "description": "Please fill out all the required information to submit a blood request.",
+      "labels": {
+        "patientName": "Patient Name",
+        "bloodGroup": "Blood Group",
+        "division": "Division",
+        "district": "District",
+        "upazila": "Upazila",
+        "address": "Address (optional)",
+        "hospitalName": "Donation Center/Hospital",
+        "contactNumber": "Contact Number",
+        "whatsappNumber": "WhatsApp Number",
+        "bloodAmount": "Amount of Blood (Bag)",
+        "donationDate": "Date of Donation",
+        "donationTime": "Time of Donation",
+        "hemoglobin": "Hemoglobin (g/dL)",
+        "patientProblem": "Patient Problem (optional)",
+        "patientProblemPlaceholder": "Describe the patient's condition"
+      },
+      "buttons": {
+        "submit": "Submit Blood Request",
+        "requesting": "Requesting Blood...",
+        "signin": "First Signin/Signup"
+      }
+    },
+    "profile": {
+      "title": "Update Profile",
+      "personalInfo": "Personal Information",
+      "labels": {
+        "name": "Name",
+        "email": "Email",
+        "bloodGroup": "Blood Group",
+        "gender": "Gender",
+        "dateOfBirth": "Date of Birth",
+        "lastDonation": "Last Donation Date",
+        "division": "Division",
+        "district": "District",
+        "upazila": "Upazila",
+        "address": "Address",
+        "addressPlaceholder": "Enter village/road no, house no",
+        "photo": "Profile Photo"
+      },
+      "buttons": {
+        "changePhoto": "Change Photo",
+        "uploading": "Uploading...",
+        "cancel": "Cancel",
+        "save": "Save Changes",
+        "update": "Update Profile"
+      }
+    }
+  },
+  "DonationProcess": {
+    "title": "Donation Process",
+    "subtitle": "Your journey to saving lives starts here",
+    "steps": {
+      "registration": {
+        "title": "Registration",
+        "description": "Create your donor profile and complete the registration process",
+        "action": "Register Now"
+      },
+      "screening": {
+        "title": "Health Screening",
+        "description": "Quick health check to ensure safe donation",
+        "details": [
+          "Blood pressure check",
+          "Hemoglobin test",
+          "Basic health assessment"
+        ]
+      },
+      "donation": {
+        "title": "Blood Donation",
+        "description": "Safe and comfortable donation process",
+        "duration": "Takes only 8-10 minutes",
+        "details": [
+          "Sterile equipment",
+          "Professional staff",
+          "Comfortable environment"
+        ]
+      },
+      "recovery": {
+        "title": "Rest & Refresh",
+        "description": "Take a moment to recover and enjoy refreshments",
+        "details": [
+          "Light refreshments",
+          "15-minute rest",
+          "Post-donation care"
+        ]
       }
     }
   }

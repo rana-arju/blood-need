@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,30 +22,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-
-const mockRequests = [
-  {
-    id: 1,
-    bloodType: "A+",
-    status: "Active",
-    date: "2024-02-15",
-    location: "City Hospital",
-  },
-  // Add more mock requests
-];
+import { Badge } from "@/components/ui/badge";
 
 export function UserBloodRequests() {
+  const t = useTranslations("UserRequests");
+
+  const mockRequests = [
+    {
+      id: 1,
+      bloodType: "A+",
+      status: "active",
+      date: "2024-02-15",
+      location: t("locations.cityHospital"),
+    },
+    {
+      id: 2,
+      bloodType: "O-",
+      status: "completed",
+      date: "2024-01-20",
+      location: t("locations.medicalCenter"),
+    },
+  ];
+
   const [requests, setRequests] = useState(mockRequests);
-  const [editingRequest, setEditingRequest] = useState(null);
+  const [editingRequest, setEditingRequest] = useState<any>(null);
 
   const handleDelete = async (id: number) => {
     try {
       // Delete request logic
       setRequests(requests.filter((request) => request.id !== id));
-      toast( "Request deleted successfully",
-      );
+      toast(t("notifications.deleteSuccess"));
     } catch {
-      toast("Failed to delete request");
+      toast(t("notifications.deleteError"));
     }
   };
 
@@ -62,53 +70,71 @@ export function UserBloodRequests() {
         )
       );
       setEditingRequest(null);
-      toast("Request updated successfully");
+      toast(t("notifications.updateSuccess"));
     } catch {
-      toast("Failed to update request");
+      toast(t("notifications.updateError"));
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "active":
+        return <Badge variant="default">{t("status.active")}</Badge>;
+      case "completed":
+        return <Badge variant="default">{t("status.completed")}</Badge>;
+      case "cancelled":
+        return <Badge variant="destructive">{t("status.cancelled")}</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">My Blood Requests</h1>
+    <div className="space-y-6 p-4 md:p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-bold">{t("title")}</h1>
+
       <Card>
         <CardHeader>
-          <CardTitle>Active Requests</CardTitle>
+          <CardTitle>{t("subtitle")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="overflow-x-auto">
               <TableHeader>
                 <TableRow>
-                  <TableHead>Blood Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{t("table.bloodType")}</TableHead>
+                  <TableHead>{t("table.status")}</TableHead>
+                  <TableHead>{t("table.date")}</TableHead>
+                  <TableHead>{t("table.location")}</TableHead>
+                  <TableHead>{t("table.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {requests.map((request) => (
                   <TableRow key={request.id}>
-                    <TableCell>{request.bloodType}</TableCell>
-                    <TableCell>{request.status}</TableCell>
+                    <TableCell className="font-medium">
+                      {request.bloodType}
+                    </TableCell>
+                    <TableCell>{getStatusBadge(request.status)}</TableCell>
                     <TableCell>{request.date}</TableCell>
                     <TableCell>{request.location}</TableCell>
                     <TableCell>
-                      <div className="space-x-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleEdit(request)}
+                          disabled={request.status === "completed"}
                         >
-                          Edit
+                          {t("actions.edit")}
                         </Button>
                         <Button
                           size="sm"
                           variant="destructive"
                           onClick={() => handleDelete(request.id)}
+                          disabled={request.status === "completed"}
                         >
-                          Delete
+                          {t("actions.delete")}
                         </Button>
                       </div>
                     </TableCell>
@@ -130,6 +156,7 @@ export function UserBloodRequests() {
 }
 
 function EditRequestDialog({ request, onUpdate, onClose }: any) {
+  const t = useTranslations("UserRequests");
   const [formData, setFormData] = useState(request || {});
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -143,11 +170,11 @@ function EditRequestDialog({ request, onUpdate, onClose }: any) {
     <Dialog open={!!request} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Blood Request</DialogTitle>
+          <DialogTitle>{t("editDialog.title")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="bloodType">Blood Type</Label>
+            <Label htmlFor="bloodType">{t("editDialog.bloodType")}</Label>
             <Input
               id="bloodType"
               value={formData.bloodType}
@@ -157,7 +184,7 @@ function EditRequestDialog({ request, onUpdate, onClose }: any) {
             />
           </div>
           <div>
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location">{t("editDialog.location")}</Label>
             <Input
               id="location"
               value={formData.location}
@@ -166,7 +193,7 @@ function EditRequestDialog({ request, onUpdate, onClose }: any) {
               }
             />
           </div>
-          <Button type="submit">Update Request</Button>
+          <Button type="submit">{t("editDialog.update")}</Button>
         </form>
       </DialogContent>
     </Dialog>

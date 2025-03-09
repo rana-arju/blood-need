@@ -35,6 +35,7 @@ import { format } from "date-fns";
 import { updateUser } from "@/services/auth";
 import { useSession } from "next-auth/react";
 import LocationSelector from "../LocationSelector";
+import { useTranslations } from "next-intl";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const genders = ["Male", "Female", "Other"];
@@ -66,6 +67,7 @@ export function ProfileSettings({
   onCancel,
   onSuccess,
 }: ProfileSettingsProps) {
+  const t = useTranslations("Forms.profile");
   const [isUploading, setIsUploading] = useState(false);
   const { data: session, update } = useSession();
   const { user } = session!;
@@ -129,14 +131,14 @@ export function ProfileSettings({
 
       if (res.success) {
         toast.success(res.message);
-         await update({
-           ...session,
-           user: {
-             ...session?.user,
-             ...values,
-           },
-         });
-         onSuccess(values);
+        await update({
+          ...session,
+          user: {
+            ...session?.user,
+            ...values,
+          },
+        });
+        onSuccess(values);
       } else {
         toast.error(res.message);
       }
@@ -149,43 +151,43 @@ export function ProfileSettings({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Update Profile</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage
-                    src={
-                      form.watch("image") || "/placeholder-avatar.jpg"
-                    }
-                    alt="Profile"
-                  />
-                  <AvatarFallback>
-                    {form.watch("name")?.charAt(0) || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex items-center space-x-2">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    id="profile-image"
-                    onChange={handleImageUpload}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() =>
-                      document.getElementById("profile-image")?.click()
-                    }
-                    disabled={isUploading}
-                  >
-                    {isUploading ? "Uploading..." : "Change Photo"}
-                  </Button>
-                </div>
+            <div className="flex flex-col items-center space-y-4">
+              <Avatar className="h-24 w-24">
+                <AvatarImage
+                  src={form.watch("image") || "/placeholder-avatar.jpg"}
+                  alt="Profile"
+                />
+                <AvatarFallback>
+                  {form.watch("name")?.charAt(0) || "U"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex items-center space-x-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="profile-image"
+                  onChange={handleImageUpload}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    document.getElementById("profile-image")?.click()
+                  }
+                  disabled={isUploading}
+                >
+                  {isUploading
+                    ? t("buttons.uploading")
+                    : t("buttons.changePhoto")}
+                </Button>
               </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
@@ -193,7 +195,7 @@ export function ProfileSettings({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t("labels.name")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -207,7 +209,7 @@ export function ProfileSettings({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("labels.email")}</FormLabel>
                     <FormControl>
                       <Input {...field} type="email" disabled />
                     </FormControl>
@@ -221,7 +223,7 @@ export function ProfileSettings({
                 name="blood"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Blood Group</FormLabel>
+                    <FormLabel>{t("labels.bloodGroup")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -249,7 +251,7 @@ export function ProfileSettings({
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel>{t("labels.gender")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -277,7 +279,7 @@ export function ProfileSettings({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date of Birth</FormLabel>
+                    <FormLabel>{t("labels.dateOfBirth")}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -319,7 +321,7 @@ export function ProfileSettings({
                 name="lastDonationDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Last Donation Date</FormLabel>
+                    <FormLabel>{t("labels.lastDonation")}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -359,7 +361,7 @@ export function ProfileSettings({
                 name="division"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Division</FormLabel>
+                    <FormLabel>{t("labels.division")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="division"
@@ -380,7 +382,7 @@ export function ProfileSettings({
                 name="district"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>District</FormLabel>
+                    <FormLabel>{t("labels.district")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="district"
@@ -403,7 +405,7 @@ export function ProfileSettings({
                 name="upazila"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Upazila</FormLabel>
+                    <FormLabel>{t("labels.upazila")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="upazila"
@@ -426,11 +428,11 @@ export function ProfileSettings({
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>{t("labels.address")}</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter village/road no, house no"
+                        placeholder={t("labels.addressPlaceholder")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -441,9 +443,9 @@ export function ProfileSettings({
 
             <div className="flex justify-end space-x-2">
               <Button type="button" variant="outline" onClick={onCancel}>
-                Cancel
+                {t("buttons.cancel")}
               </Button>
-              <Button type="submit">Save Changes</Button>
+              <Button type="submit">{t("buttons.save")}</Button>
             </div>
           </form>
         </Form>

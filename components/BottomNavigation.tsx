@@ -18,8 +18,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { DialogTitle } from "./ui/dialog";
 import InstallPWA from "./InstallPWA";
+import { useTranslations } from "next-intl";
 
 export default function BottomNavigation() {
+  const t = useTranslations("common");
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -98,21 +100,21 @@ export default function BottomNavigation() {
                 <nav className="flex flex-col h-full">
                   <DialogTitle className="sr-only">Menu</DialogTitle>
                   <ul className="space-y-4">
-                    <SidebarItem href="/about" icon={Info} label="About" />
+                    <SidebarItem href="/about" icon={Info} label={t("about")} />
                     <SidebarItem
                       href="/be-donor"
                       icon={HeartPulse}
-                      label="Be a Donor"
+                      label={t("beADonor")}
                     />{" "}
                     <SidebarItem
                       href="/virtual-test"
                       icon={FlaskConical}
-                      label="Blood Test"
+                      label={t("bloodTest")}
                     />{" "}
                     <SidebarItem
                       href="/blog"
                       icon={NotebookPen}
-                      label="Blogs"
+                      label={t("blog")}
                     />
                   </ul>
                 </nav>

@@ -122,10 +122,7 @@ export default function Header() {
             isActive("/blog") && "text-primary"
           }`}
         >
-          {
-            //t("blog")
-          }
-          Blood Test
+          {t("bloodTest")}
         </Link>
       </li>
       <li>
@@ -147,13 +144,15 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 transition-all duration-200 bg-background/80 border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex justify-start items-center">
-          <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
-          <span className="font-bold text-blood-700 flex items-center gap-1 text-md sm:text-lg md:text-2xl">
-            <span className="text-primary "> Blood</span>
-            <span className="text-gray-800 dark:text-white">Need</span>
-          </span>
-        </div>
+        <Link href="/">
+          <div className="flex justify-start items-center">
+            <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
+            <span className="font-bold text-blood-700 flex items-center gap-1 text-md sm:text-lg md:text-2xl">
+              <span className="text-primary "> Blood</span>
+              <span className="text-gray-800 dark:text-white">Need</span>
+            </span>
+          </div>
+        </Link>
         <div className="flex items-center space-x-4">
           <nav className="invisible sm:visible">
             {!isMobile && (

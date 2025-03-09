@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { donorAdd } from "@/services/beDonor";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   weight: z.number().min(50, "Weight must be at least 50 kg"),
@@ -49,6 +50,7 @@ const formSchema = z.object({
 });
 
 export default function DonorRegistrationForm() {
+    const t = useTranslations("Forms.donor");
   const { data: session } = useSession();
   const router = useRouter();
   const { user } = session!;
@@ -107,13 +109,12 @@ export default function DonorRegistrationForm() {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl text-center">
-          Donor Registration Form
-        </CardTitle>
+  {      /*
+        <CardTitle className="text-2xl text-center">{t("title")}</CardTitle>
         <CardDescription className="text-center">
-          Thank you for your interest in becoming a blood donor. Please fill out
-          the form below.
+          {t("description")}
         </CardDescription>
+        */}
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -124,7 +125,7 @@ export default function DonorRegistrationForm() {
                 name="facebookId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Facebook Id link</FormLabel>
+                    <FormLabel>{t("labels.facebookId")}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="https://www.facebook.com"
@@ -140,7 +141,7 @@ export default function DonorRegistrationForm() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>{t("labels.phone")}</FormLabel>
                     <FormControl>
                       <Input placeholder="+880XXXXXXXXXX" {...field} />
                     </FormControl>
@@ -153,7 +154,7 @@ export default function DonorRegistrationForm() {
                 name="whatsappNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>WhatsApp Number</FormLabel>
+                    <FormLabel>{t("labels.whatsapp")}</FormLabel>
                     <FormControl>
                       <Input placeholder="+880XXXXXXXXXX" {...field} />
                     </FormControl>
@@ -166,7 +167,7 @@ export default function DonorRegistrationForm() {
                 name="weight"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Weight (kg)</FormLabel>
+                    <FormLabel>{t("labels.weight")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -183,7 +184,7 @@ export default function DonorRegistrationForm() {
                 name="height"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Height (cm)</FormLabel>
+                    <FormLabel>{t("labels.height")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -200,9 +201,12 @@ export default function DonorRegistrationForm() {
                 name="emergencyContactName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emergency Contact Name</FormLabel>
+                    <FormLabel>{t("labels.emergencyContactName")}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        placeholder={t("labels.emergencyContactName")}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,9 +217,12 @@ export default function DonorRegistrationForm() {
                 name="emergencyContact"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emergency Contact Phone</FormLabel>
+                    <FormLabel>{t("labels.emergencyContact")}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        placeholder={t("labels.emergencyContact")}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -228,10 +235,10 @@ export default function DonorRegistrationForm() {
               name="medicalCondition"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Medical Conditions (if any)</FormLabel>
+                  <FormLabel>{t("labels.medicalCondition")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="List any medical conditions you have"
+                      placeholder={t("labels.medicalConditionPlaceholder")}
                       className="resize-none"
                       {...field}
                     />
@@ -246,10 +253,10 @@ export default function DonorRegistrationForm() {
               name="currentMedications"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Medications (if any)</FormLabel>
+                  <FormLabel>{t("labels.currentMedications")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="List any medications you are currently taking"
+                      placeholder={t("labels.medicationsPlaceholder")}
                       className="resize-none"
                       {...field}
                     />
@@ -271,10 +278,9 @@ export default function DonorRegistrationForm() {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>I agree to the terms and conditions</FormLabel>
+                    <FormLabel>{t("labels.agreeToTerms")}</FormLabel>
                     <FormDescription>
-                      By checking this box, you agree to our Terms of Service
-                      and Privacy Policy.
+                      {t("labels.termsDescription")}
                     </FormDescription>
                   </div>
                 </FormItem>
@@ -286,7 +292,7 @@ export default function DonorRegistrationForm() {
               className="w-full"
               disabled={user ? false : true}
             >
-              Register as Donor
+              {t("buttons.register")}
             </Button>
           </form>
         </Form>

@@ -8,6 +8,7 @@
     "beADonor": "রক্তদাতা হোন",
     "about": "আমাদের সম্পর্কে",
     "blog": "ব্লগ",
+    "bloodTest": "রক্ত পরীক্ষা",
     "myAccount": "আমার অ্যাকাউন্ট",
     "dashboard": "ড্যাশবোর্ড",
     "logOut": "লগ আউট",
@@ -524,6 +525,463 @@
       },
       "6": {
         "name": "নুসরাত জাহান"
+      }
+    }
+  },
+
+  "UserDashboard": {
+    "sidebar": {
+      "overview": "ড্যাশবোর্ড",
+      "donations": "রক্তদান",
+      "requests": "রক্তের অনুরোধ",
+      "health": "স্বাস্থ্য ইতিহাস",
+      "achievements": "অর্জন",
+      "settings": "সেটিংস",
+      "logout": "লগ আউট",
+      "userAvatar": "ব্যবহারকারীর ছবি",
+      "userName": "জন ডো",
+      "userRole": "নিয়মিত দাতা"
+    },
+    "overview": {
+      "welcome": "স্বাগতম, জন",
+      "donateNow": "এখনই দান করুন",
+      "requestBlood": "রক্ত অনুরোধ করুন",
+      "totalDonations": "মোট দান",
+      "lastDonation": "শেষ দান {date} তারিখে",
+      "livesSaved": "রক্ষিত জীবন",
+      "impactDescription": "প্রতিটি দান ৩টি পর্যন্ত জীবন বাঁচাতে পারে",
+      "nextEligible": "পরবর্তী যোগ্যতা",
+      "eligibleNow": "এখন যোগ্য",
+      "eligibleDescription": "আপনি আবার দান করতে পারেন",
+      "donorRank": "দাতা র‍্যাঙ্ক",
+      "rankDescription": "গোল্ড পর্যন্ত আরও ৩টি দান",
+      "donationHistory": "দানের ইতিহাস",
+      "impact": "আপনার প্রভাব",
+      "healthMetrics": "স্বাস্থ্য মেট্রিক্স",
+      "viewHealthDetails": "স্বাস্থ্য বিবরণ দেখুন",
+      "activities": "কার্যক্রম"
+    },
+    "tabs": {
+      "upcoming": "আসন্ন",
+      "recent": "সাম্প্রতিক"
+    },
+    "events": {
+      "bloodDrive": "সম্প্রদায় রক্তদান অভিযান",
+      "cityHospital": "সিটি হাসপাতাল",
+      "healthCheckup": "দাতা স্বাস্থ্য পরীক্ষা",
+      "medicalCenter": "মেডিকেল সেন্টার"
+    },
+    "activity": {
+      "donationCompleted": "আপনি একটি রক্তদান সম্পন্ন করেছেন",
+      "achievementUnlocked": "আপনি 'নিয়মিত দাতা' অর্জন আনলক করেছেন",
+      "requestFulfilled": "আপনার রক্তের অনুরোধ পূরণ করা হয়েছে"
+    }
+  },
+  "UserAchievements": {
+    "title": "অর্জন",
+    "currentBadge": {
+      "title": "বর্তমান ব্যাজ",
+      "badge": "সিলভার দাতা",
+      "nextLevel": "গোল্ড পর্যন্ত আরও ৩টি দান"
+    },
+    "achievementsList": {
+      "title": "অর্জনসমূহ",
+      "completed": "সম্পন্ন",
+      "progress": "{percent}% সম্পন্ন"
+    },
+    "achievements": {
+      "firstTime": {
+        "name": "প্রথমবার দাতা",
+        "description": "আপনার প্রথম রক্তদান সম্পন্ন করুন"
+      },
+      "regular": {
+        "name": "নিয়মিত দাতা",
+        "description": "৫ বার রক্তদান করুন"
+      },
+      "silver": {
+        "name": "সিলভার দাতা",
+        "description": "১০ বার রক্তদান করুন"
+      },
+      "gold": {
+        "name": "গোল্ড দাতা",
+        "description": "২০ বার রক্তদান করুন"
+      }
+    }
+  },
+  "UserDonations": {
+    "title": "দানের ইতিহাস",
+    "subtitle": "আমার দান",
+    "table": {
+      "date": "তারিখ",
+      "location": "স্থান",
+      "type": "ধরন",
+      "status": "অবস্থা"
+    },
+    "donations": {
+      "locations": {
+        "cityHospital": "সিটি হাসপাতাল",
+        "redCross": "রেড ক্রস সেন্টার"
+      },
+      "types": {
+        "wholeBlood": "সম্পূর্ণ রক্ত",
+        "platelets": "প্লেটলেট",
+        "plasma": "প্লাজমা"
+      },
+      "status": {
+        "completed": "সম্পন্ন",
+        "pending": "অপেক্ষমান",
+        "cancelled": "বাতিল"
+      }
+    }
+  },
+  "UserHealth": {
+    "title": "স্বাস্থ্য ইতিহাস",
+    "hemoglobin": {
+      "title": "হিমোগ্লোবিন মাত্রা",
+      "label": "হিমোগ্লোবিন (g/dL)"
+    },
+    "records": {
+      "title": "স্বাস্থ্য রেকর্ড",
+      "date": "তারিখ",
+      "hemoglobin": "হিমোগ্লোবিন",
+      "bloodPressure": "রক্তচাপ",
+      "weight": "ওজন (কেজি)"
+    },
+    "months": {
+      "jan": "জানু",
+      "feb": "ফেব্রু",
+      "mar": "মার্চ",
+      "apr": "এপ্রিল",
+      "may": "মে",
+      "jun": "জুন",
+      "jul": "জুলাই",
+      "aug": "আগস্ট",
+      "sep": "সেপ্টে",
+      "oct": "অক্টো",
+      "nov": "নভে",
+      "dec": "ডিসে"
+    }
+  },
+  "UserRequests": {
+    "title": "আমার রক্তের অনুরোধ",
+    "subtitle": "সক্রিয় অনুরোধ",
+    "table": {
+      "bloodType": "রক্তের গ্রুপ",
+      "status": "অবস্থা",
+      "date": "তারিখ",
+      "location": "স্থান",
+      "actions": "কার্যক্রম"
+    },
+    "status": {
+      "active": "সক্রিয়",
+      "completed": "সম্পন্ন",
+      "cancelled": "বাতিল"
+    },
+    "actions": {
+      "edit": "সম্পাদনা",
+      "delete": "মুছুন"
+    },
+    "editDialog": {
+      "title": "রক্তের অনুরোধ সম্পাদনা করুন",
+      "bloodType": "রক্তের গ্রুপ",
+      "location": "স্থান",
+      "update": "অনুরোধ আপডেট করুন"
+    },
+    "notifications": {
+      "updateSuccess": "অনুরোধ সফলভাবে আপডেট করা হয়েছে",
+      "updateError": "অনুরোধ আপডেট করতে ব্যর্থ হয়েছে",
+      "deleteSuccess": "অনুরোধ সফলভাবে মুছে ফেলা হয়েছে",
+      "deleteError": "অনুরোধ মুছতে ব্যর্থ হয়েছে"
+    },
+    "locations": {
+      "cityHospital": "সিটি হাসপাতাল",
+      "medicalCenter": "মেডিকেল সেন্টার"
+    }
+  },
+  "UserDashboard": {
+    "sidebar": {
+      "overview": "ড্যাশবোর্ড",
+      "donations": "রক্তদান",
+      "requests": "রক্তের অনুরোধ",
+      "health": "স্বাস্থ্য ইতিহাস",
+      "achievements": "অর্জন",
+      "settings": "সেটিংস",
+      "logout": "লগ আউট",
+      "userAvatar": "ব্যবহারকারীর ছবি",
+      "userName": "জন ডো",
+      "userRole": "নিয়মিত দাতা"
+    },
+    "overview": {
+      "welcome": "স্বাগতম, জন",
+      "donateNow": "এখনই দান করুন",
+      "requestBlood": "রক্ত অনুরোধ করুন",
+      "totalDonations": "মোট দান",
+      "lastDonation": "শেষ দান {date} তারিখে",
+      "livesSaved": "রক্ষিত জীবন",
+      "impactDescription": "প্রতিটি দান ৩টি পর্যন্ত জীবন বাঁচাতে পারে",
+      "nextEligible": "পরবর্তী যোগ্যতা",
+      "eligibleNow": "এখন যোগ্য",
+      "eligibleDescription": "আপনি আবার দান করতে পারেন",
+      "donorRank": "দাতা র‍্যাঙ্ক",
+      "rankDescription": "গোল্ড পর্যন্ত আরও ৩টি দান",
+      "donationHistory": "দানের ইতিহাস",
+      "impact": "আপনার প্রভাব",
+      "healthMetrics": "স্বাস্থ্য মেট্রিক্স",
+      "viewHealthDetails": "স্বাস্থ্য বিবরণ দেখুন",
+      "activities": "কার্যক্রম"
+    },
+    "tabs": {
+      "upcoming": "আসন্ন",
+      "recent": "সাম্প্রতিক"
+    },
+    "events": {
+      "bloodDrive": "সম্প্রদায় রক্তদান অভিযান",
+      "cityHospital": "সিটি হাসপাতাল",
+      "healthCheckup": "দাতা স্বাস্থ্য পরীক্ষা",
+      "medicalCenter": "মেডিকেল সেন্টার"
+    },
+    "activity": {
+      "donationCompleted": "আপনি একটি রক্তদান সম্পন্ন করেছেন",
+      "achievementUnlocked": "আপনি 'নিয়মিত দাতা' অর্জন আনলক করেছেন",
+      "requestFulfilled": "আপনার রক্তের অনুরোধ পূরণ করা হয়েছে"
+    }
+  },
+  "UserAchievements": {
+    "title": "অর্জন",
+    "currentBadge": {
+      "title": "বর্তমান ব্যাজ",
+      "badge": "সিলভার দাতা",
+      "nextLevel": "গোল্ড পর্যন্ত আরও ৩টি দান"
+    },
+    "achievementsList": {
+      "title": "অর্জনসমূহ",
+      "completed": "সম্পন্ন",
+      "progress": "{percent}% সম্পন্ন"
+    },
+    "achievements": {
+      "firstTime": {
+        "name": "প্রথমবার দাতা",
+        "description": "আপনার প্রথম রক্তদান সম্পন্ন করুন"
+      },
+      "regular": {
+        "name": "নিয়মিত দাতা",
+        "description": "৫ বার রক্তদান করুন"
+      },
+      "silver": {
+        "name": "সিলভার দাতা",
+        "description": "১০ বার রক্তদান করুন"
+      },
+      "gold": {
+        "name": "গোল্ড দাতা",
+        "description": "২০ বার রক্তদান করুন"
+      }
+    }
+  },
+  "UserDonations": {
+    "title": "দানের ইতিহাস",
+    "subtitle": "আমার দান",
+    "table": {
+      "date": "তারিখ",
+      "location": "স্থান",
+      "type": "ধরন",
+      "status": "অবস্থা"
+    },
+    "donations": {
+      "locations": {
+        "cityHospital": "সিটি হাসপাতাল",
+        "redCross": "রেড ক্রস সেন্টার"
+      },
+      "types": {
+        "wholeBlood": "সম্পূর্ণ রক্ত",
+        "platelets": "প্লেটলেট",
+        "plasma": "প্লাজমা"
+      },
+      "status": {
+        "completed": "সম্পন্ন",
+        "pending": "অপেক্ষমান",
+        "cancelled": "বাতিল"
+      }
+    }
+  },
+  "UserHealth": {
+    "title": "স্বাস্থ্য ইতিহাস",
+    "hemoglobin": {
+      "title": "হিমোগ্লোবিন মাত্রা",
+      "label": "হিমোগ্লোবিন (g/dL)"
+    },
+    "records": {
+      "title": "স্বাস্থ্য রেকর্ড",
+      "date": "তারিখ",
+      "hemoglobin": "হিমোগ্লোবিন",
+      "bloodPressure": "রক্তচাপ",
+      "weight": "ওজন (কেজি)"
+    },
+    "months": {
+      "jan": "জানু",
+      "feb": "ফেব্রু",
+      "mar": "মার্চ",
+      "apr": "এপ্রিল",
+      "may": "মে",
+      "jun": "জুন",
+      "jul": "জুলাই",
+      "aug": "আগস্ট",
+      "sep": "সেপ্টে",
+      "oct": "অক্টো",
+      "nov": "নভে",
+      "dec": "ডিসে"
+    }
+  },
+  "UserRequests": {
+    "title": "আমার রক্তের অনুরোধ",
+    "subtitle": "সক্রিয় অনুরোধ",
+    "table": {
+      "bloodType": "রক্তের গ্রুপ",
+      "status": "অবস্থা",
+      "date": "তারিখ",
+      "location": "স্থান",
+      "actions": "কার্যক্রম"
+    },
+    "status": {
+      "active": "সক্রিয়",
+      "completed": "সম্পন্ন",
+      "cancelled": "বাতিল"
+    },
+    "actions": {
+      "edit": "সম্পাদনা",
+      "delete": "মুছুন"
+    },
+    "editDialog": {
+      "title": "রক্তের অনুরোধ সম্পাদনা করুন",
+      "bloodType": "রক্তের গ্রুপ",
+      "location": "স্থান",
+      "update": "অনুরোধ আপডেট করুন"
+    },
+    "notifications": {
+      "updateSuccess": "অনুরোধ সফলভাবে আপডেট করা হয়েছে",
+      "updateError": "অনুরোধ আপডেট করতে ব্যর্থ হয়েছে",
+      "deleteSuccess": "অনুরোধ সফলভাবে মুছে ফেলা হয়েছে",
+      "deleteError": "অনুরোধ মুছতে ব্যর্থ হয়েছে"
+    },
+    "locations": {
+      "cityHospital": "সিটি হাসপাতাল",
+      "medicalCenter": "মেডিকেল সেন্টার"
+    }
+  },
+  "Forms": {
+    "donor": {
+      "title": "রক্তদাতা নিবন্ধন ফরম",
+      "description": "রক্তদাতা হওয়ার আগ্রহের জন্য ধন্যবাদ। অনুগ্রহ করে নিচের ফর্মটি পূরণ করুন।",
+      "labels": {
+        "facebookId": "ফেসবুক প্রোফাইল লিংক",
+        "phone": "ফোন নম্বর",
+        "whatsapp": "হোয়াটসঅ্যাপ নম্বর",
+        "weight": "ওজন (কেজি)",
+        "height": "উচ্চতা (সেমি)",
+        "emergencyContactName": "জরুরি যোগাযোগের নাম",
+        "emergencyContact": "জরুরি যোগাযোগের ফোন",
+        "medicalCondition": "চিকিৎসা অবস্থা (যদি থাকে)",
+        "medicalConditionPlaceholder": "আপনার যেকোন চিকিৎসা অবস্থা তালিকাভুক্ত করুন",
+        "currentMedications": "বর্তমান ঔষধ (যদি থাকে)",
+        "medicationsPlaceholder": "আপনি বর্তমানে যে ঔষধগুলি নিচ্ছেন তা তালিকাভুক্ত করুন",
+        "agreeToTerms": "আমি শর্তাবলীতে সম্মত",
+        "termsDescription": "এই বাক্সে টিক দিয়ে আপনি আমাদের সেবার শর্তাবলী এবং গোপনীয়তা নীতিতে সম্মত হচ্ছেন"
+      },
+      "buttons": {
+        "register": "রক্তদাতা হিসেবে নিবন্ধন করুন",
+        "signin": "প্রথমে সাইন ইন/সাইন আপ করুন"
+      },
+      "validation": {
+        "weight": "ওজন কমপক্ষে ৫০ কেজি হতে হবে",
+        "height": "উচ্চতা কমপক্ষে ১০০ সেমি হতে হবে",
+        "emergencyName": "জরুরি যোগাযোগের নাম কমপক্ষে ২ অক্ষরের হতে হবে",
+        "phone": "অবৈধ ফোন নম্বর",
+        "terms": "আপনাকে শর্তাবলীতে সম্মত হতে হবে"
+      }
+    },
+    "bloodRequest": {
+      "title": "রক্তের অনুরোধ ফরম",
+      "description": "রক্তের অনুরোধ জমা দেওয়ার জন্য অনুগ্রহ করে সমস্ত প্রয়োজনীয় তথ্য পূরণ করুন।",
+      "labels": {
+        "patientName": "রোগীর নাম",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "division": "বিভাগ",
+        "district": "জেলা",
+        "upazila": "উপজেলা",
+        "address": "ঠিকানা (ঐচ্ছিক)",
+        "hospitalName": "রক্তদান কেন্দ্র/হাসপাতাল",
+        "contactNumber": "যোগাযোগের নম্বর",
+        "whatsappNumber": "হোয়াটসঅ্যাপ নম্বর",
+        "bloodAmount": "রক্তের পরিমাণ (ব্যাগ)",
+        "donationDate": "রক্তদানের তারিখ",
+        "donationTime": "রক্তদানের সময়",
+        "hemoglobin": "হিমোগ্লোবিন (g/dL)",
+        "patientProblem": "রোগীর সমস্যা (ঐচ্ছিক)",
+        "patientProblemPlaceholder": "রোগীর অবস্থা বর্ণনা করুন"
+      },
+      "buttons": {
+        "submit": "রক্তের অনুরোধ জমা দিন",
+        "requesting": "রক্তের অনুরোধ করা হচ্ছে...",
+        "signin": "প্রথমে সাইন ইন/সাইন আপ করুন"
+      }
+    },
+    "profile": {
+      "title": "প্রোফাইল আপডেট",
+      "personalInfo": "ব্যক্তিগত তথ্য",
+      "labels": {
+        "name": "নাম",
+        "email": "ইমেইল",
+        "bloodGroup": "রক্তের গ্রুপ",
+        "gender": "লিঙ্গ",
+        "dateOfBirth": "জন্ম তারিখ",
+        "lastDonation": "শেষ রক্তদানের তারিখ",
+        "division": "বিভাগ",
+        "district": "জেলা",
+        "upazila": "উপজেলা",
+        "address": "ঠিকানা",
+        "addressPlaceholder": "গ্রাম/রাস্তা নং, বাড়ি নং লিখুন",
+        "photo": "প্রোফাইল ছবি"
+      },
+      "buttons": {
+        "changePhoto": "ছবি পরিবর্তন করুন",
+        "uploading": "আপলোড হচ্ছে...",
+        "cancel": "বাতিল করুন",
+        "save": "পরিবর্তন সংরক্ষণ করুন",
+        "update": "প্রোফাইল আপডেট করুন"
+      }
+    }
+  },
+  "DonationProcess": {
+    "title": "রক্তদান প্রক্রিয়া",
+    "subtitle": "জীবন বাঁচানোর আপনার যাত্রা এখান থেকে শুরু",
+    "steps": {
+      "registration": {
+        "title": "নিবন্ধন",
+        "description": "আপনার দাতা প্রোফাইল তৈরি করুন এবং নিবন্ধন প্রক্রিয়া সম্পন্ন করুন",
+        "action": "এখনই নিবন্ধন করুন"
+      },
+      "screening": {
+        "title": "স্বাস্থ্য পরীক্ষা",
+        "description": "নিরাপদ রক্তদান নিশ্চিত করতে দ্রুত স্বাস্থ্য পরীক্ষা",
+        "details": [
+          "রক্তচাপ পরীক্ষা",
+          "হিমোগ্লোবিন পরীক্ষা",
+          "মৌলিক স্বাস্থ্য মূল্যায়ন"
+        ]
+      },
+      "donation": {
+        "title": "রক্তদান",
+        "description": "নিরাপদ এবং আরামদায়ক রক্তদান প্রক্রিয়া",
+        "duration": "মাত্র ৮-১০ মিনিট সময় নেয়",
+        "details": ["জীবাণুমুক্ত সরঞ্জাম", "পেশাদার কর্মী", "আরামদায়ক পরিবেশ"]
+      },
+      "recovery": {
+        "title": "বিশ্রাম ও পুনর্জীবন",
+        "description": "একটু বিশ্রাম নিন এবং জলখাবার উপভোগ করুন",
+        "details": [
+          "হালকা জলখাবার",
+          "১৫ মিনিটের বিশ্রাম",
+          "রক্তদান-পরবর্তী যত্ন"
+        ]
       }
     }
   }

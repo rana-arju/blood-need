@@ -51,39 +51,7 @@ const requests = [
     location: "Barisal Sher-e-Bangla Medical College, Barisal, Bangladesh",
     urgency: "High",
     postedAt: "2025-02-15T04:45:00Z",
-  },
-  {
-    id: "7",
-    patientName: "Sumaiya Rahman",
-    bloodType: "B-",
-    location: "Mymensingh Medical College, Mymensingh, Bangladesh",
-    urgency: "Low",
-    postedAt: "2025-02-12T22:30:00Z",
-  },
-  {
-    id: "8",
-    patientName: "Md. Rafiq Hossain",
-    bloodType: "AB+",
-    location: "Khulna Medical College, Khulna, Bangladesh",
-    urgency: "Medium",
-    postedAt: "2025-02-14T12:15:00Z",
-  },
-  {
-    id: "9",
-    patientName: "Nazmul Huda",
-    bloodType: "O-",
-    location: "Cumilla Medical College, Cumilla, Bangladesh",
-    urgency: "High",
-    postedAt: "2025-02-15T09:55:00Z",
-  },
-  {
-    id: "10",
-    patientName: "Rina Akhter",
-    bloodType: "A+",
-    location: "Bogura Shaheed Ziaur Rahman Medical College, Bogura, Bangladesh",
-    urgency: "Low",
-    postedAt: "2025-02-11T14:00:00Z",
-  },
+  }
 ];
 /*
 interface BloodRequest {

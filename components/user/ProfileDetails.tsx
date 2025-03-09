@@ -11,8 +11,10 @@ import { getMyProfile } from "@/services/auth";
 import { ProfileSettings } from "./ProfileSettings";
 import { getLocationName } from "@/utils/locationUtils";
 import BloodDropLoader from "../BloodDropLoader";
+import { useTranslations } from "next-intl";
 
 export function ProfileDetails() {
+  const t = useTranslations("Forms.profile");
   const [userData, setUserData] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const { data: session, update } = useSession();
@@ -84,7 +86,7 @@ export function ProfileDetails() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Profile</h1>
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">{t("title")}</h1>
       {isEditing ? (
         <ProfileSettings
           initialData={userData}
@@ -94,7 +96,7 @@ export function ProfileDetails() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+            <CardTitle className="text-lg md:text-xl">{t("personalInfo")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center space-y-4">
@@ -111,23 +113,23 @@ export function ProfileDetails() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h3 className="font-semibold">Name</h3>
+                <h3 className="font-semibold">{t("labels.name")}</h3>
                 <p>{userData.name || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Email</h3>
+                <h3 className="font-semibold">{t("labels.email")}</h3>
                 <p>{userData.email || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Blood Group</h3>
+                <h3 className="font-semibold">{t("labels.bloodGroup")}</h3>
                 <p>{userData.blood || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Gender</h3>
+                <h3 className="font-semibold">{t("labels.gender")}</h3>
                 <p>{userData.gender || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Date of Birth</h3>
+                <h3 className="font-semibold">{t("labels.dateOfBirth")}</h3>
                 <p>
                   {userData.dateOfBirth
                     ? new Date(userData.dateOfBirth).toLocaleDateString()
@@ -135,7 +137,7 @@ export function ProfileDetails() {
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold">Last Donation Date</h3>
+                <h3 className="font-semibold">{t("labels.lastDonation")}</h3>
                 <p>
                   {userData.lastDonationDate
                     ? new Date(userData.lastDonationDate).toLocaleDateString()
@@ -143,23 +145,25 @@ export function ProfileDetails() {
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold">Division</h3>
+                <h3 className="font-semibold">{t("labels.division")}</h3>
                 <p>{userData.division || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">District</h3>
+                <h3 className="font-semibold">{t("labels.district")}</h3>
                 <p>{userData.district || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Upazila</h3>
+                <h3 className="font-semibold">{t("labels.upazila")}</h3>
                 <p>{userData.upazila || "Not provided"}</p>
               </div>
               <div>
-                <h3 className="font-semibold">Address</h3>
+                <h3 className="font-semibold">{t("labels.address")}</h3>
                 <p>{userData.address || "Not provided"}</p>
               </div>
             </div>
-            <Button onClick={() => setIsEditing(true)}>Update Profile</Button>
+            <Button onClick={() => setIsEditing(true)}>
+              {t("buttons.update")}
+            </Button>
           </CardContent>
         </Card>
       )}

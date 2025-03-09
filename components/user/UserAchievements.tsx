@@ -1,49 +1,59 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
-const mockAchievements = [
-  {
-    id: 1,
-    name: "First Time Donor",
-    description: "Complete your first blood donation",
-    progress: 100,
-    achieved: true,
-  },
-  {
-    id: 2,
-    name: "Regular Donor",
-    description: "Donate blood 5 times",
-    progress: 60,
-    achieved: false,
-  },
-  {
-    id: 3,
-    name: "Silver Donor",
-    description: "Donate blood 10 times",
-    progress: 30,
-    achieved: false,
-  },
-  // Add more achievements
-];
-
 export function UserAchievements() {
+  const t = useTranslations("UserAchievements");
+
+  const mockAchievements = [
+    {
+      id: 1,
+      name: t("achievements.firstTime.name"),
+      description: t("achievements.firstTime.description"),
+      progress: 100,
+      achieved: true,
+    },
+    {
+      id: 2,
+      name: t("achievements.regular.name"),
+      description: t("achievements.regular.description"),
+      progress: 60,
+      achieved: false,
+    },
+    {
+      id: 3,
+      name: t("achievements.silver.name"),
+      description: t("achievements.silver.description"),
+      progress: 30,
+      achieved: false,
+    },
+    {
+      id: 4,
+      name: t("achievements.gold.name"),
+      description: t("achievements.gold.description"),
+      progress: 15,
+      achieved: false,
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Achievements</h1>
+    <div className="space-y-6 p-4 md:p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-bold">{t("title")}</h1>
+
       <Card>
         <CardHeader>
-          <CardTitle>Current Badge</CardTitle>
+          <CardTitle>{t("currentBadge.title")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-4">
-            <Badge variant="secondary" className="text-lg py-2 px-4">
-              Silver Donor
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <Badge variant="secondary" className="text-lg py-2 px-4 w-fit">
+              {t("currentBadge.badge")}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              3 more donations until Gold
+              {t("currentBadge.nextLevel")}
             </span>
           </div>
         </CardContent>
@@ -51,7 +61,7 @@ export function UserAchievements() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Achievements</CardTitle>
+          <CardTitle>{t("achievementsList.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">
@@ -61,7 +71,9 @@ export function UserAchievements() {
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold">{achievement.name}</h3>
                     {achievement.achieved && (
-                      <Badge variant="default">Completed</Badge>
+                      <Badge variant="default">
+                        {t("achievementsList.completed")}
+                      </Badge>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -69,7 +81,9 @@ export function UserAchievements() {
                   </p>
                   <Progress value={achievement.progress} className="h-2" />
                   <p className="text-xs text-muted-foreground mt-2">
-                    {achievement.progress}% Complete
+                    {t("achievementsList.progress", {
+                      percent: achievement.progress,
+                    })}
                   </p>
                 </CardContent>
               </Card>

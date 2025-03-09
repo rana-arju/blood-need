@@ -43,6 +43,7 @@ import LocationSelector from "./LocationSelector";
 import { bloodRequest } from "@/services/bloodRegister";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -72,6 +73,7 @@ const formSchema = z.object({
 });
 
 export default function BloodRequestForm() {
+  const t = useTranslations("Forms.bloodRequest");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -157,16 +159,14 @@ export default function BloodRequestForm() {
         </div> */
   }
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl text-center">
-          Blood Request Form
-        </CardTitle>
+    <Card className="w-full max-w-4xl mx-auto pt-4">
+      {/*  <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl text-center">{t("title")}</CardTitle>
         <CardDescription className="text-center">
-          Please fill out all the required information to submit a blood
-          request.
+          {t("description")}
         </CardDescription>
       </CardHeader>
+     */}
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -176,9 +176,9 @@ export default function BloodRequestForm() {
                 name="patientName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Patient Name</FormLabel>
+                    <FormLabel>{t("labels.patientName")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder={t("labels.patientName")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -190,14 +190,14 @@ export default function BloodRequestForm() {
                 name="blood"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Blood Group</FormLabel>
+                    <FormLabel>{t("labels.bloodGroup")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select blood group" />
+                          <SelectValue placeholder={t("labels.bloodGroup")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -218,7 +218,7 @@ export default function BloodRequestForm() {
                 name="division"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Division</FormLabel>
+                    <FormLabel>{t("labels.division")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="division"
@@ -239,7 +239,7 @@ export default function BloodRequestForm() {
                 name="district"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>District</FormLabel>
+                    <FormLabel>{t("labels.district")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="district"
@@ -262,7 +262,7 @@ export default function BloodRequestForm() {
                 name="upazila"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Upazila</FormLabel>
+                    <FormLabel>{t("labels.upazila")}</FormLabel>
                     <FormControl>
                       <LocationSelector
                         type="upazila"
@@ -285,7 +285,7 @@ export default function BloodRequestForm() {
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address (optional)</FormLabel>
+                    <FormLabel>{t("labels.address")}</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter address" {...field} />
                     </FormControl>
@@ -299,10 +299,13 @@ export default function BloodRequestForm() {
                 name="hospitalName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Donation Center/Hospital</FormLabel>
+                    <FormLabel>
+                      {" "}
+                      <FormLabel>{t("labels.hospitalName")}</FormLabel>
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter donation center or hospital name"
+                        placeholder={t("labels.hospitalName")}
                         {...field}
                       />
                     </FormControl>
@@ -316,7 +319,7 @@ export default function BloodRequestForm() {
                 name="contactNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contact Number</FormLabel>
+                    <FormLabel>{t("labels.contactNumber")}</FormLabel>
                     <FormControl>
                       <Input placeholder="+880XXXXXXXXXX" {...field} />
                     </FormControl>
@@ -330,7 +333,7 @@ export default function BloodRequestForm() {
                 name="whatsappNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>WhatsApp Number</FormLabel>
+                    <FormLabel>{t("labels.whatsappNumber")}</FormLabel>
                     <FormControl>
                       <Input placeholder="+880XXXXXXXXXX" {...field} />
                     </FormControl>
@@ -344,7 +347,7 @@ export default function BloodRequestForm() {
                 name="bloodAmount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Amount of Blood (Bag)</FormLabel>
+                    <FormLabel>{t("labels.bloodAmount")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -362,7 +365,7 @@ export default function BloodRequestForm() {
                 name="requiredDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date of Donation</FormLabel>
+                    <FormLabel>{t("labels.donationDate")}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -408,7 +411,7 @@ export default function BloodRequestForm() {
                 name="requireTime"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Time of Donation</FormLabel>
+                    <FormLabel>{t("labels.donationTime")}</FormLabel>
                     <FormControl>
                       <Input
                         type="time"
@@ -433,7 +436,7 @@ export default function BloodRequestForm() {
                 name="hemoglobin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Hemoglobin (g/dL)</FormLabel>
+                    <FormLabel>{t("labels.hemoglobin")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -453,10 +456,10 @@ export default function BloodRequestForm() {
               name="patientProblem"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Patient Problem (optional)</FormLabel>
+                  <FormLabel>{t("labels.patientProblem")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe the patient's condition"
+                      placeholder={t("labels.patientProblemPlaceholder")}
                       className="resize-none"
                       {...field}
                     />
@@ -470,12 +473,12 @@ export default function BloodRequestForm() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Requesting Blood...
+                  {t("buttons.requesting")}
                 </>
               ) : !user ? (
-                "First Signin/Signup"
+                t("buttons.signin")
               ) : (
-                "Submit Blood Request"
+                t("buttons.submit")
               )}
             </Button>
           </form>

@@ -26,7 +26,7 @@ export default function DonorLeaderboard() {
       name: t("donors.1.name"),
       donations: 24,
       bloodType: "O+",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 1,
     },
     {
@@ -34,7 +34,7 @@ export default function DonorLeaderboard() {
       name: t("donors.2.name"),
       donations: 21,
       bloodType: "A-",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 2,
     },
     {
@@ -42,7 +42,7 @@ export default function DonorLeaderboard() {
       name: t("donors.3.name"),
       donations: 19,
       bloodType: "B+",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 3,
     },
     {
@@ -50,7 +50,7 @@ export default function DonorLeaderboard() {
       name: t("donors.4.name"),
       donations: 16,
       bloodType: "AB+",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 4,
     },
     {
@@ -58,7 +58,7 @@ export default function DonorLeaderboard() {
       name: t("donors.5.name"),
       donations: 14,
       bloodType: "O-",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 5,
     },
     {
@@ -66,7 +66,7 @@ export default function DonorLeaderboard() {
       name: t("donors.6.name"),
       donations: 12,
       bloodType: "A+",
-      avatar: "/placeholder.svg?height=100&width=100",
+      avatar: "https://res.cloudinary.com/db8l1ulfq/image/upload/v1740566021/sygfps6phbgv3iozj7vy.jpg",
       rank: 6,
     },
   ];
@@ -164,7 +164,7 @@ export default function DonorLeaderboard() {
 
         <div className="text-center mt-10">
           <Button asChild>
-            <Link href="/register-donor" className="flex items-center">
+            <Link href="/be-donor" className="flex items-center">
               {t("cta")}
               <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
