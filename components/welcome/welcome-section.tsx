@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, Heart, Users, Target, Droplet } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export default function WelcomeSection() {
   const t = useTranslations("Welcome");
@@ -83,15 +84,23 @@ export default function WelcomeSection() {
             </motion.div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground text-base rounded-full px-8"
-              >
-                {t("buttons.donate")}
-              </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8">
-                {t("buttons.learn")}
-              </Button>
+              <Link href="/be-donor">
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground text-base rounded-full px-8"
+                >
+                  {t("buttons.donate")}
+                </Button>
+              </Link>
+              <Link href="/learn/blood-donation-101">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full px-8"
+                >
+                  {t("buttons.learn")}
+                </Button>
+              </Link>
             </div>
           </motion.div>
 
@@ -208,9 +217,11 @@ export default function WelcomeSection() {
                     <div className="w-full h-[1px] bg-border my-6"></div>
 
                     <div className="flex justify-center">
-                      <Button variant="outline" className="rounded-full">
-                        {t("buttons.learn")}
-                      </Button>
+                      <Link href="/learn/blood-donation-101">
+                        <Button variant="outline" className="rounded-full">
+                          {t("buttons.learn")}
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </TabsContent>

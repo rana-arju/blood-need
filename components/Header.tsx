@@ -105,17 +105,6 @@ export default function Header() {
           </li>
         </>
       )}
-
-      <li>
-        <Link
-          href="/about"
-          className={`hover:text-primary ${
-            isActive("/about") && "text-primary"
-          }`}
-        >
-          {t("about")}
-        </Link>
-      </li>   
       <li>
         <Link
           href="/blog"
@@ -124,6 +113,29 @@ export default function Header() {
           }`}
         >
           {t("blog")}
+        </Link>
+      </li>{" "}
+      <li>
+        <Link
+          href="/virtual-test"
+          className={`hover:text-primary ${
+            isActive("/blog") && "text-primary"
+          }`}
+        >
+          {
+            //t("blog")
+          }
+          Blood Test
+        </Link>
+      </li>
+      <li>
+        <Link
+          href="/about"
+          className={`hover:text-primary ${
+            isActive("/about") && "text-primary"
+          }`}
+        >
+          {t("about")}
         </Link>
       </li>
       <li>
@@ -138,7 +150,7 @@ export default function Header() {
         <div className="flex justify-start items-center">
           <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
           <span className="font-bold text-blood-700 flex items-center gap-1 text-md sm:text-lg md:text-2xl">
-            <span className="text-primary "> Blood</span>{" "}
+            <span className="text-primary "> Blood</span>
             <span className="text-gray-800 dark:text-white">Need</span>
           </span>
         </div>

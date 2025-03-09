@@ -26,7 +26,7 @@ export default function DonationSteps() {
       icon: <HelpCircle className="w-6 h-6" />,
       action: {
         label: t("step2.action"),
-        href: "/why-donate",
+        href: "/why-give-blood",
       },
     },
     {
@@ -36,7 +36,7 @@ export default function DonationSteps() {
       icon: <Heart className="w-6 h-6" />,
       action: {
         label: t("step3.action"),
-        href: "/impact",
+        href: "/donation-impact",
       },
     },
   ];

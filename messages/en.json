@@ -231,21 +231,284 @@
     "canGiveTo": "Can Give Blood To",
     "canReceiveFrom": "Can Receive Blood From"
   },
-  "DonationSteps": {
-    "step1": {
+ "DonationSteps": {
+  "title": "Blood Donation Steps",
+  "subtitle": "Three simple steps to save a life",
+  "steps": {
+    "become": {
       "title": "Become a Donor",
-      "description": "Register to become a blood donor and help save lives",
-      "action": "Register Now"
+      "description": "Register as a blood donor and help save lives",
+      "button": "Register Now"
     },
-    "step2": {
-      "title": "Why Give Blood?",
+    "why": {
+      "title": "Why Donate?",
       "description": "Learn about the importance of blood donation",
-      "action": "Learn More"
+      "button": "Learn More"
     },
-    "step3": {
-      "title": "How Donations Help",
-      "description": "Discover how your donation makes a difference",
-      "action": "See Impact"
+    "impact": {
+      "title": "Your Impact",
+      "description": "See how your donation makes a difference",
+      "button": "See Impact"
+    }
+  }
+}
+,
+
+
+  "Features": {
+    "title": "Explore Our Features",
+    "subtitle": "Discover our advanced features to make the blood donation process easier and more efficient",
+    "virtualTest": {
+      "title": "Virtual Blood Group Test",
+      "description": "Take a quick quiz to find out your potential blood group before donation"
+    },
+    "matching": {
+      "title": "Donor-Recipient Matching",
+      "description": "Our AI-powered system matches donors with the necessary recipients"
+    },
+    "alerts": {
+      "title": "Emergency Alerts",
+      "description": "Receive real-time notifications when blood is needed in your area"
+    },
+    "scheduling": {
+      "title": "Donation Scheduling",
+      "description": "Easily schedule your blood donation time"
+    },
+    "locations": {
+      "title": "Donation Centers",
+      "description": "Find nearby blood donation centers"
+    },
+    "tracking": {
+      "title": "Donation Tracking",
+      "description": "View your donation history and impact"
+    },
+    "learnMore": "Learn More"
+  }
+
+,
+ 
+
+  "WhyGiveBlood": {
+    "hero": {
+      "title": "Why Give Blood?",
+      "subtitle": "Every donation can save up to three lives and make a real difference in your community.",
+      "badge": "Life-saving impact",
+      "primary": "Become a Donor",
+      "secondary": "See Impact",
+      "imageAlt": "Blood donation process",
+      "stat": {
+        "label": "Blood Donations Needed",
+        "value": "38,000",
+        "description": "Units needed daily nationwide"
+      }
+    },
+    "reasons": {
+      "title": "Reasons to Donate",
+      "subtitle": "Why your blood donation matters",
+      "save": {
+        "title": "Save Lives",
+        "description": "A single donation can save up to three lives and help patients undergoing surgeries, trauma care, and cancer treatments."
+      },
+      "regular": {
+        "title": "Regular Need",
+        "description": "Every two seconds, someone needs blood. Regular donations ensure a stable supply for emergencies and ongoing treatments."
+      },
+      "community": {
+        "title": "Community Support",
+        "description": "By donating blood, you directly support your local community and help ensure that blood is available when needed most."
+      }
+    },
+    "facts": {
+      "title": "Important Facts",
+      "subtitle": "What you should know about blood donation",
+      "accident": {
+        "stat": "38%",
+        "text": "Of blood is used for accident victims and emergency care"
+      },
+      "surgery": {
+        "stat": "27%",
+        "text": "Of blood is needed for surgical procedures and operations"
+      },
+      "cancer": {
+        "stat": "25%",
+        "text": "Of blood is used for cancer patients during treatment"
+      }
+    },
+    "emergency": {
+      "title": "Emergency Blood Need",
+      "description": "Hospitals face critical blood shortages regularly. Your donation today could save someone's life tomorrow.",
+      "update": "Last updated: Today at 9:00 AM",
+      "stat": "4,300",
+      "statLabel": "Units needed this week",
+      "cta": "Donate Now"
+    }
+  },
+  "DonationImpact": {
+    "hero": {
+      "title": "The Impact of Your Donation",
+      "subtitle": "See how your blood donation makes a difference in people's lives",
+      "badge": "Lives Saved",
+      "cta": "Become a Donor"
+    },
+    "impacts": {
+      "lives": {
+        "stat": "10,000+",
+        "title": "Lives Saved",
+        "description": "Through the generosity of our donors in the past year"
+      },
+      "community": {
+        "stat": "5,000+",
+        "title": "Regular Donors",
+        "description": "Who consistently help save lives through blood donation"
+      },
+      "emergency": {
+        "stat": "24/7",
+        "title": "Emergency Service",
+        "description": "Providing blood for emergencies around the clock"
+      }
+    },
+    "stories": {
+      "title": "Success Stories",
+      "subtitle": "Real stories of how your donations have changed lives",
+      "surgery": {
+        "title": "Complex Surgery",
+        "description": "A child's life was saved during a complex heart surgery thanks to multiple blood donors",
+        "impact": "8 donors contributed to successful surgery",
+        "location": "City General Hospital"
+      },
+      "accident": {
+        "title": "Accident Victim",
+        "description": "A car accident victim received life-saving blood transfusions within minutes of arrival",
+        "impact": "Blood collected within 30 minutes",
+        "location": "Memorial Medical Center"
+      },
+      "cancer": {
+        "title": "Cancer Treatment",
+        "description": "A cancer patient continues treatment thanks to regular blood donations",
+        "impact": "24 units provided over 6 months",
+        "location": "Regional Cancer Center"
+      }
+    },
+    "tabs": {
+      "journey": "Donation Journey",
+      "stats": "Statistics"
+    },
+    "timeline": {
+      "title": "Your Donation Journey",
+      "donation": {
+        "title": "Blood Donation",
+        "description": "Your blood is collected and tested for safety"
+      },
+      "processing": {
+        "title": "Processing",
+        "description": "Blood is processed into components and stored"
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "Your blood saves lives in hospitals and emergency situations"
+      }
+    },
+    "stats": {
+      "title": "Donation Statistics",
+      "monthly": {
+        "label": "Monthly Goal",
+        "value": "75% Complete"
+      },
+      "yearly": {
+        "label": "Yearly Goal",
+        "value": "85% Complete"
+      },
+      "total": {
+        "value": "38,500",
+        "label": "Total Donations This Year"
+      }
+    }
+  },
+  "VirtualTest": {
+    "title": "Virtual Blood Type Test",
+    "description": "Answer a few questions to estimate your potential blood type",
+    "badge": "Quick Estimate",
+    "questions": {
+      "ethnicity": "What is your ethnic background?",
+      "parents": "Do you know your parents' blood types?",
+      "antibodies": "Have you ever had a blood test before?"
+    },
+    "options": {
+      "ethnicity": [
+        "South Asian",
+        "East Asian",
+        "African",
+        "European",
+        "Other"
+      ],
+      "parents": [
+        "Both have type A",
+        "Both have type B",
+        "One has type A, one has type B",
+        "One has type O",
+        "I don't know"
+      ],
+      "antibodies": [
+        "Yes, I know my blood type",
+        "Yes, but I don't remember",
+        "No, never had one",
+        "Not sure"
+      ]
+    },
+    "progress": "Question {current} of {total}",
+    "buttons": {
+      "next": "Next Question",
+      "previous": "Previous",
+      "finish": "Get Results"
+    },
+    "tooltips": {
+      "question": "This helps us estimate your blood type based on genetic factors"
+    },
+    "result": {
+      "title": "Your Estimated Blood Type",
+      "description": "Based on your answers, your blood type is likely:",
+      "disclaimer": "This is only an estimate. Please get a professional blood test for accurate results.",
+      "retake": "Retake Test",
+      "findMatch": "Find Donors",
+      "share": "Share Results"
+    },
+    "bloodTypes": {
+      "APositive": "You can donate to A+ and AB+. You can receive from A+, A-, O+ and O-.",
+      "ANegative": "You can donate to A+, A-, AB+ and AB-. You can receive from A- and O-.",
+      "BPositive": "You can donate to B+ and AB+. You can receive from B+, B-, O+ and O-.",
+      "BNegative": "You can donate to B+, B-, AB+ and AB-. You can receive from B- and O-.",
+      "OPositive": "You can donate to O+, A+, B+ and AB+. You can receive from O+ and O-.",
+      "ONegative": "Universal donor - you can donate to all blood types. You can receive only from O-.",
+      "ABPositive": "Universal recipient - you can receive from all blood types. You can donate to AB+ only.",
+      "ABNegative": "You can donate to AB+ and AB-. You can receive from A-, B-, AB- and O-."
+    }
+  },
+  "DonorLeaderboard": {
+    "title": "Top Blood Donors",
+    "subtitle": "Recognizing our most dedicated donors who are saving lives",
+    "badge": "Heroes Among Us",
+    "donations": "Donations",
+    "impact": "Potentially saved {count} lives",
+    "cta": "Join Our Donors",
+    "donors": {
+      "1": {
+        "name": "John Smith"
+      },
+      "2": {
+        "name": "Sarah Johnson"
+      },
+      "3": {
+        "name": "Michael Chen"
+      },
+      "4": {
+        "name": "Emily Williams"
+      },
+      "5": {
+        "name": "David Rodriguez"
+      },
+      "6": {
+        "name": "Lisa Thompson"
+      }
     }
   }
 }

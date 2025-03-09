@@ -140,8 +140,8 @@ const ChatBot: React.FC = () => {
         <div
           className={`fixed ${
             isMinimized
-              ? "bottom-6 right-6 w-72"
-              : "bottom-6 right-6 w-80 sm:w-96"
+              ? "bottom-16 md:bottom-6 right-6 w-72"
+              : "bottom-16 md:bottom-6 right-6 w-80 sm:w-96"
           } z-40 transition-all duration-300 ease-in-out`}
         >
           <Card className="shadow-xl border-blood-100 overflow-hidden">
@@ -149,7 +149,7 @@ const ChatBot: React.FC = () => {
             <div className="bg-primary text-white p-3 flex items-center justify-between">
               <div className="flex items-center">
                 <Droplet className="h-5 w-5 mr-2" />
-                <span className="font-semibold">Blood Need Assistant</span>
+                <span className="font-semibold text-sm md:text-md">Blood Need Assistant</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Button
@@ -179,7 +179,7 @@ const ChatBot: React.FC = () => {
 
             {/* Chat Messages */}
             {!isMinimized && (
-              <div className="h-80 overflow-y-auto p-3 bg-white">
+              <div className="h-56 md:h-80 overflow-y-auto p-3 bg-white">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
@@ -187,7 +187,7 @@ const ChatBot: React.FC = () => {
                       msg.sender === "user" ? "text-right" : "text-left"
                     }`}
                   >
-                    <div
+                    <div 
                       className={`inline-block px-3 py-2 rounded-lg max-w-xs lg:max-w-md ${
                         msg.sender === "user"
                           ? "bg-primary text-white"

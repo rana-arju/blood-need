@@ -18,35 +18,62 @@ const mockDonations = [
     type: "Whole Blood",
     status: "Completed",
   },
-  // Add more mock donations
+  {
+    id: 2,
+    date: "2024-02-10",
+    location: "Red Cross Center",
+    type: "Platelets",
+    status: "Pending",
+  },
 ];
 
 export function UserDonationHistory() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Donation History</h1>
-      <Card>
+    <div className="space-y-6 p-4 md:p-6 lg:p-8 max-w-4xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-bold text-center">
+        Donation History
+      </h1>
+      <Card className="w-full">
         <CardHeader>
-          <CardTitle>My Donations</CardTitle>
+          <CardTitle className="text-lg md:text-xl">My Donations</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table>
+            <Table className="min-w-[600px] md:min-w-full">
               <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
+                <TableRow className="bg-gray-100 dark:bg-gray-800">
+                  <TableHead className="p-2 text-sm md:text-base">
+                    Date
+                  </TableHead>
+                  <TableHead className="p-2 text-sm md:text-base">
+                    Location
+                  </TableHead>
+                  <TableHead className="p-2 text-sm md:text-base">
+                    Type
+                  </TableHead>
+                  <TableHead className="p-2 text-sm md:text-base">
+                    Status
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {mockDonations.map((donation) => (
-                  <TableRow key={donation.id}>
-                    <TableCell>{donation.date}</TableCell>
-                    <TableCell>{donation.location}</TableCell>
-                    <TableCell>{donation.type}</TableCell>
-                    <TableCell>{donation.status}</TableCell>
+                  <TableRow
+                    key={donation.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
+                    <TableCell className="p-2 text-sm md:text-base">
+                      {donation.date}
+                    </TableCell>
+                    <TableCell className="p-2 text-sm md:text-base">
+                      {donation.location}
+                    </TableCell>
+                    <TableCell className="p-2 text-sm md:text-base">
+                      {donation.type}
+                    </TableCell>
+                    <TableCell className="p-2 text-sm md:text-base">
+                      {donation.status}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

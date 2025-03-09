@@ -1,17 +1,17 @@
 import { useTranslations } from "next-intl";
 import Hero from "@/components/Hero";
-import Steps from "@/components/Steps";
-import Welcome from "@/components/Welcome";
 import DonationProcess from "@/components/DonationProcess";
 import News from "@/components/News";
 import { ReviewSection } from "@/components/ReviewSection";
 import BloodRequestFeed from "@/components/BloodRequestFeed";
 import UpcomingDrives from "@/components/UpcomingDrives";
 import EducationalResources from "@/components/EducationalResources";
-import FeatureHighlights from "@/components/FeatureHighlights";
-import CommunityBloodDriveMap from "@/components/CommunityBloodDriveMap";
+
 import ImpactStatistics from "@/components/ImpactStatistics";
 import WelcomeSection from "@/components/welcome/welcome-section";
+import DonationSteps from "@/components/donation-steps";
+import DonorLeaderboard from "@/components/donor-leaderboard";
+import ExploreFeatures from "@/components/features/explore-features";
 export default function Home() {
   const t = useTranslations("home");
   return (
@@ -26,13 +26,18 @@ export default function Home() {
       <WelcomeSection />
       <BloodRequestFeed />
       <EducationalResources />
-      <Steps />
+      <DonationSteps />
       <DonationProcess />
       <UpcomingDrives />
      
-      <CommunityBloodDriveMap />
+      {//<CommunityBloodDriveMap />
+      }
+
+     { //<ExploreFeatures />
+     }
       <ReviewSection />
-      <FeatureHighlights />
+
+      <DonorLeaderboard />
 
       <News />
     </div>

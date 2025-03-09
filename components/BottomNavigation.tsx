@@ -11,6 +11,8 @@ import {
   Info,
   Droplets,
   HeartPulse,
+  NotebookPen,
+  FlaskConical,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -101,6 +103,16 @@ export default function BottomNavigation() {
                       href="/be-donor"
                       icon={HeartPulse}
                       label="Be a Donor"
+                    />{" "}
+                    <SidebarItem
+                      href="/virtual-test"
+                      icon={FlaskConical}
+                      label="Blood Test"
+                    />{" "}
+                    <SidebarItem
+                      href="/blog"
+                      icon={NotebookPen}
+                      label="Blogs"
                     />
                   </ul>
                 </nav>
