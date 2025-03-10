@@ -68,7 +68,9 @@ export default function DonorMatching() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl mx-auto text-center mb-12"
         >
-          <h1 className="text-4xl font-bold mb-4">{t("title")}</h1>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+            {t("title")}
+          </h2>
           <p className="text-muted-foreground">{t("description")}</p>
         </motion.div>
 

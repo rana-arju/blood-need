@@ -48,7 +48,9 @@ export function UserSidebar() {
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b">
-            <h1 className="text-xl font-bold">User Dashboard</h1>
+            <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+              User Dashboard
+            </h3>
           </div>
           <nav className="flex-1 overflow-y-auto py-4">
             <ul className="space-y-2 px-4">

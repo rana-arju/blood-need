@@ -25,9 +25,9 @@ export default function PreparationPage() {
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-primary">
           {t("title")}
-        </h1>
+        </h2>
         <div className="w-24 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
       </motion.div>
 
@@ -41,7 +41,7 @@ export default function PreparationPage() {
           <Card className="mb-8 overflow-hidden border-2 border-muted">
             <div className="bg-primary/5 p-6">
               <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-2xl font-bold text-primary mb-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4">
                   The Complete Preparation Guide
                 </h2>
                 <p className="text-muted-foreground">

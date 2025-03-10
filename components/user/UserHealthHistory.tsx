@@ -35,7 +35,9 @@ export function UserHealthHistory() {
 
   return (
     <div className="space-y-6 p-4 md:p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-bold">{t("title")}</h1>
+      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+        {t("title")}
+      </h3>
 
       <Card>
         <CardHeader>

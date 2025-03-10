@@ -67,7 +67,9 @@ export function BloodRequestsList() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Blood Requests List</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+        Blood Requests List
+      </h2>
       <Input placeholder="Search requests..." className="max-w-sm" />
       <div className="overflow-x-auto rounded-lg border">
         <Table>

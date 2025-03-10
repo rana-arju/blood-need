@@ -38,9 +38,9 @@ const Blogs = () => {
       {/* Hero Banner */}
       <section className="relative py-16 bg-primary/70">
         <div className="container mx-auto px-4 text-center text-white">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
             Blood Donation Blog
-          </h1>
+          </h2>
           <p className="max-w-2xl mx-auto">
             Explore our articles about blood donation awareness, donor stories,
             and the impact of your contribution.

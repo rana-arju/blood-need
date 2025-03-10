@@ -61,7 +61,9 @@ export function ReviewsList() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Reviews List</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+        Reviews List
+      </h2>
       <Input placeholder="Search reviews..." className="max-w-sm" />
       <div className="overflow-x-auto rounded-lg border">
         <Table>

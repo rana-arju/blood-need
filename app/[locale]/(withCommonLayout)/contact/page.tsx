@@ -7,7 +7,9 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       <div className="container px-4 py-16">
         <div className="text-center space-y-4 mb-12">
-          <h1 className="text-4xl font-bold tracking-tight">Contact Us</h1>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+            Contact Us
+          </h3>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Get in touch with us for any questions or concerns about blood
             donation

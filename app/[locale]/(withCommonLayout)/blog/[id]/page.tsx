@@ -45,9 +45,10 @@ const BlogDetailPage = () => {
   if (!post) {
     return (
       <div className="min-h-screen bg-gray-50">
-        
         <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Article not found</h1>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            Article not found
+          </h3>
           <p className="mb-6">
             The article you're looking for doesn't exist or has been removed.
           </p>
@@ -61,7 +62,6 @@ const BlogDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       {/* Hero Banner */}
       <section className="relative h-[300px] md:h-[400px] overflow-hidden">
         <div className="absolute inset-0">
@@ -77,9 +77,9 @@ const BlogDetailPage = () => {
             <div className="inline-block bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded mb-4">
               {post.category}
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               {post.title}
-            </h1>
+            </h2>
             <div className="flex items-center text-white/80 text-sm">
               <CalendarDays className="w-4 h-4 mr-1" />
               <span>{post.date}</span>

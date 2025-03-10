@@ -152,9 +152,9 @@ export default function VirtualBloodTest() {
             <Droplet className="w-4 h-4 mr-2" />
             {t("badge")}
           </div>
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
             {t("title")}
-          </h1>
+          </h2>
           <p className="text-muted-foreground">{t("description")}</p>
         </motion.div>
 
@@ -187,7 +187,7 @@ export default function VirtualBloodTest() {
                 className="space-y-6"
               >
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">
                     {questions[currentQuestion].text}
                   </h2>
                   <TooltipProvider>
@@ -264,7 +264,7 @@ export default function VirtualBloodTest() {
                   <div className="w-20 h-20 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center mb-4">
                     <CheckCircle className="w-10 h-10" />
                   </div>
-                  <h2 className="text-2xl font-bold mb-2">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
                     {t("result.title")}
                   </h2>
                   <p className="text-muted-foreground mb-6">

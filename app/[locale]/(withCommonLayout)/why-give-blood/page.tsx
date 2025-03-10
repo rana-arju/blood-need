@@ -73,9 +73,9 @@ export default function WhyGiveBlood() {
                 <Droplet className="w-4 h-4 mr-2" />
                 {t("hero.badge")}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
                 {t("hero.title")}
-              </h1>
+              </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 {t("hero.subtitle")}
               </p>
@@ -136,7 +136,9 @@ export default function WhyGiveBlood() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold mb-4">{t("reasons.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              {t("reasons.title")}
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {t("reasons.subtitle")}
             </p>
@@ -171,7 +173,9 @@ export default function WhyGiveBlood() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold mb-4">{t("facts.title")}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              {t("facts.title")}
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {t("facts.subtitle")}
             </p>

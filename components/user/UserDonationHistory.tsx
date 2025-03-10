@@ -47,7 +47,9 @@ export function UserDonationHistory() {
 
   return (
     <div className="space-y-6 p-4 md:p-6 lg:p-8 max-w-4xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-bold">{t("title")}</h1>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+        {t("title")}
+      </h2>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">{t("subtitle")}</CardTitle>

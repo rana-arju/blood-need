@@ -20,10 +20,14 @@ export default async function AdminBloodDrivesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Manage Blood Drives</h1>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
+        Manage Blood Drives
+      </h2>
       <BloodDriveForm onSuccess={() => {}} />
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">Existing Blood Drives</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          Existing Blood Drives
+        </h2>
         {bloodDrives?.map((drive: any) => (
           <div key={drive.id} className="mb-4 p-4 border rounded">
             <h3 className="text-xl font-semibold">{drive.title}</h3>

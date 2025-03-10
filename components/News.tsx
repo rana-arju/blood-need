@@ -21,7 +21,7 @@ export function BlogSection() {
           <h3 className="text-red-600 text-sm font-semibold uppercase mb-2">
             Our Articles
           </h3>
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
             Blood Donation Awareness
           </h2>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">

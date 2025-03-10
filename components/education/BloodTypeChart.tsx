@@ -54,7 +54,7 @@ export default function BloodTypeChart() {
   return (
     <div className="w-full max-w-7xl mx-auto p-1 md:p-4 space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary ">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary ">
           {t("title")}
         </h2>
         <p className="text-muted-foreground">{t("subtitle")}</p>

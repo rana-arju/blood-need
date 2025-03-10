@@ -53,9 +53,9 @@ export default function AboutContent() {
             <Heart className="w-4 h-4 mr-2" />
             {t("badge")}
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
             {t("title")}
-          </h1>
+          </h2>
           <p className="text-lg md:text-xl text-muted-foreground">
             {t("subtitle")}
           </p>
@@ -72,7 +72,7 @@ export default function AboutContent() {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-2 ">
                 <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <h2 className="text-xl md:text-2xl font-bold mb-4">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                     {t("platform.title")}
                   </h2>
                   <p className="text-muted-foreground mb-4">
@@ -124,7 +124,7 @@ export default function AboutContent() {
           transition={{ delay: 0.2 }}
           className="max-w-5xl mx-auto mb-16"
         >
-          <h2 className="text-xl md:text-2xl font-bold mb-8 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-center">
             {t("developer.title")}
           </h2>
 
@@ -311,7 +311,9 @@ export default function AboutContent() {
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="p-8">
               <Heart className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h2 className="text-xl sm:text-2xl font-bold mb-2">{t("cta.title")}</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl  font-bold mb-2">
+                {t("cta.title")}
+              </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
                 {t("cta.description")}
               </p>

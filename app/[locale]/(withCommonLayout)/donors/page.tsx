@@ -101,9 +101,9 @@ export default function DonorsPage() {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-center">
         Blood Donors Directory
-      </h1>
+      </h2>
 
       <div className="mb-6">
         <DonorSearchBar

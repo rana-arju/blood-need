@@ -72,7 +72,9 @@ export default function BloodDriveOrganizer() {
     return (
       <Card>
         <CardContent className="pt-6">
-          <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            Thank You!
+          </h2>
           <p>
             Your blood drive has been submitted for review. We&apos;ll contact
             you soon with next steps.

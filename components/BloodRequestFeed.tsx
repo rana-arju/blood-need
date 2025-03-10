@@ -111,39 +111,42 @@ export default function BloodRequestFeed() {
   return (
     <section className="py-12 bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
           Current Blood Requests
         </h2>
-        {requests?.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {requests?.map((request) => (
-            <Card
-              key={request.id}
-              className="hover:shadow-lg transition-shadow duration-300"
-            >
-              <CardHeader>
-                <CardTitle className="flex justify-between items-center">
-                  <span>{request.patientName}</span>
-                  <Badge className={getUrgencyColor(request.urgency)}>
-                    {request.urgency} Urgency
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2">
-                  <strong>Blood Type:</strong> {request.bloodType}
-                </p>
-                <p className="mb-2">
-                  <strong>Location:</strong> {request.location}
-                </p>
-                <p className="mb-4 text-sm text-gray-500">
-                  Posted {request.postedAt}
-                </p>
-                <Button className="w-full">Respond to Request</Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div> : <div className="mx-auto">Not Found</div>}
-        
+        {requests?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {requests?.map((request) => (
+              <Card
+                key={request.id}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center">
+                    <span>{request.patientName}</span>
+                    <Badge className={getUrgencyColor(request.urgency)}>
+                      {request.urgency} Urgency
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-2">
+                    <strong>Blood Type:</strong> {request.bloodType}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Location:</strong> {request.location}
+                  </p>
+                  <p className="mb-4 text-sm text-gray-500">
+                    Posted {request.postedAt}
+                  </p>
+                  <Button className="w-full">Respond to Request</Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="mx-auto">Not Found</div>
+        )}
       </div>
     </section>
   );

@@ -44,7 +44,7 @@ const EducationalResources = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-primary">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-primary">
             {t("title")}
           </h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6 rounded-full"></div>

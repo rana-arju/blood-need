@@ -94,7 +94,9 @@ export function UserDashboard() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold">User Dashboard</h1>
+      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+        User Dashboard
+      </h3>
       <Tabs defaultValue="profile" className="space-y-4">
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>

@@ -25,13 +25,17 @@ export default function Volunteers() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container">
-        <h3 className="text-sm text-primary text-center uppercase mb-4">OUR MEMBERS</h3>
-        <h2 className="text-3xl font-bold text-center mb-12">Meet Volunteers</h2>
+        <h3 className="text-sm text-primary text-center uppercase mb-4">
+          OUR MEMBERS
+        </h3>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12">
+          Meet Volunteers
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {volunteers.map((volunteer, index) => (
             <div key={index} className="text-center">
               <Image
-                width = {80}
+                width={80}
                 height={80}
                 src={volunteer.image || "/placeholder.svg"}
                 alt={volunteer.name}
@@ -44,6 +48,6 @@ export default function Volunteers() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 

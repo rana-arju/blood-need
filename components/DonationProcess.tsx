@@ -61,7 +61,7 @@ export default function DonationProcess() {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
             {t("title")}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">

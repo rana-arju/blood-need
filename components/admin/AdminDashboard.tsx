@@ -12,7 +12,9 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
+        Admin Dashboard
+      </h3>
       <div>
         <Tabs
           value={activeTab}

@@ -16,9 +16,9 @@ export default function BloodDonation101Page() {
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-primary">
           {t("title")}
-        </h1>
+        </h2>
         <div className="w-24 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
       </motion.div>
 

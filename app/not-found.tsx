@@ -11,9 +11,9 @@ export default function NotFound() {
         <div className="flex justify-center">
           <Droplet className="h-24 w-24 text-red-500 animate-pulse" />
         </div>
-        <h1 className="mt-6 text-4xl font-extrabold text-gray-900 sm:text-5xl">
+        <h2 className="mt-6  font-extrabold text-gray-900 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
           404 - Page Not Found
-        </h1>
+        </h2>
         <p className="mt-2 text-lg text-gray-600">
           Oops! It seems we couldn&apos;t find the page you&apos;re looking for.
         </p>

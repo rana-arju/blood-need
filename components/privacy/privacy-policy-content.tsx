@@ -138,9 +138,9 @@ export default function PrivacyPolicyContent() {
             <Shield className="w-4 h-4 mr-2" />
             {t("badge")}
           </div>
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
             {t("title")}
-          </h1>
+          </h2>
           <p className="text-muted-foreground">
             {t("effectiveDate")} {lastUpdated}
           </p>
@@ -166,7 +166,7 @@ export default function PrivacyPolicyContent() {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       {section.icon}
-                      <h2 className="text-2xl font-semibold">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold">
                         {section.title}
                       </h2>
                     </div>

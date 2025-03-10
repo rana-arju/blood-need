@@ -34,8 +34,8 @@ export default function Welcome() {
           >
             <div className="rounded-lg overflow-hidden">
               <Image
-              width={600}
-              height={600}
+                width={600}
+                height={600}
                 src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1739977063/ravi25_may_5_1_kxg8rj.jpg"
                 alt="Medical team"
                 className="w-full h-[400px] object-contain"
@@ -51,7 +51,7 @@ export default function Welcome() {
             <h3 className="text-primary text-sm font-semibold mb-2">
               HELP THE PEOPLE IN NEED
             </h3>
-            <h2 className="text-3xl font-bold mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
               Welcome to Blood Donors Organization
             </h2>
             <p className="text-gray-600 mb-8">

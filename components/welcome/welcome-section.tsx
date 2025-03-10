@@ -53,9 +53,9 @@ export default function WelcomeSection() {
               {t("subtitle").split(".")[0]}
             </div>
 
-            <h1 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl text-primary">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter  text-primary">
               {t("title")}
-            </h1>
+            </h2>
 
             <p className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-[600px]">
               {t("subtitle").split(".")[1]

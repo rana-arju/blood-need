@@ -22,7 +22,7 @@ const CustomNotFound = () => {
       </div>
 
       {/* Title */}
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-gray-200">
         There are no blood requests
       </h2>
 
