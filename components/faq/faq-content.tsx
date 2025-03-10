@@ -227,10 +227,10 @@ export default function FaqContent() {
             <HelpCircle className="w-4 h-4 mr-2" />
             {t("badge")}
           </div>
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
             {t("title")}
           </h1>
-          <p className="text-xl text-muted-foreground">{t("subtitle")}</p>
+          <p className="text-lg md:text-xl text-muted-foreground">{t("subtitle")}</p>
         </motion.div>
 
         <div className="max-w-3xl mx-auto mb-10">
@@ -247,7 +247,7 @@ export default function FaqContent() {
 
         <div className="max-w-4xl mx-auto">
           <Tabs defaultValue="all" className="mb-8">
-            <TabsList className="flex flex-wrap justify-center mb-8">
+            <TabsList className="flex flex-wrap justify-center mb-16">
               <TabsTrigger value="all">{t("tabs.all")}</TabsTrigger>
               {categories.map((category) => (
                 <TabsTrigger key={category.id} value={category.id}>
@@ -259,7 +259,7 @@ export default function FaqContent() {
               ))}
             </TabsList>
 
-            <TabsContent value="all">
+            <TabsContent value="all" >
               {searchQuery && allQuestions.length === 0 ? (
                 <div className="text-center py-12">
                   <HelpCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -267,7 +267,7 @@ export default function FaqContent() {
                   <p className="text-muted-foreground">{t("tryDifferent")}</p>
                 </div>
               ) : (
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible className="w-full pt-14">
                   {allQuestions.map((question) => (
                     <AccordionItem key={question.id} value={question.id}>
                       <AccordionTrigger className="text-left">
@@ -294,7 +294,7 @@ export default function FaqContent() {
 
             {categories.map((category) => (
               <TabsContent key={category.id} value={category.id}>
-                <Card className="mb-8 mt-14">
+                <Card className="mb-8 mt-24 md:mt-8">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="mt-1 p-2 rounded-full bg-primary/10 text-primary">
@@ -321,7 +321,7 @@ export default function FaqContent() {
                     <p className="text-muted-foreground">{t("tryDifferent")}</p>
                   </div>
                 ) : (
-                  <Accordion type="single" collapsible className="w-full">
+                  <Accordion type="single" collapsible className="w-full mt-10">
                     {category.questions.map((question) => (
                       <AccordionItem key={question.id} value={question.id}>
                         <AccordionTrigger className="text-left">

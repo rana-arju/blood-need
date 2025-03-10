@@ -96,10 +96,10 @@ export default function AwarenessContent() {
             <Info className="w-4 h-4 mr-2" />
             {t("badge")}
           </div>
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
             {t("title")}
           </h1>
-          <p className="text-xl text-muted-foreground">{t("subtitle")}</p>
+          <p className="text-lg md:text-xl text-muted-foreground">{t("subtitle")}</p>
         </motion.div>
 
         <Tabs defaultValue="donor" className="max-w-5xl mx-auto">

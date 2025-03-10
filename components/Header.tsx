@@ -143,7 +143,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 transition-all duration-200 bg-background/80 border-b">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center overflow-hidden whitespace-nowrap">
         <Link href="/">
           <div className="flex justify-start items-center">
             <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
@@ -167,6 +167,7 @@ export default function Header() {
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:ring-0 focus:outline-none bg-red">
+               
                   <Avatar className="w-7 h-7">
                     <AvatarImage
                       className="dark:bg-white object-cover"
@@ -225,7 +226,7 @@ export default function Header() {
               href="/notifications"
               className="text-foreground hover:text-primary"
             >
-              <Bell size={24} />
+              <Bell size={22} />
             </Link>
           )}
 
