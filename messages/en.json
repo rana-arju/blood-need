@@ -1117,6 +1117,83 @@
         }
       }
     }
+  },
+  "About": {
+    "badge": "About Us",
+    "title": "About Blood Need",
+    "subtitle": "Connecting blood donors with those in need",
+    "platform": {
+      "title": "Our Blood Donation Platform",
+      "description": "Blood Need is a community-driven platform dedicated to connecting blood donors with recipients in need. We believe that every donation has the potential to save lives, and our mission is to make the process as simple and efficient as possible.",
+      "features": {
+        "1": "Real-time matching of donors with recipients based on blood type and location",
+        "2": "Secure and private communication between donors and recipients",
+        "3": "Emergency alerts for urgent blood requirements",
+        "4": "Educational resources about blood donation and health"
+      },
+      "donateButton": "Become a Donor",
+      "requestButton": "Request Blood",
+      "imageAlt": "Blood donation process",
+      "imageCaption": "Every donation can save up to three lives"
+    },
+    "developer": {
+      "title": "Meet the Developer",
+      "role": "Full Stack Web Developer",
+      "bio": {
+        "title": "About Me",
+        "content": "I'm Rana Arju, a passionate Full Stack Web Developer with expertise in MERN stack development. I specialize in creating responsive, user-friendly web applications that solve real-world problems.",
+        "content2": "With a strong foundation in both front-end and back-end technologies, I enjoy building complete solutions from concept to deployment. The 'Blood Need' platform represents my commitment to using technology for social good."
+      },
+      "education": {
+        "title": "Education",
+        "degree": "Diploma in computer engineering",
+        "institution": "Cox's Bazar Polytechnic Institute, Cox's Bazar"
+      },
+      "experience": {
+        "title": "Experience",
+        "position": "Full Stack Web Developer",
+        "company": "Freelance & Personal Projects",
+        "present": "Present"
+      },
+      "skills": {
+        "title": "Technical Skills"
+      }
+    },
+    "cta": {
+      "title": "Join Our Mission to Save Lives",
+      "description": "Whether you're looking to donate blood or in need of a donation, our platform is here to help. Join our community today and be part of something meaningful.",
+      "donateButton": "Become a Donor",
+      "contactButton": "Contact Us"
+    }
+  },
+  "QuickLinks": {
+    "badge": "Quick Access",
+    "title": "Essential Resources",
+    "subtitle": "Access important information and services to support your blood donation journey",
+    "learnMore": "Learn More",
+    "awareness": {
+      "title": "Awareness",
+      "description": "Learn about safe blood donation practices and how to protect yourself from fraud"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Find answers to common questions about blood donation and our platform"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "Understand how we protect your personal information and maintain confidentiality"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "Learn about our mission, vision, and the team behind the Blood Need platform"
+    },
+    "whyDonate": {
+      "title": "Why Donate?",
+      "description": "Discover the importance of blood donation and how it saves lives in your community"
+    },
+    "impact": {
+      "title": "Your Impact",
+      "description": "See how your blood donations make a difference and help save lives"
+    }
   }
-
 }

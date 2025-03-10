@@ -6,12 +6,10 @@ import { ReviewSection } from "@/components/ReviewSection";
 import BloodRequestFeed from "@/components/BloodRequestFeed";
 import UpcomingDrives from "@/components/UpcomingDrives";
 import EducationalResources from "@/components/EducationalResources";
-
 import ImpactStatistics from "@/components/ImpactStatistics";
 import WelcomeSection from "@/components/welcome/welcome-section";
-import DonationSteps from "@/components/donation-steps";
 import DonorLeaderboard from "@/components/donor-leaderboard";
-import ExploreFeatures from "@/components/features/explore-features";
+import QuickLinksSection from "@/components/quick-links/quick-links-section";
 export default function Home() {
   const t = useTranslations("home");
   return (
@@ -22,23 +20,14 @@ export default function Home() {
         ctaText={t("hero.cta")}
       />
       <ImpactStatistics />
-
       <WelcomeSection />
       <BloodRequestFeed />
       <EducationalResources />
-      <DonationSteps />
       <DonationProcess />
+      <QuickLinksSection />
       <UpcomingDrives />
-     
-      {//<CommunityBloodDriveMap />
-      }
-
-     { //<ExploreFeatures />
-     }
       <ReviewSection />
-
       <DonorLeaderboard />
-
       <News />
     </div>
   );
