@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { ReviewCard } from "./ReviewCard";
 import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
+import AddReviewModal from "./home/AddReviewModal";
 
 // Fake data for reviews
 const allReviews = [
@@ -90,6 +93,8 @@ const allReviews = [
 
 export function ReviewSection() {
   const [visibleReviews, setVisibleReviews] = useState(6);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const t = useTranslations("Home.latestRequests");
 
   const loadMore = () => {
     setVisibleReviews((prev) => Math.min(prev + 3, allReviews.length));
@@ -101,6 +106,16 @@ export function ReviewSection() {
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
           What Our Community Says
         </h2>
+        <div className="mb-10">
+          <Button
+            onClick={() => setIsReviewModalOpen(true)}
+            size="lg"
+            variant="outline"
+          >
+            <Star className="mr-2 h-4 w-4 text-yellow-400" />
+            {t("addReviewButton")}
+          </Button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allReviews?.slice(0, visibleReviews).map((review) => (
             <div key={review.id} className="h-full">
@@ -119,6 +134,11 @@ export function ReviewSection() {
           </div>
         )}
       </div>
+
+      <AddReviewModal
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+      />
     </section>
   );
 }

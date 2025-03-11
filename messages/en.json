@@ -1195,5 +1195,32 @@
       "title": "Your Impact",
       "description": "See how your blood donations make a difference and help save lives"
     }
+  },
+  "Home": {
+    "latestRequests": {
+      "title": "Latest Blood Requests",
+      "subtitle": "These are the most recent blood donation requests in your area",
+      "viewAllButton": "View All Requests",
+      "addReviewButton": "Add Review"
+    },
+    "reviews": {
+      "title": "What Our Users Say",
+      "subtitle": "Read reviews from our blood donors and recipients",
+      "addReview": "Add Review",
+      "viewAll": "View Reviews"
+    },
+    "addReview": {
+      "title": "Add Your Review",
+      "ratingLabel": "Rating",
+      "reviewLabel": "Your Review",
+      "reviewPlaceholder": "Share your experience with our blood donation community...",
+      "submitButton": "Submit Review",
+      "successMessage": "Thank you for your review!",
+      "errorMessage": "There was an error submitting your review. Please try again."
+    }
+  },
+  "Reviews": {
+    "title": "Community Reviews",
+    "subtitle": "See what our users have to say about their experiences"
   }
 }

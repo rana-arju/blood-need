@@ -1,4 +1,5 @@
 import "./globals.css";
+import "../styles/swiper-custom.css"
 import { Inter } from "next/font/google";
 import { getServerSession } from "next-auth/next";
 

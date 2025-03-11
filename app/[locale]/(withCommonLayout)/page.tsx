@@ -3,13 +3,64 @@ import Hero from "@/components/Hero";
 import DonationProcess from "@/components/DonationProcess";
 import News from "@/components/News";
 import { ReviewSection } from "@/components/ReviewSection";
-import BloodRequestFeed from "@/components/BloodRequestFeed";
 import UpcomingDrives from "@/components/UpcomingDrives";
 import EducationalResources from "@/components/EducationalResources";
 import ImpactStatistics from "@/components/ImpactStatistics";
 import WelcomeSection from "@/components/welcome/welcome-section";
 import DonorLeaderboard from "@/components/donor-leaderboard";
 import QuickLinksSection from "@/components/quick-links/quick-links-section";
+import LatestBloodRequests from "@/components/home/LatestBloodRequests";
+import ReviewsSection from "@/components/home/ReviewSection";
+const mockBloodRequests = [
+  {
+    id: "1",
+    bloodType: "A+",
+    location: "City Hospital, Dhaka",
+    requiredDate: "2024-03-15",
+    requiredTime: "14:00",
+    urgency: "high",
+  },
+  {
+    id: "2",
+    bloodType: "O-",
+    location: "Medical Center, Chittagong",
+    requiredDate: "2024-03-16",
+    requiredTime: "10:30",
+    urgency: "medium",
+  },
+  {
+    id: "3",
+    bloodType: "B+",
+    location: "General Hospital, Sylhet",
+    requiredDate: "2024-03-17",
+    requiredTime: "09:00",
+    urgency: "low",
+  },
+  {
+    id: "4",
+    bloodType: "AB-",
+    location: "Emergency Clinic, Rajshahi",
+    requiredDate: "2024-03-18",
+    requiredTime: "16:45",
+    urgency: "high",
+  },
+  {
+    id: "5",
+    bloodType: "A-",
+    location: "Community Health Center, Khulna",
+    requiredDate: "2024-03-19",
+    requiredTime: "11:15",
+    urgency: "medium",
+  },
+  {
+    id: "6",
+    bloodType: "O+",
+    location: "University Hospital, Barisal",
+    requiredDate: "2024-03-20",
+    requiredTime: "13:30",
+    urgency: "low",
+  },
+];
 export default function Home() {
   const t = useTranslations("home");
   return (
@@ -21,13 +72,16 @@ export default function Home() {
       />
       <ImpactStatistics />
       <WelcomeSection />
-      <BloodRequestFeed />
+      {
+        //<BloodRequestFeed />
+      }
+      <LatestBloodRequests requests={mockBloodRequests} />
+      <DonorLeaderboard />
       <EducationalResources />
       <DonationProcess />
       <QuickLinksSection />
       <UpcomingDrives />
-      <ReviewSection />
-      <DonorLeaderboard />
+      <ReviewsSection />
       <News />
     </div>
   );
