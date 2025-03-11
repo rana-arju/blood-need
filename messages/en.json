@@ -201,9 +201,9 @@
     "subtitle": "Join our lifesaving mission to make blood donation accessible and efficient. Every drop counts in our journey to save lives together.",
     "features": {
       "service": "24/7 Service",
-      "bloodBank": "Blood Bank",
-      "support": "Donor Support",
-      "health": "Health Check"
+      "notification": "Notification",
+      "support": "Emergency Notifiaction",
+      "health": "Blood Donation History tracking"
     },
     "buttons": {
       "donate": "Donate Now",

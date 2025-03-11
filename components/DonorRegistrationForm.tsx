@@ -16,19 +16,15 @@ import { Input } from "@/components/ui/input";
 
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { donorAdd } from "@/services/beDonor";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
+import LoadingDrop from "./LoadingDrop";
 
 const formSchema = z.object({
   weight: z.number().min(50, "Weight must be at least 50 kg"),
@@ -50,15 +46,21 @@ const formSchema = z.object({
 });
 
 export default function DonorRegistrationForm() {
-    const t = useTranslations("Forms.donor");
-  const { data: session } = useSession();
+  const t = useTranslations("Forms.donor");
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const { user } = session!;
-  if (!user?.id) {
-    toast.error("Please sign in");
-    router.push("auth/signin");
-    return;
-  }
+  const user = session!;
+  const toastShown = useRef(false);
+  useEffect(() => {
+    if (status === "unauthenticated" && !toastShown.current) {
+      toast.error("Please sign in");
+      toastShown.current = true; // Prevent multiple toasts
+      router.push("/auth/signin");
+    }
+  }, [status, router]);
+
+  if (status === "loading") return <LoadingDrop />;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,7 +83,7 @@ export default function DonorRegistrationForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const donorData = {
-        userId: user?.id,
+        userId: user?.user?.id,
         phone: values.phone,
         whatsappNumber: values?.whatsappNumber,
         facebookId: values?.facebookId,
@@ -92,7 +94,7 @@ export default function DonorRegistrationForm() {
         currentMedications: values?.currentMedications,
       };
 
-      const res = await donorAdd(donorData, user?.id);
+      const res = await donorAdd(donorData, user?.user?.id);
 
       if (res.success) {
         toast.success(res.message);
@@ -109,7 +111,7 @@ export default function DonorRegistrationForm() {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="space-y-1">
-  {      /*
+        {/*
         <CardTitle className="text-2xl text-center">{t("title")}</CardTitle>
         <CardDescription className="text-center">
           {t("description")}
@@ -290,7 +292,7 @@ export default function DonorRegistrationForm() {
             <Button
               type="submit"
               className="w-full"
-              disabled={user ? false : true}
+              disabled={user?.user ? false : true}
             >
               {t("buttons.register")}
             </Button>

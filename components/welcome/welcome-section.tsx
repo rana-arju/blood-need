@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { CheckCircle, Heart, Users, Target, Droplet } from "lucide-react";
+import { CheckCircle, Heart, Target, Droplet, BellRing,  AlarmClockCheck } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -15,9 +15,15 @@ export default function WelcomeSection() {
 
   const features = [
     { icon: <CheckCircle className="w-5 h-5" />, text: t("features.service") },
-    { icon: <Heart className="w-5 h-5" />, text: t("features.bloodBank") },
-    { icon: <Users className="w-5 h-5" />, text: t("features.support") },
-    { icon: <Target className="w-5 h-5" />, text: t("features.health") },
+    {
+      icon: <BellRing className="w-5 h-5" />,
+      text: t("features.notification"),
+    },
+    {
+      icon: <AlarmClockCheck className="w-5 h-5" />,
+      text: t("features.support"),
+    },
+    { icon: <Droplet className="w-5 h-5" />, text: t("features.health") },
   ];
 
   const containerVariants = {

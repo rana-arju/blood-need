@@ -147,7 +147,7 @@ export default function Header() {
         <Link href="/">
           <div className="flex justify-start items-center">
             <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
-            <span className="font-bold text-blood-700 flex items-center gap-1 text-md sm:text-lg md:text-2xl">
+            <span className="font-bold flex items-center gap-1 text-lg md:text-2xl">
               <span className="text-primary "> Blood</span>
               <span className="text-gray-800 dark:text-white">Need</span>
             </span>
@@ -167,7 +167,6 @@ export default function Header() {
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:ring-0 focus:outline-none bg-red">
-               
                   <Avatar className="w-7 h-7">
                     <AvatarImage
                       className="dark:bg-white object-cover"

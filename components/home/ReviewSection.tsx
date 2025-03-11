@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Mousewheel, EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 interface Review {
   id: string;
@@ -28,6 +29,7 @@ export default function ReviewsSection() {
   const { theme } = useTheme();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     // Fetch reviews from your API here
@@ -80,12 +82,27 @@ export default function ReviewsSection() {
 
     fetchReviews();
   }, []);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
+  const handleScroll = (direction: "next" | "prev") => {
+    if (!sectionRef.current) return;
+    const sections = document.querySelectorAll("section"); // Get all sections
+    const index = Array.from(sections).indexOf(sectionRef.current);
+
+    if (direction === "next" && index < sections.length - 1) {
+      sections[index + 1].scrollIntoView({ behavior: "smooth" });
+    }
+    if (direction === "prev" && index > 0) {
+      sections[index - 1].scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-background" ref={sectionRef}>
       <div className="container px-4 md:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-2x sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">{t("title")}</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+            {t("title")}
+          </h2>
           <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
 
@@ -96,6 +113,8 @@ export default function ReviewsSection() {
             slidesPerView={1}
             spaceBetween={30}
             mousewheel={true}
+            onReachEnd={() => handleScroll("next")}
+            onReachBeginning={() => handleScroll("prev")}
             pagination={{
               clickable: true,
             }}
@@ -148,10 +167,13 @@ export default function ReviewsSection() {
         </div>
 
         <div className="flex justify-center space-x-4">
-          <Button onClick={() => setIsReviewModalOpen(true)}>
-            <Plus className=" h-4 w-4" />
-            {t("addReview")}
-          </Button>
+          {session?.user && (
+            <Button onClick={() => setIsReviewModalOpen(true)}>
+              <Plus className=" h-4 w-4" />
+              {t("addReview")}
+            </Button>
+          )}
+
           <Button variant="outline" asChild>
             <Link href="/reviews">{t("viewAll")}</Link>
           </Button>
