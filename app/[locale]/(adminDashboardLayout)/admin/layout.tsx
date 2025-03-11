@@ -13,7 +13,7 @@ export default function AdminLayout({
       <Header />
       <Sidebar />
       <div className="flex-1 mb-16 md:mb-0 md:ml-64 relative">
-        <main className="p-6">{children}</main>
+        <main className="p-1">{children}</main>
       </div>
       <BottomNavigation />
     </div>
