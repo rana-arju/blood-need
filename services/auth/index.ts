@@ -204,7 +204,7 @@ export const createUser = async (data: any) => {
         return Error();
       }
     }
-    revalidateTag("User");
+    revalidateTag("Users");
     return res.json();
   } catch (error: any) {
     return Error(error);
@@ -222,7 +222,28 @@ export const getMyProfile = async (id: string) => {
           Authorization: `Bearer ${id}`, // Pass JWT token or other headers here
         },
         next: {
-          tags: ["User"],
+          tags: ["Users"],
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getUserById = async (id: string,token:string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Pass JWT token or other headers here
+        },
+        next: {
+          tags: ["Users"],
         },
       }
     );

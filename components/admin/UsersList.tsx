@@ -63,6 +63,7 @@ import {
   ShieldCheck,
   CheckCircle,
   XCircle,
+  User,
 } from "lucide-react";
 import {
   deleteUser,
@@ -71,7 +72,7 @@ import {
   updateUser,
   updateUserRole,
   updateUserStatus,
-  type User,
+  type User as UserType,
   type PaginationOptions,
   type UserFilters,
 } from "@/services/auth";
@@ -79,14 +80,16 @@ import {
 export function UsersList() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [passwordUser, setPasswordUser] = useState<User | null>(null);
+  const [editingUser, setEditingUser] = useState<UserType | null>(null);
+  const [passwordUser, setPasswordUser] = useState<UserType | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [deleteConfirmUser, setDeleteConfirmUser] = useState<User | null>(null);
+  const [deleteConfirmUser, setDeleteConfirmUser] = useState<UserType | null>(
+    null
+  );
   const [pagination, setPagination] = useState<PaginationOptions>({
     page: 1,
     limit: 10,
@@ -182,7 +185,16 @@ export function UsersList() {
 
     try {
       await updateUserRole(id, role, user.id);
-      setUsers(users.map((u) => (u.id === id ? { ...u, role: role as "user" | "admin" | "superadmin" | "volunteer" } : u)));
+      setUsers(
+        users.map((u) =>
+          u.id === id
+            ? {
+                ...u,
+                role: role as "user" | "admin" | "superadmin" | "volunteer",
+              }
+            : u
+        )
+      );
       toast.success(`User role updated to ${role}`);
     } catch (error) {
       console.error("Error updating user role:", error);
@@ -231,7 +243,7 @@ export function UsersList() {
   };
 
   // Handle user update
-  const handleUpdate = async (updatedUser: User) => {
+  const handleUpdate = async (updatedUser: UserType) => {
     if (!user?.id) return;
 
     try {
@@ -318,14 +330,14 @@ export function UsersList() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.length === 0 ? (
+                  {users?.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} className="text-center py-8">
                         No users found
                       </TableCell>
                     </TableRow>
                   ) : (
-                    users.map((user) => (
+                    users?.map((user) => (
                       <TableRow key={user.id}>
                         <TableCell className="whitespace-nowrap font-medium">
                           {user.name}
@@ -349,6 +361,14 @@ export function UsersList() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  router.push(`/admin/users/${user.id}`)
+                                }
+                              >
+                                <User className="h-4 w-4 mr-2" />
+                                View Profile
+                              </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => setEditingUser(user)}
                               >
@@ -610,8 +630,8 @@ function EditUserDialog({
   onUpdate,
   onClose,
 }: {
-  user: User | null;
-  onUpdate: (user: User) => void;
+  user: UserType | null;
+  onUpdate: (user: UserType) => void;
   onClose: () => void;
 }) {
   const [name, setName] = useState("");
