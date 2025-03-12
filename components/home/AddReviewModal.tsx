@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import { toast } from "sonner";
+import { createReview } from "@/services/review";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface AddReviewModalProps {
   isOpen: boolean;
@@ -32,7 +35,7 @@ interface AddReviewModalProps {
 
 const reviewSchema = z.object({
   rating: z.number().min(1).max(5),
-  review: z
+  comment: z
     .string()
     .min(10, "Review must be at least 10 characters long")
     .max(500, "Review must not exceed 500 characters"),
@@ -44,20 +47,38 @@ export default function AddReviewModal({
 }: AddReviewModalProps) {
   const t = useTranslations("Home.addReview");
   const [hoveredStar, setHoveredStar] = useState(0);
-
+  const { data: session } = useSession();
+  const router = useRouter();
   const form = useForm<z.infer<typeof reviewSchema>>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
       rating: 0,
-      review: "",
+      comment: "",
     },
   });
+  useEffect(() => {
+    if (!session?.user) {
+      router.push("/auth/signin");
+    }
+  }, [session, router]);
 
   const onSubmit = async (values: z.infer<typeof reviewSchema>) => {
     try {
       // Here you would typically send the review data to your backend
       console.log("Submitting review:", values);
-      toast.success(t("successMessage"));
+      const modifiedReview = {
+        comment: values?.comment,
+        rating: Number(values?.rating),
+        userId: session?.user?.id!,
+      };
+      const res = await createReview(modifiedReview, session?.user?.id!);
+      console.log("review res", res);
+      if (res?.success) {
+        toast.success(res?.message);
+      }else{
+        toast.error(res?.message)
+      }
+
       form.reset();
       onClose();
     } catch (error) {
@@ -103,7 +124,7 @@ export default function AddReviewModal({
             />
             <FormField
               control={form.control}
-              name="review"
+              name="comment"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("reviewLabel")}</FormLabel>

@@ -8,6 +8,7 @@ import { Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { getAllReviews } from "@/services/review";
 import { Review } from "@/types/reviews";
+import moment from "moment";
 
 
 
@@ -20,7 +21,6 @@ export default function ReviewsPage() {
     const fetchReviews = async () => {
       const res = await getAllReviews();
       const reviews = res?.data;
-      console.log("reviews", res?.data);
 
       setReviews(reviews);
     };
@@ -35,8 +35,8 @@ export default function ReviewsPage() {
         <p className="text-xl text-muted-foreground mb-12 text-center">
           {t("subtitle")}
         </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          reviews?.length > 0 ?  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reviews?.map((review: any, index: number) => (
             <motion.div
               key={review.id}
@@ -72,13 +72,18 @@ export default function ReviewsPage() {
                   </div>
                   <p className="text-muted-foreground mb-2">{review.comment}</p>
                   <p className="text-sm text-muted-foreground">
-                    {new Date(review.date).toLocaleDateString()}
+                    {moment(review.createdAt).format("LLL")}
                   </p>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
+        </div> : <div>
+          <p className="text-gray-500 capitalize text-center text-lg sm:text-xl">There are no review!</p>
         </div>
+        }
+
+       
       </div>
     </div>
   );

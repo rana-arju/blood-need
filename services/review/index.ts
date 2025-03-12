@@ -117,7 +117,7 @@ export const getReviewById = async (reviewId: string): Promise<Review> => {
           "Content-Type": "application/json",
         },
         next: {
-          tags: ["Review"],
+          tags: ["Reviews"],
         },
         cache: "no-store", // Ensure we don't get cached results
       }
@@ -137,9 +137,9 @@ export const getReviewById = async (reviewId: string): Promise<Review> => {
 
 // Create a review
 export const createReview = async (
-  data: { userId: string; comment: string },
+  data: { userId: string; comment: string; rating: number },
   token: string
-): Promise<Review> => {
+) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/reviews`,
@@ -189,7 +189,7 @@ export const updateReview = async (
     }
 
     revalidateTag("Reviews");
-    revalidateTag("Review");
+
     return response.json();
   } catch (error: any) {
     console.error("Error updating review:", error);
