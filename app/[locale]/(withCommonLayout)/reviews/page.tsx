@@ -6,15 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
+import { getAllReviews } from "@/services/review";
+import { Review } from "@/types/reviews";
 
-interface Review {
-  id: string;
-  userName: string;
-  userImage: string;
-  rating: number;
-  comment: string;
-  date: string;
-}
+
 
 export default function ReviewsPage() {
   const t = useTranslations("Reviews");
@@ -23,38 +18,11 @@ export default function ReviewsPage() {
   useEffect(() => {
     // Fetch all reviews from your API here
     const fetchReviews = async () => {
-      // Replace this with your actual API call
-      const mockReviews: Review[] = [
-        {
-          id: "1",
-          userName: "John Doe",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 5,
-          comment:
-            "Great experience donating blood. The staff was very friendly and professional.",
-          date: "2024-03-01",
-        },
-        {
-          id: "2",
-          userName: "Jane Smith",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 4,
-          comment:
-            "Easy to use platform. Found a donor quickly when I needed blood for my surgery.",
-          date: "2024-02-28",
-        },
-        {
-          id: "3",
-          userName: "Mike Johnson",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 5,
-          comment:
-            "This platform is saving lives. I'm proud to be a regular donor.",
-          date: "2024-02-27",
-        },
-        // Add more mock reviews as needed
-      ];
-      setReviews(mockReviews);
+      const res = await getAllReviews();
+      const reviews = res?.data;
+      console.log("reviews", res?.data);
+
+      setReviews(reviews);
     };
 
     fetchReviews();
@@ -69,7 +37,7 @@ export default function ReviewsPage() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review, index) => (
+          {reviews?.map((review: any, index: number) => (
             <motion.div
               key={review.id}
               initial={{ opacity: 0, y: 20 }}
@@ -81,13 +49,13 @@ export default function ReviewsPage() {
                   <div className="flex items-center mb-4">
                     <Avatar className="h-12 w-12 mr-4">
                       <AvatarImage
-                        src={review.userImage}
-                        alt={review.userName}
+                        src={review.user.image}
+                        alt={review.user.name}
                       />
-                      <AvatarFallback>{review.userName[0]}</AvatarFallback>
+                      <AvatarFallback>{review.user.name[0]}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-semibold">{review.userName}</h3>
+                      <h3 className="font-semibold">{review.user.name}</h3>
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
                           <Star

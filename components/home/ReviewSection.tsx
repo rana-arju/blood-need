@@ -15,14 +15,8 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
-
-interface Review {
-  id: string;
-  userName: string;
-  userImage: string;
-  rating: number;
-  comment: string;
-}
+import { getAllReviews } from "@/services/review";
+import { Review } from "@/types/reviews";
 
 export default function ReviewsSection() {
   const t = useTranslations("Home.reviews");
@@ -34,50 +28,11 @@ export default function ReviewsSection() {
   useEffect(() => {
     // Fetch reviews from your API here
     const fetchReviews = async () => {
-      // Replace this with your actual API call
-      const mockReviews: Review[] = [
-        {
-          id: "1",
-          userName: "John Doe",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 5,
-          comment:
-            "Great experience donating blood. The staff was very friendly and professional.",
-        },
-        {
-          id: "2",
-          userName: "Jane Smith",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 4,
-          comment:
-            "Easy to use platform. Found a donor quickly when I needed blood for my surgery.",
-        },
-        {
-          id: "3",
-          userName: "Mike Johnson",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 5,
-          comment:
-            "This platform is saving lives. I'm proud to be a regular donor.",
-        },
-        {
-          id: "4",
-          userName: "Emily Brown",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 5,
-          comment:
-            "The process was smooth and the staff made me feel comfortable throughout.",
-        },
-        {
-          id: "5",
-          userName: "David Lee",
-          userImage: "/placeholder.svg?height=40&width=40",
-          rating: 4,
-          comment:
-            "Great initiative! The mobile app makes it easy to schedule donations.",
-        },
-      ];
-      setReviews(mockReviews);
+      const res = await getAllReviews();
+      const reviews = res?.data;
+      console.log("reviews", res?.data);
+
+      setReviews(reviews);
     };
 
     fetchReviews();
@@ -122,7 +77,7 @@ export default function ReviewsSection() {
             modules={[Mousewheel, EffectCards]}
             className="w-full h-full"
           >
-            {reviews.map((review) => (
+            {reviews?.slice(0,6).map((review) => (
               <SwiperSlide key={review.id}>
                 <Card
                   className={cn(
@@ -135,19 +90,19 @@ export default function ReviewsSection() {
                     <div className="flex items-center mb-4">
                       <Avatar className="h-12 w-12 mr-4">
                         <AvatarImage
-                          src={review.userImage}
-                          alt={review.userName}
+                          src={review.user?.image}
+                          alt={review?.user?.name}
                         />
-                        <AvatarFallback>{review.userName[0]}</AvatarFallback>
+                        <AvatarFallback>{review.user?.name[0]}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="font-semibold">{review.userName}</h3>
+                        <h3 className="font-semibold">{review?.user?.name}</h3>
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
                               className={`h-4 w-4 ${
-                                i < review.rating
+                                i < review?.rating
                                   ? "text-yellow-400 fill-yellow-400"
                                   : "text-gray-300"
                               }`}
