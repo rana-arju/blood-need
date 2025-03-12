@@ -26,6 +26,43 @@ interface DonorResponse {
   };
 }
 
+export interface PaginationOptions {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
+
+export interface DonorFilters {
+  searchTerm?: string;
+  blood?: string;
+  division?: string;
+  district?: string;
+  upazila?: string;
+  gender?: string;
+  eligibleOnly?: boolean;
+  lastDonationDate?: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+interface DonorResponse {
+  success: boolean;
+  data: any[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
+
 export const getAllDonors = async (params: Record<string, any>) => {
   try {
     // Format the parameters for the backend
@@ -139,32 +176,77 @@ export const donorUpdate = async (data: any, donorId: string) => {
     return Error(error);
   }
 };
-export const getSingleDonor = async (donorId: string): Promise<any> => {
+// Get a donor by ID
+export const getDonorById = async (donorId: string): Promise<any> => {
   try {
-  
-     const response = await axios.get(
-       `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/${donorId}`
-     );
-     return response.data.data;
-  } catch (error: any) {
-    return Error(error);
-  }
-};
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/${donorId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: {
+        tags: ["Donor"],
+      },
+      cache: "no-store", // Ensure we don't get cached results
+    })
 
-export const deleteDonor = async (donorId: string): Promise<any> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blood-donor/${donorId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
-      }
-    );
-    revalidateTag("Donor");
-    return res.json();
+    if (!response.ok) {
+      throw new Error(`Error fetching donor: ${response.status}`)
+    }
+
+    const result = await response.json()
+    return result.data
   } catch (error: any) {
-    return Error(error);
+    console.error("Error fetching donor:", error)
+    throw error
   }
-};
+}
+
+
+// Update a donor
+export const updateDonor = async (donorId: string, data: any, token: string): Promise<any> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/${donorId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error updating donor: ${response.status}`)
+    }
+
+    revalidateTag("Donors")
+    revalidateTag("Donor")
+    return response.json()
+  } catch (error: any) {
+    console.error("Error updating donor:", error)
+    throw error
+  }
+}
+
+// Delete a donor
+export const deleteDonor = async (donorId: string, token: string): Promise<any> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/${donorId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error deleting donor: ${response.status}`)
+    }
+
+    revalidateTag("Donors")
+    return response.json()
+  } catch (error: any) {
+    console.error("Error deleting donor:", error)
+    throw error
+  }
+}
