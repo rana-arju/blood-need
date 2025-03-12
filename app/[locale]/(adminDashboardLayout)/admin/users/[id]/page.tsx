@@ -44,7 +44,7 @@ export default function UserDetailsPage() {
       try {
         setLoading(true);
         const userData = await getUserById(userId, session.user.id);
-        setUser(userData);
+        setUser(userData?.data);
       } catch (error) {
         console.error("Error fetching user:", error);
         toast.error("Failed to load user details");
@@ -145,6 +145,7 @@ export default function UserDetailsPage() {
       day: "numeric",
     });
   };
+console.log("user", user);
 
   return (
     <div className="space-y-6">
@@ -169,15 +170,15 @@ export default function UserDetailsPage() {
             <div className="flex flex-col items-center gap-4">
               <Avatar className="h-40 w-40">
                 <AvatarImage
-                  src={user.image || "/placeholder.svg?height=160&width=160"}
+                  src={user?.image}
                   alt={user.name}
                 />
                 <AvatarFallback className="text-4xl">
-                  {user.name?.charAt(0) || "U"}
+                  {user.name?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-center">
-                <h2 className="text-xl font-bold">{user.name || "No Name"}</h2>
+                <h2 className="text-xl font-bold">{user.name}</h2>
                 <div className="flex gap-2 mt-2">
                   {renderRoleBadge(user.role)}
                   {renderStatusBadge(user.status)}
@@ -204,7 +205,7 @@ export default function UserDetailsPage() {
                     </h3>
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span>{user.phone || "No Phone"}</span>
+                      <span>{user?.donorInfo?.phone || "No Phone"}</span>
                     </div>
                   </div>
 

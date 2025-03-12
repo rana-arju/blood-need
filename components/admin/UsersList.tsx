@@ -138,9 +138,6 @@ export function UsersList() {
         if (debouncedSearchTerm && debouncedSearchTerm.trim() !== "") {
           filters.searchTerm = debouncedSearchTerm.trim();
         }
-
-        console.log("Fetching users with filters:", filters);
-
         const response = await getAllUsers(user.id, filters, pagination);
 
         setUsers(response.data);
@@ -351,14 +348,14 @@ export function UsersList() {
                         <TableCell className="whitespace-nowrap">
                           {renderStatusBadge(user.status)}
                         </TableCell>
-                        <TableCell className="whitespace-nowrap text-right">
+                        <TableCell className="whitespace-nowrap text-right ">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
+                              <Button variant="ghost" size="icon" className="outline-none border-none">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
+                            <DropdownMenuContent align="end" className="max-h-64 overflow-y-auto scroll-m-0">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
