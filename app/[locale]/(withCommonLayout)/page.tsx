@@ -2,7 +2,6 @@ import { useTranslations } from "next-intl";
 import Hero from "@/components/Hero";
 import DonationProcess from "@/components/DonationProcess";
 import News from "@/components/News";
-import { ReviewSection } from "@/components/ReviewSection";
 import UpcomingDrives from "@/components/UpcomingDrives";
 import EducationalResources from "@/components/EducationalResources";
 import ImpactStatistics from "@/components/ImpactStatistics";
@@ -61,7 +60,7 @@ const mockBloodRequests = [
     urgency: "low",
   },
 ];
-export default function Home() {
+export default  function Home() {
   const t = useTranslations("home");
   return (
     <div className="overflow-x-hidden">
@@ -75,7 +74,8 @@ export default function Home() {
       {
         //<BloodRequestFeed />
       }
-      <LatestBloodRequests requests={mockBloodRequests} />
+      <LatestBloodRequests />
+      
       <DonorLeaderboard />
       <EducationalResources />
       <DonationProcess />

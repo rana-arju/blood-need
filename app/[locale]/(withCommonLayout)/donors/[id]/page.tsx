@@ -24,10 +24,10 @@ import {
 import { format, formatDistanceToNow } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButton } from "@/components/ShareButton";
-import { getSingleDonor } from "@/services/beDonor";
 import { extractFacebookUsername, getFacebookUrl } from "@/utils/socialMedia";
 import Link from "next/link";
 import { getLocationName } from "@/utils/locationUtils";
+import { getDonorById } from "@/services/beDonor";
 
 export default function DonorDetailPage() {
   const { id } = useParams();
@@ -38,7 +38,7 @@ export default function DonorDetailPage() {
   useEffect(() => {
     const fetchDonorDetails = async () => {
       try {
-        const data = await getSingleDonor(id as string);
+        const data = await getDonorById(id as string);
         data.user.division = await getLocationName(
           "division",
           data.user.division

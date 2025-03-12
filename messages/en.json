@@ -1198,7 +1198,7 @@
   },
   "Home": {
     "latestRequests": {
-      "title": "Latest Blood Requests",
+      "title": "Emergency Blood Requests",
       "subtitle": "These are the most recent blood donation requests in your area",
       "viewAllButton": "View All Requests",
       "addReviewButton": "Add Review"
