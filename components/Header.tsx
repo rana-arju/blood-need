@@ -119,7 +119,7 @@ export default function Header() {
         <Link
           href="/virtual-test"
           className={`hover:text-primary ${
-            isActive("/blog") && "text-primary"
+            isActive("/virtual-test") && "text-primary"
           }`}
         >
           {t("bloodTest")}

@@ -35,7 +35,7 @@ export function UserSidebar() {
     <>
       <Button
         variant="outline"
-        className="fixed top-4 left-4 z-50 md:hidden"
+        className="fixed top-14 left-1 z-50 md:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
         <Menu className="h-4 w-4" />
@@ -46,12 +46,8 @@ export function UserSidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-center h-16 border-b">
-            <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
-              User Dashboard
-            </h3>
-          </div>
+        <div className="flex flex-col h-full mt-14">
+        
           <nav className="flex-1 overflow-y-auto py-4">
             <ul className="space-y-2 px-4">
               {sidebarItems.map((item) => (

@@ -506,139 +506,7 @@
       }
     }
   },
-  "UserDashboard": {
-    "sidebar": {
-      "overview": "Dashboard",
-      "donations": "Donations",
-      "requests": "Blood Requests",
-      "health": "Health History",
-      "achievements": "Achievements",
-      "settings": "Settings",
-      "logout": "Log Out",
-      "userAvatar": "User Avatar",
-      "userName": "John Doe",
-      "userRole": "Regular Donor"
-    },
-    "overview": {
-      "welcome": "Welcome, John",
-      "donateNow": "Donate Now",
-      "requestBlood": "Request Blood",
-      "totalDonations": "Total Donations",
-      "lastDonation": "Last donation on {date}",
-      "livesSaved": "Lives Saved",
-      "impactDescription": "Each donation can save up to 3 lives",
-      "nextEligible": "Next Eligible",
-      "eligibleNow": "Eligible Now",
-      "eligibleDescription": "You can donate again",
-      "donorRank": "Donor Rank",
-      "rankDescription": "3 more donations until Gold",
-      "donationHistory": "Donation History",
-      "impact": "Your Impact",
-      "healthMetrics": "Health Metrics",
-      "viewHealthDetails": "View Health Details",
-      "activities": "Activities"
-    },
-    "tabs": {
-      "upcoming": "Upcoming",
-      "recent": "Recent"
-    },
-    "events": {
-      "bloodDrive": "Community Blood Drive",
-      "cityHospital": "City Hospital",
-      "healthCheckup": "Donor Health Checkup",
-      "medicalCenter": "Medical Center"
-    },
-    "activity": {
-      "donationCompleted": "You completed a blood donation",
-      "achievementUnlocked": "You unlocked the 'Regular Donor' achievement",
-      "requestFulfilled": "Your blood request was fulfilled"
-    }
-  },
-  "UserAchievements": {
-    "title": "Achievements",
-    "currentBadge": {
-      "title": "Current Badge",
-      "badge": "Silver Donor",
-      "nextLevel": "3 more donations until Gold"
-    },
-    "achievementsList": {
-      "title": "Achievements",
-      "completed": "Completed",
-      "progress": "{percent}% Complete"
-    },
-    "achievements": {
-      "firstTime": {
-        "name": "First Time Donor",
-        "description": "Complete your first blood donation"
-      },
-      "regular": {
-        "name": "Regular Donor",
-        "description": "Donate blood 5 times"
-      },
-      "silver": {
-        "name": "Silver Donor",
-        "description": "Donate blood 10 times"
-      },
-      "gold": {
-        "name": "Gold Donor",
-        "description": "Donate blood 20 times"
-      }
-    }
-  },
-  "UserDonations": {
-    "title": "Donation History",
-    "subtitle": "My Donations",
-    "table": {
-      "date": "Date",
-      "location": "Location",
-      "type": "Type",
-      "status": "Status"
-    },
-    "donations": {
-      "locations": {
-        "cityHospital": "City Hospital",
-        "redCross": "Red Cross Center"
-      },
-      "types": {
-        "wholeBlood": "Whole Blood",
-        "platelets": "Platelets",
-        "plasma": "Plasma"
-      },
-      "status": {
-        "completed": "Completed",
-        "pending": "Pending",
-        "cancelled": "Cancelled"
-      }
-    }
-  },
-  "UserHealth": {
-    "title": "Health History",
-    "hemoglobin": {
-      "title": "Hemoglobin Levels",
-      "label": "Hemoglobin (g/dL)"
-    },
-    "records": {
-      "title": "Health Records",
-      "date": "Date",
-      "hemoglobin": "Hemoglobin",
-      "bloodPressure": "Blood Pressure",
-      "weight": "Weight (kg)"
-    },
-    "months": {
-      "jan": "Jan",
-      "feb": "Feb",
-      "mar": "Mar",
-      "apr": "Apr",
-      "may": "May",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Oct",
-      "nov": "Nov",
-      "dec": "Dec"
-    }
-  },
+
   "UserRequests": {
     "title": "My Blood Requests",
     "subtitle": "Active Requests",
@@ -1222,5 +1090,203 @@
   "Reviews": {
     "title": "Community Reviews",
     "subtitle": "See what our users have to say about their experiences"
+  },
+  "UserDonations": {
+    "title": "Donation History",
+    "subtitle": "Track your blood donation journey",
+    "addDonation": "Add Donation",
+    "editDonation": "Edit Donation",
+    "noDonations": "You haven't recorded any donations yet.",
+    "addFirstDonation": "Record Your First Donation",
+    "table": {
+      "date": "Date",
+      "location": "Location",
+      "type": "Blood Type",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "hospitalName": "Hospital Name",
+    "location": "Location",
+    "amount": "Amount",
+    "status": "Status",
+    "notes": "Notes",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this donation record?",
+    "donations": {
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "cancelled": "Cancelled"
+      },
+      "locations": {
+        "cityHospital": "City Hospital",
+        "redCross": "Red Cross Center"
+      },
+      "types": {
+        "wholeBlood": "Whole Blood",
+        "platelets": "Platelets",
+        "plasma": "Plasma"
+      }
+    }
+  },
+  "UserAchievements": {
+    "title": "My Achievements",
+    "subtitle": "Track your blood donation journey achievements",
+    "currentBadge": {
+      "title": "Current Badge",
+      "badge": "First Time Donor",
+      "nextLevel": "Donate 3 times to reach Regular Donor status"
+    },
+    "achievementsList": {
+      "title": "Your Achievements",
+      "completed": "Completed",
+      "progress": "{percent}% Complete"
+    },
+    "achievements": {
+      "firstTime": {
+        "name": "First Time Donor",
+        "description": "Donated blood for the first time"
+      },
+      "regular": {
+        "name": "Regular Donor",
+        "description": "Donated blood 3 times"
+      },
+      "silver": {
+        "name": "Silver Donor",
+        "description": "Donated blood 5 times"
+      },
+      "gold": {
+        "name": "Gold Donor",
+        "description": "Donated blood 10 times"
+      },
+      "platinum": {
+        "name": "Platinum Donor",
+        "description": "Donated blood 25 times"
+      },
+      "diamond": {
+        "name": "Diamond Donor",
+        "description": "Donated blood 50 times"
+      },
+      "lifesaver": {
+        "name": "Lifesaver",
+        "description": "Donated blood 100 times"
+      },
+      "communityhero": {
+        "name": "Community Hero",
+        "description": "Helped organize a blood donation drive"
+      },
+      "firstblooddonation": {
+        "name": "First Blood Donation",
+        "description": "Successfully completed your first blood donation"
+      }
+    },
+    "noAchievements": "You haven't earned any achievements yet. Start donating blood to unlock achievements!",
+    "startDonating": "Start Donating"
+  },
+  "UserHealth": {
+    "title": "Health History",
+    "subtitle": "Track your health metrics over time",
+    "donorInfo": "Donor Information",
+    "healthRecords": "Health Records",
+    "healthRecordsDescription": "Your health records history",
+    "healthMetrics": "Health Metrics",
+    "addRecord": "Add Record",
+    "addNewRecord": "Add New Health Record",
+    "addRecordDescription": "Enter your latest health metrics",
+    "editRecord": "Edit Health Record",
+    "editRecordDescription": "Update your health record information",
+    "deleteRecord": "Delete Health Record",
+    "deleteRecordConfirmation": "This action cannot be undone. This will permanently delete your health record.",
+    "date": "Date",
+    "hemoglobin": "Hemoglobin",
+    "hemoglobinTrend": "Hemoglobin Trend",
+    "bloodPressure": "Blood Pressure",
+    "weight": "Weight",
+    "weightTrend": "Weight Trend",
+    "height": "Height",
+    "notes": "Notes",
+    "medicalCondition": "Medical Condition",
+    "currentMedications": "Current Medications",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "none": "None",
+    "notProvided": "Not Provided",
+    "noHealthRecords": "No health records found",
+    "addFirstRecord": "Add Your First Record",
+    "noRecords": "You haven't recorded any health data yet.",
+    "noData": "No data available to display",
+    "hemoglobin": {
+      "title": "Hemoglobin Levels",
+      "label": "Hemoglobin (g/dL)"
+    },
+    "weight": {
+      "title": "Weight Tracking",
+      "label": "Weight (kg)"
+    },
+    "records": {
+      "title": "Health Records",
+      "date": "Date",
+      "hemoglobin": "Hemoglobin",
+      "bloodPressure": "Blood Pressure",
+      "weight": "Weight",
+      "height": "Height",
+      "pulse": "Pulse Rate",
+      "notes": "Notes",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Are you sure you want to delete this health record?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "successAdd": "Health record added successfully",
+    "successUpdate": "Health record updated successfully",
+    "successDelete": "Health record deleted successfully",
+    "errorAdd": "Failed to add health record. Please try again.",
+    "errorUpdate": "Failed to update health record. Please try again.",
+    "errorDelete": "Failed to delete health record. Please try again.",
+    "errorFetch": "Failed to load health records. Please try again later."
+  },
+  "UserDashboard": {
+    "overview": {
+      "welcome": "Welcome to Your Dashboard",
+      "totalDonations": "Total Donations",
+      "lastDonation": "Last donation: {date}",
+      "livesSaved": "Lives Saved",
+      "impactDescription": "Each donation can save up to 3 lives",
+      "nextEligible": "Next Eligible",
+      "eligibleNow": "Eligible Now",
+      "eligibleDescription": "You can donate again anytime",
+      "donorRank": "Donor Rank",
+      "rankDescription": "5 more donations to reach Gold",
+      "donateNow": "Donate Now",
+      "requestBlood": "Request Blood",
+      "donationHistory": "Donation History",
+      "impact": "Your Impact",
+      "healthMetrics": "Health Metrics",
+      "viewHealthDetails": "View Health Details",
+      "activities": "Activities",
+      "hemoglobin": "Hemoglobin",
+      "donations": "Donations"
+    },
+    "events": {
+      "bloodDrive": "Community Blood Drive",
+      "cityHospital": "City Hospital",
+      "healthCheckup": "Donor Health Checkup",
+      "medicalCenter": "Medical Center"
+    },
+    "activity": {
+      "donationCompleted": "Successfully completed blood donation",
+      "achievementUnlocked": "Unlocked Silver Donor achievement",
+      "requestFulfilled": "Your blood request was fulfilled"
+    },
+    "tabs": {
+      "upcoming": "Upcoming",
+      "recent": "Recent"
+    }
   }
 }

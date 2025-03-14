@@ -101,6 +101,28 @@ export const getAllBloodRequests = async (params: any) => {
     throw error;
   }
 };
+export const getAllMyBloodRequests = async (params: any, userId: string) => {
+  try {
+    const response = await axios.get<BloodRequestResponse>(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/myrequest`,
+      {
+        params: params, // Pass userId as a query parameter
+        headers: {
+          Authorization: `Bearer ${userId}`, // Set the authorization token
+        },
+      }
+    );
+    return {
+      requests: response.data.data,
+      totalPages: response.data.meta.totalPages,
+      currentPage: response.data.meta.page,
+      total: response.data.meta.total,
+    };
+  } catch (error) {
+    console.error("Error fetching blood requests:", error);
+    throw error;
+  }
+};
 
 export const getBloodRequestById = async (id: string) => {
   try {
@@ -115,8 +137,6 @@ export const getBloodRequestById = async (id: string) => {
 };
 
 export const bloodRequest = async (data: any, token: string) => {
-  console.log(JSON.stringify(data));
-
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests`,
@@ -135,109 +155,66 @@ export const bloodRequest = async (data: any, token: string) => {
     return Error(error);
   }
 };
-export const donorUpdate = async (data: any, userId: string) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${userId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    revalidateTag("Request");
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
-export const getSingleDonor = async (donorId: string): Promise<any> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blood-donor/${donorId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
-      }
-    );
-    revalidateTag("Request");
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
-export const deleteDonor = async (donorId: string): Promise<any> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blood-donor/${donorId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-        },
-      }
-    );
-    revalidateTag("Request");
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
 
 // Update blood request
 export const updateBloodRequest = async (
   id: string,
   data: Partial<BloodRequest>,
-  token: string,
+  token: string
 ): Promise<{ data: BloodRequest }> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    })
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
     if (!res.ok) {
-      throw new Error(`Error updating blood request: ${res.status}`)
+      throw new Error(`Error updating blood request: ${res.status}`);
     }
 
-    revalidateTag("blood-requests")
-    revalidateTag(`blood-request-${id}`)
+    revalidateTag("blood-requests");
+    revalidateTag(`blood-request-${id}`);
 
-    return await res.json()
+    return await res.json();
   } catch (error: any) {
-    console.error("Error updating blood request:", error)
-    throw error
+    console.error("Error updating blood request:", error);
+    throw error;
   }
-}
+};
 
 // Delete blood request
-export const deleteBloodRequest = async (id: string, token: string): Promise<{ data: BloodRequest }> => {
+export const deleteBloodRequest = async (
+  id: string,
+  token: string
+): Promise<{ data: BloodRequest }> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!res.ok) {
-      throw new Error(`Error deleting blood request: ${res.status}`)
+      throw new Error(`Error deleting blood request: ${res.status}`);
     }
 
-    revalidateTag("blood-requests")
+    revalidateTag("blood-requests");
 
-    return await res.json()
+    return await res.json();
   } catch (error: any) {
-    console.error("Error deleting blood request:", error)
-    throw error
+    console.error("Error deleting blood request:", error);
+    throw error;
   }
-}
+};

@@ -1,5 +1,5 @@
-import { UserBloodRequests } from "@/components/user/UserBloodRequests";
+import { UserBloodRequestsList } from "@/components/user/UserBloodRequests";
 
 export default function RequestsPage() {
-  return <UserBloodRequests />;
+  return <UserBloodRequestsList />;
 }

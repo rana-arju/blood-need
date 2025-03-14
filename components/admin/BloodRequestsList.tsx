@@ -166,7 +166,6 @@ export function BloodRequestsList() {
 
   // Handle blood request update
   const handleUpdate = async (updatedRequest: BloodRequest) => {
-    console.log("update reuest", updatedRequest);
 
     if (!session?.user?.id) {
       toast.error("You must be logged in to update a blood request");
@@ -184,7 +183,7 @@ export function BloodRequestsList() {
         },
         session.user.id
       );
-      console.log("res", res);
+    
 
       // Update the request in the local state
       setRequests(
