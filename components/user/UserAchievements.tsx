@@ -12,9 +12,11 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { IAchievement } from "@/types/achievement.interface";
 import { getMyAchievements } from "@/services/achivement";
+import { useSession } from "next-auth/react";
 
 export function UserAchievements() {
   const t = useTranslations("UserAchievements");
+  const {data:session} = useSession()
   const { theme } = useTheme();
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,50 +24,11 @@ export function UserAchievements() {
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
-       // const data = await getMyAchievements();
-        //setAchievements(data || []);
-          setAchievements([
-            {
-              id: "1",
-              userId: "user1",
-              name: t("achievements.firstTime.name"),
-              description: t("achievements.firstTime.description"),
-              progress: 100,
-              achieved: true,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-            {
-              id: "2",
-              userId: "user1",
-              name: t("achievements.regular.name"),
-              description: t("achievements.regular.description"),
-              progress: 60,
-              achieved: false,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-            {
-              id: "3",
-              userId: "user1",
-              name: t("achievements.silver.name"),
-              description: t("achievements.silver.description"),
-              progress: 30,
-              achieved: false,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-            {
-              id: "4",
-              userId: "user1",
-              name: t("achievements.gold.name"),
-              description: t("achievements.gold.description"),
-              progress: 15,
-              achieved: false,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ]);
+        const data = await getMyAchievements(session?.user.id!);
+        setAchievements(data.data || []);
+  
+        
+     
       } catch (error) {
         console.error("Error fetching achievements:", error);
         // Use mock data if API fails

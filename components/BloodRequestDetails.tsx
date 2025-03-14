@@ -23,6 +23,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getLocationName } from "@/utils/locationUtils";
+import { useSession } from "next-auth/react";
+import { createNewDonation, getDonationById } from "@/services/donation";
+import { toast } from "sonner";
 
 // Types
 interface BloodRequestDetailsProps {
@@ -67,7 +70,9 @@ function calculateUrgency(requiredDate: Date): "Low" | "Medium" | "High" {
 export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
   const [request, setRequest] = useState<BloodRequest | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [donation, setDonation] = useState(null);
   const [error, setError] = useState<string | null>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchBloodRequest = async () => {
@@ -75,7 +80,6 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
       try {
         const data = await getBloodRequestById(id);
         const requestData = data?.data;
-       
 
         // Convert location IDs to names
         requestData.division = await getLocationName(
@@ -101,6 +105,17 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
     fetchBloodRequest();
   }, [id]);
 
+  useEffect(() => {
+    const fetchDonation = async () => {
+      if (request) {
+        const res = await getDonationById(session?.user.id!, request.id!);
+
+        setDonation(res.data);
+      }
+    };
+    fetchDonation();
+  }, [request]);
+
   if (isLoading) return <CustomNotFound />;
   if (error)
     return <div className="text-center py-10 text-red-500">Error: {error}</div>;
@@ -116,6 +131,20 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
     Low: "bg-green-500",
     Medium: "bg-yellow-500",
     High: "bg-red-500",
+  };
+  const handleIntereste = async () => {
+    const requestId = request?.id;
+    const userId = session?.user?.id;
+    try {
+      const res = await createNewDonation({ requestId, userId });
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch {
+      toast.error("Something wrong. try again");
+    }
   };
 
   return (
@@ -234,7 +263,18 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
         )}
 
         {/* Action Button */}
-        <Button className="w-full mt-4">Respond to Request</Button>
+        {donation ? (
+          <Button className="w-full mt-4  font-bold cursor-pointer" disabled>
+            Already Interested
+          </Button>
+        ) : (
+          <Button
+            className="w-full mt-4 font-bold cursor-pointer"
+            onClick={handleIntereste}
+          >
+            I'm want to donate
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
