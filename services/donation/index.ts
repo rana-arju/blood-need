@@ -111,6 +111,25 @@ export const getMyDonationOffers = async (userId: string, requestId: string) => 
      throw new Error(error.message || "Failed to fetch donation");
    }
 };
+export const getMyDonation = async (userId: string) => {
+   try {
+     const response = await fetch(
+       `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/my-donation`,
+       {
+         method: "GET",
+         headers: {
+           Authorization: `Bearer ${userId}`,
+           "Content-Type": "application/json",
+         },
+       }
+     );
+
+     return response.json();
+   } catch (error: any) {
+     console.error(`Error fetching donation`, error);
+     throw new Error(error.message || "Failed to fetch donation");
+   }
+};
 export const getDonationById = async (id: string, request: string) => {
   try {
     const response = await fetch(

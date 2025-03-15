@@ -1192,9 +1192,10 @@
     "confirmDelete": "আপনি কি নিশ্চিত যে আপনি এই দান রেকর্ড মুছতে চান?",
     "donations": {
       "status": {
-        "completed": "সম্পন্ন",
+        "confirmed": "সম্পন্ন",
         "pending": "অপেক্ষমান",
-        "cancelled": "বাতিল"
+        "cancelled": "বাতিল",
+        "selected": "নির্বাচিত"
       },
       "locations": {
         "cityHospital": "সিটি হাসপাতাল",

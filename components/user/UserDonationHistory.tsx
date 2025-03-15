@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -21,6 +21,8 @@ import {
 } from "recharts";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslations } from "next-intl";
+import { getMyDonation } from "@/services/donation";
+import { useSession } from "next-auth/react";
 
 // Mock data based on the provided schema
 const mockDonationData = [
@@ -240,7 +242,7 @@ interface Donation {
   id: string;
   userId: string;
   bloodRequestId: string;
-  status: "completed" | "pending" | "cancelled";
+  status: "confirmed" | "pending" | "cancelled";
   notes?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -250,10 +252,10 @@ interface Donation {
 
 export function UserDonationHistory() {
   const t = useTranslations("UserDonations");
+  const { data: session } = useSession();
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
-
 
   // Colors for charts
   const COLORS = [
@@ -276,26 +278,28 @@ export function UserDonationHistory() {
         // In a real app, this would be an API call
         // const response = await fetch('/api/donations');
         // const data = await response.json();
-
-        // Using mock data instead
+        const res = await getMyDonation(session?.user?.id!);
         setTimeout(() => {
-          setDonations(mockDonationData);
-
+          setDonations(res?.data);
           // Calculate stats from mock data
-          const completedCount = mockDonationData.filter(
-            (d) => d.status === "completed"
+          const completedCount = res?.data?.filter(
+            (d: any) => d.status === "confirmed"
           ).length;
-          const pendingCount = mockDonationData.filter(
-            (d) => d.status === "pending"
+          const pendingCount = res?.data?.filter(
+            (d: any) => d.status === "pending"
           ).length;
-          const cancelledCount = mockDonationData.filter(
-            (d) => d.status === "cancelled"
+          const cancelledCount = res?.data?.filter(
+            (d: any) => d.status === "cancelled"
+          ).length;
+          const selectedCount = res?.data?.filter(
+            (d: any) => d.status === "selected"
           ).length;
 
           // Group by blood type
-          const bloodTypeCount = mockDonationData.reduce((acc, donation) => {
+          const bloodTypeCount = res?.data.reduce((acc: any, donation: any) => {
             const bloodType = donation.bloodRequest.blood;
-            if (donation.status === "completed") {
+
+            if (donation.status === "confirmed") {
               acc[bloodType] =
                 (acc[bloodType] || 0) + donation.bloodRequest.bloodAmount;
             }
@@ -320,10 +324,10 @@ export function UserDonationHistory() {
             const monthStart = new Date(year, month.getMonth(), 1);
             const monthEnd = new Date(year, month.getMonth() + 1, 0);
 
-            const monthDonations = mockDonationData.filter((d) => {
+            const monthDonations = res.data.filter((d: any) => {
               const donationDate = new Date(d.createdAt);
               return (
-                d.status === "completed" &&
+                d.status === "confirmed" &&
                 donationDate >= monthStart &&
                 donationDate <= monthEnd
               );
@@ -333,16 +337,17 @@ export function UserDonationHistory() {
               month: monthKey,
               count: monthDonations.length,
               units: monthDonations.reduce(
-                (sum, d) => sum + d.bloodRequest.bloodAmount,
+                (sum: any, d: any) => sum + d.bloodRequest.bloodAmount,
                 0
               ),
             });
           }
 
           setStats({
-            totalDonations: mockDonationData.length,
+            totalDonations: res.data?.length,
             completedDonations: completedCount,
             pendingDonations: pendingCount,
+            selectedDonations: selectedCount,
             cancelledDonations: cancelledCount,
             donationsByBloodType: bloodTypeCount,
             donationsByMonth,
@@ -362,10 +367,10 @@ export function UserDonationHistory() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "completed":
+      case "confirmed":
         return (
           <Badge variant="outline" className="bg-green-400 text-white">
-            {t("donations.status.completed")}
+            {t("donations.status.confirmed")}
           </Badge>
         );
       case "pending":
@@ -498,9 +503,11 @@ export function UserDonationHistory() {
                       </h3>
                     </div>
                     <div className="bg-yellow-500/10 p-4 rounded-lg">
-                      <p className="text-sm text-muted-foreground">Pending</p>
+                      <p className="text-sm text-muted-foreground">
+                        Pending/Selected
+                      </p>
                       <h3 className="text-2xl font-bold">
-                        {stats.pendingDonations}
+                        {stats.pendingDonations}/{stats.selectedDonations}
                       </h3>
                     </div>
                     <div className="bg-red-500/10 p-4 rounded-lg">
