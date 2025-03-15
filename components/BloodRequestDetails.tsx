@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import { getLocationName } from "@/utils/locationUtils";
 import { useSession } from "next-auth/react";
-import { createNewDonation, getDonationById } from "@/services/donation";
+import { createNewDonation, getDonationById, singleDonation } from "@/services/donation";
 import { toast } from "sonner";
 
 // Types
@@ -108,13 +108,14 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
   useEffect(() => {
     const fetchDonation = async () => {
       if (request) {
-        const res = await getDonationById(session?.user.id!, request.id!);
+        const res = await singleDonation(session?.user.id!, request.id!);
 
         setDonation(res.data);
       }
     };
     fetchDonation();
   }, [request]);
+console.log("req", donation);
 
   if (isLoading) return <CustomNotFound />;
   if (error)

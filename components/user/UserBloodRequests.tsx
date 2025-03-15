@@ -446,7 +446,7 @@ export function UserBloodRequestsList() {
                               <DropdownMenuItem
                                 onClick={() =>
                                   router.push(
-                                    `/requests/${request.id}`
+                                    `/dashboard/requests/${request.id}`
                                   )
                                 }
                               >

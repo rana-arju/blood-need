@@ -59,18 +59,12 @@ export interface GetDonationsParams {
   userId?: string;
 }
 
-export const getUserDonations = async (params: GetDonationsParams = {}) => {
+export const getUserDonations = async (
+  params: GetDonationsParams = {},
+  userId: string,
+  requestId: string
+) => {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      throw new Error("Authentication required");
-    }
-    const { user } = session;
-
-    if (!user) {
-      throw new Error("Authentication required");
-    }
-
     const { page = 1, limit = 10, status, bloodRequestId } = params;
 
     // Build query parameters
@@ -80,27 +74,45 @@ export const getUserDonations = async (params: GetDonationsParams = {}) => {
     if (status) queryParams.append("status", status);
     if (bloodRequestId) queryParams.append("bloodRequestId", bloodRequestId);
 
-    const response = await axios.get(
+    const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_BACKEND_URL
-      }/api/donations?${queryParams.toString()}`,
+      }/donations/${requestId}?${queryParams.toString()}`,
       {
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${user.id}`,
+          Authorization: `Bearer ${userId}`,
         },
       }
     );
 
-    return response.data.data as DonationResponse;
+    return response.json();
   } catch (error: any) {
     console.error("Error fetching donations:", error);
     throw new Error(error.message || "Failed to fetch donations");
   }
 };
+export const getMyDonationOffers = async (userId: string, requestId: string) => {
+   try {
+     const response = await fetch(
+       `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/${requestId}`,
+       {
+         method: "GET",
+         headers: {
+           Authorization: `Bearer ${userId}`,
+           "Content-Type": "application/json",
+         },
+       }
+     );
 
+     return response.json();
+   } catch (error: any) {
+     console.error(`Error fetching donation ${requestId}:`, error);
+     throw new Error(error.message || "Failed to fetch donation");
+   }
+};
 export const getDonationById = async (id: string, request: string) => {
   try {
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/${request}`,
       {
@@ -157,7 +169,7 @@ export const createNewDonation = async (data: any) => {
         },
         body: JSON.stringify({
           bloodRequestId: data.requestId,
-          userId: data.userId
+          userId: data.userId,
         }),
       }
     );
@@ -170,3 +182,23 @@ export const createNewDonation = async (data: any) => {
     throw new Error(error.message || "Failed to add health record");
   }
 };
+export const singleDonation =async(userId:string, id:string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/single/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${userId}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.json();
+  } catch (error: any) {
+    console.error(`Error fetching donation ${id}:`, error);
+    throw new Error(error.message || "Failed to fetch donation");
+  }
+
+}

@@ -218,3 +218,111 @@ export const deleteBloodRequest = async (
     throw error;
   }
 };
+// Show interest in a blood request
+export const showInterest = async (requestId: string): Promise<{ success: boolean }> => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-requests/${requestId}/interest`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (!res.ok) {
+      throw new Error(`Error showing interest: ${res.status}`)
+    }
+
+    revalidateTag(`blood-request-${requestId}`)
+    return await res.json()
+  } catch (error: any) {
+    console.error("Error showing interest:", error)
+    throw error
+  }
+}
+
+// Cancel interest in a blood request
+export const cancelInterest = async (requestId: string, userId: string): Promise<{ success: boolean }> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/blood-requests/${requestId}/interest`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userId}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Error cancelling interest: ${res.status}`)
+    }
+
+    revalidateTag(`blood-request-${requestId}`)
+    return await res.json()
+  } catch (error: any) {
+    console.error("Error cancelling interest:", error)
+    throw error
+  }
+}
+// Get interested donor details
+export const getInterestedDonorDetails = async (requestId: string, userId: string): Promise<any> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/blood-requests/${requestId}/donors/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userId}`,
+        },
+        next: {
+          tags: [`blood-request-donor-${requestId}-${userId}`],
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Error fetching donor details: ${res.status}`)
+    }
+
+    return  res.json()
+  } catch (error: any) {
+    console.error("Error fetching donor details:", error)
+    throw error
+  }
+}
+// Update interested donor status
+export const updateDonorStatus = async (
+  requestId: string,
+  userId: string,
+  status: "pending" | "selected" | "confirmed" | "cancelled",
+): Promise<{ success: boolean }> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/blood-requests/${requestId}/donors/${userId}/status`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userId}`,
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Error updating donor status: ${res.status}`)
+    }
+
+    // Revalidate both the blood request and the donor details
+    revalidateTag(`blood-request-${requestId}`)
+    revalidateTag(`blood-request-donor-${requestId}-${userId}`)
+    return await res.json()
+  } catch (error: any) {
+    console.error("Error updating donor status:", error)
+    throw error
+  }
+}
+
