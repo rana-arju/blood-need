@@ -1390,9 +1390,9 @@
       "pageDescription": "এই রক্তের অনুরোধে আগ্রহী দাতার বিস্তারিত তথ্য",
       "donorStatus": "দাতার অবস্থা",
       "donorInformation": "দাতার তথ্য",
-      "personalInfo": "ব্যক্তিগত তথ্য",
-      "contactInfo": "যোগাযোগের তথ্য",
-      "medicalInfo": "চিকিৎসা তথ্য",
+      "personalInfo": "ব্যক্তিগত",
+      "contactInfo": "যোগাযোগের",
+      "medicalInfo": "চিকিৎসা",
       "donationHistory": "দান ইতিহাস",
       "selectStatus": "অবস্থা আপডেট করুন",
       "pending": "অপেক্ষমান",
@@ -1419,7 +1419,24 @@
       "confirmDonation": "দান নিশ্চিত করুন",
       "cancelSelection": "নির্বাচন বাতিল করুন",
       "notSpecified": "উল্লেখ করা হয়নি",
-      "none": "কোনটি নয়"
+      "none": "কোনটি নয়",
+      "dialog": {
+        "title": "দাতার অবস্থা আপডেট করুন",
+        "description": "দাতার অবস্থা পরিবর্তন করুন এবং এই আপডেট সম্পর্কে ঐচ্ছিক নোট যোগ করুন।",
+        "statusLabel": "অবস্থা",
+        "selectStatus": "একটি অবস্থা নির্বাচন করুন",
+        "notesLabel": "নোট",
+        "notesPlaceholder": "এই অবস্থা পরিবর্তন সম্পর্কে যেকোন প্রাসঙ্গিক নোট যোগ করুন...",
+        "save": "পরিবর্তন সংরক্ষণ করুন",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "cancel": "বাতিল করুন"
+      },
+      "status": {
+        "pending": "অপেক্ষমান",
+        "selected": "নির্বাচিত",
+        "confirmed": "নিশ্চিত",
+        "cancelled": "বাতিল"
+      }
     }
   }
 }

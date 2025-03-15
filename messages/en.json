@@ -1353,9 +1353,9 @@
       "pageDescription": "Detailed information about the donor interested in this blood request",
       "donorStatus": "Donor Status",
       "donorInformation": "Donor Information",
-      "personalInfo": "Personal Information",
-      "contactInfo": "Contact Information",
-      "medicalInfo": "Medical Information",
+      "personalInfo": "Personal",
+      "contactInfo": "Contact",
+      "medicalInfo": "Medical",
       "donationHistory": "Donation History",
       "selectStatus": "Update Status",
       "pending": "Pending",
@@ -1382,7 +1382,24 @@
       "confirmDonation": "Confirm Donation",
       "cancelSelection": "Cancel Selection",
       "notSpecified": "Not specified",
-      "none": "None"
+      "none": "None",
+      "dialog": {
+        "title": "Update Donor Status",
+        "description": "Change the donor's status and add optional notes about this update.",
+        "statusLabel": "Status",
+        "selectStatus": "Select a status",
+        "notesLabel": "Notes",
+        "notesPlaceholder": "Add any relevant notes about this status change...",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "cancel": "Cancel"
+      },
+      "status": {
+        "pending": "Pending",
+        "selected": "Selected",
+        "confirmed": "Confirmed",
+        "cancelled": "Cancelled"
+      }
     }
   }
 }

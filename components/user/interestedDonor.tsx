@@ -43,7 +43,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { DonorDetails } from "@/types/donor-details";
 import { updateDonorStatus } from "@/services/bloodRegister";
-
+import { StatusChangeDialog } from "./StatusChangeDialog";
 
 interface InterestedDonorDetailsProps {
   donor: DonorDetails;
@@ -62,7 +62,7 @@ export default function InterestedDonorDetails({
   const [status, setStatus] = useState<
     "pending" | "selected" | "confirmed" | "cancelled"
   >(donor.donationOffer.status);
-
+  const [isOpen, setIsOpen] = useState(false);
   const handleStatusChange = async (
     newStatus: "pending" | "selected" | "confirmed" | "cancelled"
   ) => {
@@ -101,35 +101,35 @@ export default function InterestedDonorDetails({
         return <Badge variant="outline">{status}</Badge>;
     }
   };
-function calculateAge(dateOfBirth: string | Date): number {
-  const birthDate = new Date(dateOfBirth);
-  const today = new Date();
+  function calculateAge(dateOfBirth: string | Date): number {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
 
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const monthDiff = today.getMonth() - birthDate.getMonth();
-  const dayDiff = today.getDate() - birthDate.getDate();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
 
-  // Adjust age if birthday hasn't occurred yet this year
-  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    age--;
+    // Adjust age if birthday hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age;
   }
 
-  return age;
-}
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-[300px] md:w-full">
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-col md:flex-row">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 rounded-full overflow-hidden bg-muted flex items-center justify-center">
                 {donor.image ? (
                   <Image
                     src={donor.image}
                     alt={donor.name}
-                    width={80}
-                    height={80}
+                    width={60}
+                    height={60}
                     className="object-fit h-16 w-16"
                   />
                 ) : (
@@ -137,7 +137,9 @@ function calculateAge(dateOfBirth: string | Date): number {
                 )}
               </div>
               <div>
-                <CardTitle>{donor.name}</CardTitle>
+                <CardTitle className="text-lg md:text-xl">
+                  {donor.name}
+                </CardTitle>
                 <CardDescription className="flex items-center gap-2 mt-1">
                   <Droplet className="h-4 w-4" />
                   {donor.blood || t("notSpecified")}
@@ -146,24 +148,19 @@ function calculateAge(dateOfBirth: string | Date): number {
                 </CardDescription>
               </div>
             </div>
+          
 
             {userIsRequester && (
-              <Select
-                value={status}
-                onValueChange={(value) => handleStatusChange(value as any)}
-                disabled={isUpdating}
-              >
-                <SelectTrigger className="w-32 sm:w-40">
-                  <SelectValue placeholder={t("selectStatus")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">{t("pending")}</SelectItem>
-                  <SelectItem value="selected">{t("selected")}</SelectItem>
-                  <SelectItem value="confirmed">{t("confirmed")}</SelectItem>
-                  <SelectItem value="cancelled">{t("cancelled")}</SelectItem>
-                </SelectContent>
-              </Select>
+              <StatusChangeDialog
+                currentStatus={status}
+                requestId={requestId}
+                userId={donor.id}
+                onStatusChange={setStatus}
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+              />
             )}
+            
           </div>
         </CardHeader>
         <CardContent>
@@ -367,7 +364,9 @@ function calculateAge(dateOfBirth: string | Date): number {
       {userIsRequester && (
         <Card>
           <CardHeader>
-            <CardTitle>{t("donorStatus")}</CardTitle>
+            <CardTitle className="text-lg md:text-xl">
+              {t("donorStatus")}
+            </CardTitle>
             <CardDescription>{t("selectStatus")}</CardDescription>
           </CardHeader>
           <CardContent>

@@ -52,7 +52,7 @@ export default async function InterestedDonorDetailsPage({
     }
 
     return (
-      <div className="container mx-auto px-4 py-6 max-w-4xl">
+      <div className="container mx-auto px-1 md:p-4 py-6 max-w-4xl">
         <div className="flex items-center gap-4 mb-6">
           <Button variant="outline" size="icon" asChild className="h-10 w-10">
             <Link href={`/dashboard/requests/${id}`}>
@@ -61,8 +61,8 @@ export default async function InterestedDonorDetailsPage({
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">{t("pageTitle")}</h1>
-            <p className="text-muted-foreground">{t("pageDescription")}</p>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">{t("pageTitle")}</h1>
+            <p className="text-muted-foreground text-xs sm:text-md">{t("pageDescription")}</p>
           </div>
         </div>
 
