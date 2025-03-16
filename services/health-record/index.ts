@@ -1,10 +1,7 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
 import axios from "axios";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export interface HealthRecord {
   id: string;
@@ -20,55 +17,109 @@ export interface HealthRecord {
   updatedAt: string;
 }
 
-export const getUserHealthRecords = async () => {
+export interface HealthRecordFormData {
+  date: string;
+  hemoglobin: number;
+  bloodPressure: string;
+  weight: number;
+  height?: number;
+  pulse?: number;
+  notes?: string;
+}
+
+export interface DonorInfo {
+  id: string;
+  userId: string;
+  phone: string;
+  whatsappNumber?: string | null;
+  facebookId?: string | null;
+  emergencyContact: string;
+  height?: number | null;
+  weight?: number | null;
+  medicalCondition?: string | null;
+  currentMedications?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const getUserHealthRecords = async (
+  token: string
+) => {
   try {
-   const session = await getServerSession(authOptions);
-   if (!session) {
-     throw new Error("Authentication required");
-   }
-   const { user } = session;
-
-   if (!user) {
-     throw new Error("Authentication required");
-   }
-
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records`,
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records/my-records`,
       {
         headers: {
-          Authorization: `Bearer ${user.id}`,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-    
+        next: {
+          tags: ["HealthRecords"],
+        },
       }
     );
 
-    return response.data.data;
+    return response.json();
   } catch (error: any) {
     console.error("Error fetching health records:", error);
-    throw new Error(error.message || "Failed to fetch health records");
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch health records"
+    );
+  }
+};
+
+export const getHealthRecordById = async (
+  id: string,
+  token: string
+): Promise<HealthRecord> => {
+  try {
+    if (!token) {
+      throw new Error("Authentication token not found");
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        next: {
+          tags: [`HealthRecord-${id}`],
+        },
+      }
+    );
+
+    return response.json();
+  } catch (error: any) {
+    console.error("Error fetching health record:", error);
+    throw new Error(
+      error.response?.data?.message || "Failed to fetch health record"
+    );
   }
 };
 
 export const addHealthRecord = async (
-  data: Omit<HealthRecord, "id" | "userId" | "createdAt" | "updatedAt">
-) => {
+  data: HealthRecordFormData,
+  userId: string
+): Promise<HealthRecord> => {
   try {
-   const session = await getServerSession(authOptions);
-   if (!session) {
-     throw new Error("Authentication required");
-   }
-   const { user } = session;
+    if (!userId) {
+      throw new Error("Authentication token not found");
+    }
 
-   if (!user) {
-     throw new Error("Authentication required");
-   }
+    const payload = {
+      ...data,
+      userId,
+      date: new Date(data.date),
+    };
 
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records`,
-      data,
+      payload,
       {
         headers: {
-          Authorization: `Bearer ${user.id}`,
+          Authorization: `Bearer ${userId}`,
           "Content-Type": "application/json",
         },
       }
@@ -78,69 +129,103 @@ export const addHealthRecord = async (
     return response.data.data;
   } catch (error: any) {
     console.error("Error adding health record:", error);
-    throw new Error(error.message || "Failed to add health record");
+    throw new Error(
+      error.response?.data?.message || "Failed to add health record"
+    );
   }
 };
 
 export const updateHealthRecord = async (
   id: string,
-  data: Partial<Omit<HealthRecord, "id" | "userId" | "createdAt" | "updatedAt">>
-) => {
+  data: HealthRecordFormData,
+  token:string
+): Promise<HealthRecord> => {
   try {
-   const session = await getServerSession(authOptions);
-   if (!session) {
-     throw new Error("Authentication required");
-   }
-   const { user } = session;
+    if (!id) {
+      throw new Error("Authentication token not found");
+    }
 
-   if (!user) {
-     throw new Error("Authentication required");
-   }
+    const payload = {
+      ...data,
+      date: new Date(data.date),
+    };
 
     const response = await axios.patch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records/${id}`,
-      data,
+      payload,
       {
         headers: {
-          Authorization: `Bearer ${user.id}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       }
     );
 
     revalidateTag("HealthRecords");
+    revalidateTag(`HealthRecord-${id}`);
     return response.data.data;
   } catch (error: any) {
     console.error("Error updating health record:", error);
-    throw new Error(error.message || "Failed to update health record");
+    throw new Error(
+      error.response?.data?.message || "Failed to update health record"
+    );
   }
 };
 
-export const deleteHealthRecord = async (id: string) => {
+export const deleteHealthRecord = async (
+  id: string,
+  token: string
+): Promise<void> => {
   try {
-    const session = await getServerSession(authOptions);
-     if (!session) {
-       throw new Error("Authentication required");
-     }
-     const {user} = session;
- 
-     if (!user) {
-       throw new Error("Authentication required");
-     }
+    if (!token) {
+      throw new Error("Authentication token not found");
+    }
 
-    const response = await axios.delete(
+    await axios.delete(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/health-records/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${user.id}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
     revalidateTag("HealthRecords");
-    return response.data.data;
+    return;
   } catch (error: any) {
     console.error("Error deleting health record:", error);
-    throw new Error(error.message || "Failed to delete health record");
+    throw new Error(
+      error.response?.data?.message || "Failed to delete health record"
+    );
   }
 };
+export const getUserDonorInfo = async (donorId: string): Promise<any> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blood-donor/user/${donorId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        next: {
+          tags: ["Donor"],
+        },
+        cache: "no-store", // Ensure we don't get cached results
+      }
+    );
+
+    if (!response.ok) {
+       throw new Error(
+         `Error fetching donor: ${response.status}`
+       );
+    }
+
+    
+    return response.json();
+  } catch (error: any) {
+    console.error("Error fetching donor:", error);
+    throw error;
+  }
+};
+

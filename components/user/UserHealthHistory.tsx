@@ -22,14 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  getUserHealthRecords,
-  addHealthRecord,
-  updateHealthRecord,
-  deleteHealthRecord,
-  getUserDonorInfo,
-  type HealthRecordFormData,
-} from "@/services/health-history";
+
 import {
   BarChart,
   Bar,
@@ -46,116 +39,18 @@ import { AlertCircle, Edit, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as z from "zod";
-
-// Mock data for health records
-const mockHealthRecords = [
-  {
-    id: "1",
-    userId: "user1",
-    date: new Date("2023-12-15"),
-    hemoglobin: 14.2,
-    bloodPressure: "120/80",
-    weight: 75.5,
-    height: 175,
-    notes: "Regular checkup, all values normal",
-    createdAt: new Date("2023-12-15"),
-    updatedAt: new Date("2023-12-15"),
-  },
-  {
-    id: "2",
-    userId: "user1",
-    date: new Date("2023-11-10"),
-    hemoglobin: 13.8,
-    bloodPressure: "118/78",
-    weight: 76.0,
-    height: 175,
-    notes: "Slight decrease in hemoglobin, but still within normal range",
-    createdAt: new Date("2023-11-10"),
-    updatedAt: new Date("2023-11-10"),
-  },
-  {
-    id: "3",
-    userId: "user1",
-    date: new Date("2023-10-05"),
-    hemoglobin: 14.5,
-    bloodPressure: "122/82",
-    weight: 74.8,
-    height: 175,
-    notes: "Post-donation checkup, recovery is good",
-    createdAt: new Date("2023-10-05"),
-    updatedAt: new Date("2023-10-05"),
-  },
-  {
-    id: "4",
-    userId: "user1",
-    date: new Date("2023-09-01"),
-    hemoglobin: 13.5,
-    bloodPressure: "125/85",
-    weight: 75.2,
-    height: 175,
-    notes: "Pre-donation checkup",
-    createdAt: new Date("2023-09-01"),
-    updatedAt: new Date("2023-09-01"),
-  },
-  {
-    id: "5",
-    userId: "user1",
-    date: new Date("2023-08-01"),
-    hemoglobin: 14.0,
-    bloodPressure: "120/80",
-    weight: 75.0,
-    height: 175,
-    notes: "Regular health checkup",
-    createdAt: new Date("2023-08-01"),
-    updatedAt: new Date("2023-08-01"),
-  },
-];
-
-// Mock donor info
-const mockDonorInfo = {
-  id: "donor1",
-  userId: "user1",
-  phone: "+1234567890",
-  whatsappNumber: "+1234567890",
-  facebookId: "johndoe",
-  emergencyContact: "+0987654321",
-  height: 175,
-  weight: 75.5,
-  medicalCondition: "None",
-  currentMedications: "None",
-  createdAt: new Date("2023-01-01"),
-  updatedAt: new Date("2023-01-01"),
-};
-
-// Types based on the schema
-interface IHealthRecord {
-  id: string;
-  userId: string;
-  date: Date;
-  hemoglobin: number;
-  bloodPressure: string;
-  weight: number;
-  height: number;
-  notes?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  pulse?: number | null;
-}
-
-interface DonorInfo {
-  id: string;
-  userId: string;
-  phone: string;
-  whatsappNumber?: string | null;
-  facebookId?: string | null;
-  emergencyContact: string;
-  height?: number | null;
-  weight?: number | null;
-  medicalCondition?: string | null;
-  currentMedications?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { cn } from "@/lib/utils";
+import {
+  addHealthRecord,
+  deleteHealthRecord,
+  type DonorInfo,
+  getUserDonorInfo,
+  getUserHealthRecords,
+  type HealthRecord,
+  type HealthRecordFormData,
+  updateHealthRecord,
+} from "@/services/health-record";
+import { useSession } from "next-auth/react";
 
 // Form schema for health record
 const healthRecordSchema = z.object({
@@ -164,6 +59,7 @@ const healthRecordSchema = z.object({
   bloodPressure: z.string().min(1, { message: "Blood pressure is required" }),
   weight: z.coerce.number().min(1, { message: "Weight is required" }),
   height: z.coerce.number().min(1, { message: "Height is required" }),
+  pulse: z.coerce.number().optional(),
   notes: z.string().optional(),
 });
 
@@ -173,15 +69,13 @@ export function UserHealthHistory() {
   const isMobile = useIsMobile();
   const isSmallMobile = useIsMobile(400);
   const isDark = theme === "dark";
-
-  const [healthRecords, setHealthRecords] = useState<IHealthRecord[]>(mockHealthRecords);
-  const [donorInfo, setDonorInfo] = useState<any>(mockDonorInfo);
+  const { data: session } = useSession();
+  const [healthRecords, setHealthRecords] = useState<HealthRecord[]>([]);
+  const [donorInfo, setDonorInfo] = useState<DonorInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<IHealthRecord | null>(
-    null
-  );
+  const [currentRecord, setCurrentRecord] = useState<HealthRecord | null>(null);
   const [formData, setFormData] = useState<HealthRecordFormData>({
     date: format(new Date(), "yyyy-MM-dd"),
     hemoglobin: 14,
@@ -192,18 +86,21 @@ export function UserHealthHistory() {
     notes: "",
   });
   const [activeTab, setActiveTab] = useState("hemoglobin");
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [records, donor] = await Promise.all([
-          getUserHealthRecords(),
-          getUserDonorInfo(),
+        // Fetch health records and donor info in parallel
+        const [recordsResponse, donorResponse] = await Promise.all([
+          getUserHealthRecords(session?.user.id!),
+          getUserDonorInfo(session?.user.id!).catch(() => null), // Don't fail if donor info isn't available
         ]);
 
-        setHealthRecords(mockHealthRecords);
-        setDonorInfo(mockDonorInfo);
+        setHealthRecords(recordsResponse.data);
+        setDonorInfo(donorResponse ? donorResponse.data : null);
       } catch (error) {
         console.error("Failed to fetch data:", error);
         toast.error(t("errorFetch"));
@@ -213,7 +110,26 @@ export function UserHealthHistory() {
     };
 
     fetchData();
-  }, [t]);
+  }, [t, session?.user.id]);
+
+  const validateForm = (data: HealthRecordFormData) => {
+    try {
+      healthRecordSchema.parse(data);
+      setFormErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0].toString()] = err.message;
+          }
+        });
+        setFormErrors(errors);
+      }
+      return false;
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -226,22 +142,45 @@ export function UserHealthHistory() {
         name === "weight" ||
         name === "height" ||
         name === "pulse"
-          ? Number(value)
+          ? value === ""
+            ? ""
+            : Number(value)
           : value,
     }));
   };
 
   const handleAddRecord = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm(formData)) {
+      return;
+    }
+
     try {
-      await addHealthRecord(formData);
-      const updatedRecords = await getUserHealthRecords();
-      setHealthRecords(updatedRecords);
+      setSubmitting(true);
+      const newRecord = await addHealthRecord(formData, session?.user.id!);
+
+      // Update the local state with the new record
+      setHealthRecords((prev) => [newRecord, ...prev]);
       setIsAddDialogOpen(false);
+
+      // Reset form data
+      setFormData({
+        date: format(new Date(), "yyyy-MM-dd"),
+        hemoglobin: 14,
+        bloodPressure: "120/80",
+        weight: 70,
+        height: 175,
+        pulse: 72,
+        notes: "",
+      });
+
       toast.success(t("successAdd"));
     } catch (error) {
       console.error("Failed to add health record:", error);
       toast.error(t("errorAdd"));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -249,15 +188,32 @@ export function UserHealthHistory() {
     e.preventDefault();
     if (!currentRecord) return;
 
+    if (!validateForm(formData)) {
+      return;
+    }
+
     try {
-      await updateHealthRecord(currentRecord.id, formData);
-      const updatedRecords = await getUserHealthRecords();
-      setHealthRecords(updatedRecords);
+      setSubmitting(true);
+      const updatedRecord = await updateHealthRecord(
+        currentRecord.id,
+        formData,
+        session?.user.id!
+      );
+
+      // Update the local state with the updated record
+      setHealthRecords((prev) =>
+        prev.map((record) =>
+          record.id === currentRecord.id ? updatedRecord : record
+        )
+      );
+
       setIsEditDialogOpen(false);
       toast.success(t("successUpdate"));
     } catch (error) {
       console.error("Failed to update health record:", error);
       toast.error(t("errorUpdate"));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -265,9 +221,11 @@ export function UserHealthHistory() {
     if (!confirm(t("confirmDelete"))) return;
 
     try {
-      await deleteHealthRecord(id);
-      const updatedRecords = await getUserHealthRecords();
-      setHealthRecords(updatedRecords);
+      await deleteHealthRecord(id, session?.user.id!);
+
+      // Update the local state by removing the deleted record
+      setHealthRecords((prev) => prev.filter((record) => record.id !== id));
+
       toast.success(t("successDelete"));
     } catch (error) {
       console.error("Failed to delete health record:", error);
@@ -275,7 +233,7 @@ export function UserHealthHistory() {
     }
   };
 
-  const openEditDialog = (record: IHealthRecord) => {
+  const openEditDialog = (record: HealthRecord) => {
     setCurrentRecord(record);
     setFormData({
       date: format(new Date(record.date), "yyyy-MM-dd"),
@@ -291,18 +249,18 @@ export function UserHealthHistory() {
 
   // Prepare chart data
   const chartData = healthRecords
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    ?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map((record) => ({
       date: format(new Date(record.date), isSmallMobile ? "MM/dd" : "MMM dd"),
       hemoglobin: record.hemoglobin,
       weight: record.weight,
       pulse: record.pulse || 0,
-      bloodPressure: record.bloodPressure.split("/")[0], // Just use systolic for charting
+      bloodPressure: Number.parseInt(record.bloodPressure.split("/")[0]), // Just use systolic for charting
     }));
 
   // Prepare bar chart data for mobile
   const barChartData = healthRecords
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    ?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5) // Only show the 5 most recent records
     .map((record) => ({
       date: format(new Date(record.date), isSmallMobile ? "MM/dd" : "MMM dd"),
@@ -330,7 +288,7 @@ export function UserHealthHistory() {
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
               {t("title")}
             </h1>
             <p className="text-muted-foreground text-sm sm:text-base">
@@ -414,7 +372,7 @@ export function UserHealthHistory() {
                     </div>
                     <div className="bg-primary/10 dark:bg-primary/20 p-2 sm:p-3 rounded-lg">
                       <p className="text-xs sm:text-sm text-muted-foreground">
-                        {t("weight")}
+                        {t("weightTitle")}
                       </p>
                       <p className="text-sm sm:text-base font-medium">
                         {donorInfo.weight
@@ -457,126 +415,130 @@ export function UserHealthHistory() {
                     <CardTitle className="text-base sm:text-lg">
                       {t("healthMetrics")}
                     </CardTitle>
-                    {isMobile && (
-                      <Tabs
-                        value={activeTab}
-                        onValueChange={setActiveTab}
-                        className="w-full sm:w-auto"
-                      >
-                        <TabsList className="grid grid-cols-2 w-full sm:w-auto">
-                          <TabsTrigger value="hemoglobin" className="text-xs">
-                            {t("hemoglobin")}
-                          </TabsTrigger>
-                          <TabsTrigger value="weight" className="text-xs">
-                            {t("weight")}
-                          </TabsTrigger>
-                        </TabsList>
-                      </Tabs>
-                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="px-3 pb-3 sm:px-6 sm:pb-4">
                   {isMobile ? (
                     // Mobile view with tabs and bar charts
-                    <div className="h-[250px]">
+                    <Tabs
+                      value={activeTab}
+                      onValueChange={setActiveTab}
+                      className="w-full"
+                    >
+                      <TabsList className="grid grid-cols-2 w-full mb-4">
+                        <TabsTrigger value="hemoglobin" className="text-xs">
+                          {t("hemoglobin.title")}
+                        </TabsTrigger>
+                        <TabsTrigger value="weight" className="text-xs">
+                          {t("weight.title")}
+                        </TabsTrigger>
+                      </TabsList>
                       <TabsContent value="hemoglobin" className="mt-0">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={barChartData}
-                            margin={{
-                              top: 5,
-                              right: 5,
-                              left: isSmallMobile ? -20 : -10,
-                              bottom: 5,
-                            }}
-                          >
-                            <CartesianGrid
-                              strokeDasharray="3 3"
-                              stroke={isDark ? "#374151" : "#e5e7eb"}
-                            />
-                            <XAxis
-                              dataKey="date"
-                              tick={{
-                                fontSize: isSmallMobile ? 9 : 10,
-                                fill: isDark ? "#9ca3af" : "#6b7280",
+                        <div className="h-[250px]">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={barChartData}
+                              margin={{
+                                top: 5,
+                                right: 5,
+                                left: isSmallMobile ? -20 : -10,
+                                bottom: 5,
                               }}
-                              tickMargin={5}
-                            />
-                            <YAxis
-                              tick={{
-                                fontSize: isSmallMobile ? 9 : 10,
-                                fill: isDark ? "#9ca3af" : "#6b7280",
-                              }}
-                              width={isSmallMobile ? 25 : 30}
-                              domain={[12, 16]}
-                            />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: isDark ? "#1f2937" : "#ffffff",
-                                borderColor: isDark ? "#374151" : "#e5e7eb",
-                                color: isDark ? "#f9fafb" : "#111827",
-                                fontSize: isSmallMobile ? 10 : 12,
-                                padding: isSmallMobile ? "4px" : "6px",
-                              }}
-                            />
-                            <Bar
-                              dataKey="hemoglobin"
-                              fill={chartColors.hemoglobin}
-                              name={t("hemoglobin")}
-                              radius={[4, 4, 0, 0]}
-                            />
-                          </BarChart>
-                        </ResponsiveContainer>
+                            >
+                              <CartesianGrid
+                                strokeDasharray="3 3"
+                                stroke={isDark ? "#374151" : "#e5e7eb"}
+                              />
+                              <XAxis
+                                dataKey="date"
+                                tick={{
+                                  fontSize: isSmallMobile ? 9 : 10,
+                                  fill: isDark ? "#9ca3af" : "#6b7280",
+                                }}
+                                tickMargin={5}
+                              />
+                              <YAxis
+                                tick={{
+                                  fontSize: isSmallMobile ? 9 : 10,
+                                  fill: isDark ? "#9ca3af" : "#6b7280",
+                                }}
+                                width={isSmallMobile ? 25 : 30}
+                                domain={[12, 16]}
+                              />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: isDark
+                                    ? "#1f2937"
+                                    : "#ffffff",
+                                  borderColor: isDark ? "#374151" : "#e5e7eb",
+                                  color: isDark ? "#f9fafb" : "#111827",
+                                  fontSize: isSmallMobile ? 10 : 12,
+                                  padding: isSmallMobile ? "4px" : "6px",
+                                }}
+                              />
+                              <Bar
+                                dataKey="hemoglobin"
+                                fill={chartColors.hemoglobin}
+                                name={t("hemoglobin.label")}
+                                radius={[4, 4, 0, 0]}
+                              />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
                       </TabsContent>
                       <TabsContent value="weight" className="mt-0">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={barChartData}
-                            margin={{
-                              top: 5,
-                              right: 5,
-                              left: isSmallMobile ? -20 : -10,
-                              bottom: 5,
-                            }}
-                          >
-                            <CartesianGrid
-                              strokeDasharray="3 3"
-                              stroke={isDark ? "#374151" : "#e5e7eb"}
-                            />
-                            <XAxis
-                              dataKey="date"
-                              tick={{
-                                fontSize: isSmallMobile ? 9 : 10,
-                                fill: isDark ? "#9ca3af" : "#6b7280",
+                        <div className="h-[250px]">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={barChartData}
+                              margin={{
+                                top: 5,
+                                right: 5,
+                                left: isSmallMobile ? -20 : -10,
+                                bottom: 5,
                               }}
-                              tickMargin={5}
-                            />
-                            <YAxis
-                              tick={{
-                                fontSize: isSmallMobile ? 9 : 10,
-                                fill: isDark ? "#9ca3af" : "#6b7280",
-                              }}
-                              width={isSmallMobile ? 25 : 30}
-                            />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: isDark ? "#1f2937" : "#ffffff",
-                                borderColor: isDark ? "#374151" : "#e5e7eb",
-                                color: isDark ? "#f9fafb" : "#111827",
-                                fontSize: isSmallMobile ? 10 : 12,
-                                padding: isSmallMobile ? "4px" : "6px",
-                              }}
-                            />
-                            <Bar
-                              dataKey="weight"
-                              fill={chartColors.weight}
-                              name={t("weight")}
-                              radius={[4, 4, 0, 0]}
-                            />
-                          </BarChart>
-                        </ResponsiveContainer>
+                            >
+                              <CartesianGrid
+                                strokeDasharray="3 3"
+                                stroke={isDark ? "#374151" : "#e5e7eb"}
+                              />
+                              <XAxis
+                                dataKey="date"
+                                tick={{
+                                  fontSize: isSmallMobile ? 9 : 10,
+                                  fill: isDark ? "#9ca3af" : "#6b7280",
+                                }}
+                                tickMargin={5}
+                              />
+                              <YAxis
+                                tick={{
+                                  fontSize: isSmallMobile ? 9 : 10,
+                                  fill: isDark ? "#9ca3af" : "#6b7280",
+                                }}
+                                width={isSmallMobile ? 25 : 30}
+                              />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: isDark
+                                    ? "#1f2937"
+                                    : "#ffffff",
+                                  borderColor: isDark ? "#374151" : "#e5e7eb",
+                                  color: isDark ? "#f9fafb" : "#111827",
+                                  fontSize: isSmallMobile ? 10 : 12,
+                                  padding: isSmallMobile ? "4px" : "6px",
+                                }}
+                              />
+                              <Bar
+                                dataKey="weight"
+                                fill={chartColors.weight}
+                                name={t("weight.label")}
+                                radius={[4, 4, 0, 0]}
+                              />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
                       </TabsContent>
-                    </div>
+                    </Tabs>
                   ) : (
                     // Desktop view with line charts
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -624,7 +586,7 @@ export function UserHealthHistory() {
                               strokeWidth={2}
                               dot={{ r: 4 }}
                               activeDot={{ r: 6 }}
-                              name={t("hemoglobin")}
+                              name={t("hemoglobin.label")}
                             />
                           </LineChart>
                         </ResponsiveContainer>
@@ -661,7 +623,7 @@ export function UserHealthHistory() {
                               contentStyle={{
                                 backgroundColor: isDark ? "#1f2937" : "#ffffff",
                                 borderColor: isDark ? "#374151" : "#e5e7eb",
-                                color: "#111827",
+                                color: isDark ? "#f9fafb" : "#111827",
                               }}
                             />
                             <Legend />
@@ -672,7 +634,7 @@ export function UserHealthHistory() {
                               strokeWidth={2}
                               dot={{ r: 4 }}
                               activeDot={{ r: 6 }}
-                              name={t("weight")}
+                              name={t("weight.label")}
                             />
                           </LineChart>
                         </ResponsiveContainer>
@@ -793,7 +755,7 @@ export function UserHealthHistory() {
                     </div>
                   ) : (
                     // Desktop table view
-                    <div className="overflow-x-auto -mx-3 sm:mx-0">
+                    <div className="overflow-x-auto -mx-3 sm:-mx-0">
                       <div className="inline-block min-w-full align-middle">
                         <div className="overflow-hidden">
                           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -934,8 +896,16 @@ export function UserHealthHistory() {
                     value={formData.date}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.date && "border-destructive"
+                    )}
                   />
+                  {formErrors.date && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.date}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="hemoglobin" className="text-xs sm:text-sm">
@@ -949,8 +919,16 @@ export function UserHealthHistory() {
                     value={formData.hemoglobin}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.hemoglobin && "border-destructive"
+                    )}
                   />
+                  {formErrors.hemoglobin && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.hemoglobin}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -965,8 +943,16 @@ export function UserHealthHistory() {
                     value={formData.bloodPressure}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.bloodPressure && "border-destructive"
+                    )}
                   />
+                  {formErrors.bloodPressure && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.bloodPressure}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="weight" className="text-xs sm:text-sm">
@@ -980,8 +966,16 @@ export function UserHealthHistory() {
                     value={formData.weight}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.weight && "border-destructive"
+                    )}
                   />
+                  {formErrors.weight && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.weight}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -995,8 +989,16 @@ export function UserHealthHistory() {
                     type="number"
                     value={formData.height}
                     onChange={handleInputChange}
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.height && "border-destructive"
+                    )}
                   />
+                  {formErrors.height && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.height}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="pulse" className="text-xs sm:text-sm">
@@ -1040,8 +1042,9 @@ export function UserHealthHistory() {
                 type="submit"
                 size={isMobile ? "sm" : "default"}
                 className="text-xs sm:text-sm h-8 sm:h-10"
+                disabled={submitting}
               >
-                {t("save")}
+                {submitting ? t("saving") : t("save")}
               </Button>
             </DialogFooter>
           </form>
@@ -1068,8 +1071,16 @@ export function UserHealthHistory() {
                     value={formData.date}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.date && "border-destructive"
+                    )}
                   />
+                  {formErrors.date && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.date}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label
@@ -1086,8 +1097,16 @@ export function UserHealthHistory() {
                     value={formData.hemoglobin}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.hemoglobin && "border-destructive"
+                    )}
                   />
+                  {formErrors.hemoglobin && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.hemoglobin}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1105,8 +1124,16 @@ export function UserHealthHistory() {
                     value={formData.bloodPressure}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.bloodPressure && "border-destructive"
+                    )}
                   />
+                  {formErrors.bloodPressure && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.bloodPressure}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="edit-weight" className="text-xs sm:text-sm">
@@ -1120,8 +1147,16 @@ export function UserHealthHistory() {
                     value={formData.weight}
                     onChange={handleInputChange}
                     required
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.weight && "border-destructive"
+                    )}
                   />
+                  {formErrors.weight && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.weight}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1135,8 +1170,16 @@ export function UserHealthHistory() {
                     type="number"
                     value={formData.height}
                     onChange={handleInputChange}
-                    className="text-xs sm:text-sm h-8 sm:h-10"
+                    className={cn(
+                      "text-xs sm:text-sm h-8 sm:h-10",
+                      formErrors.height && "border-destructive"
+                    )}
                   />
+                  {formErrors.height && (
+                    <p className="text-xs text-destructive">
+                      {formErrors.height}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="edit-pulse" className="text-xs sm:text-sm">
@@ -1180,8 +1223,9 @@ export function UserHealthHistory() {
                 type="submit"
                 size={isMobile ? "sm" : "default"}
                 className="text-xs sm:text-sm h-8 sm:h-10"
+                disabled={submitting}
               >
-                {t("save")}
+                {submitting ? t("saving") : t("save")}
               </Button>
             </DialogFooter>
           </form>
