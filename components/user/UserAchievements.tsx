@@ -7,20 +7,18 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTheme } from "next-themes";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { IAchievement } from "@/types/achievement.interface";
 import { getMyAchievements } from "@/services/achivement";
 import { useSession } from "next-auth/react";
-import { useIsMobile } from "@/hooks/use-mobile";
+
 import { cn } from "@/lib/utils";
 import { Trophy } from "lucide-react";
 
 export function UserAchievements() {
   const t = useTranslations("UserAchievements");
-  const { theme } = useTheme();
-  const isMobile = useIsMobile();
   const { data: session } = useSession();
   const [achievements, setAchievements] = useState<IAchievement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,53 +30,6 @@ export function UserAchievements() {
         setAchievements(data.data || []);
       } catch (error) {
         console.error("Error fetching achievements:", error);
-        // Use mock data if API fails
-        setAchievements([
-          {
-            id: "1",
-            userId: "user1",
-            name: t("achievements.firstTime.name"),
-            description: t("achievements.firstTime.description"),
-            progress: 100,
-            achieved: true,
-            badgeImage: "/badges/first-donation.png",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-          {
-            id: "2",
-            userId: "user1",
-            name: t("achievements.regular.name"),
-            description: t("achievements.regular.description"),
-            progress: 60,
-            achieved: false,
-            badgeImage: "/badges/regular-donor.png",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-          {
-            id: "3",
-            userId: "user1",
-            name: t("achievements.silver.name"),
-            description: t("achievements.silver.description"),
-            progress: 30,
-            achieved: false,
-            badgeImage: "/badges/silver-donor.png",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-          {
-            id: "4",
-            userId: "user1",
-            name: t("achievements.gold.name"),
-            description: t("achievements.gold.description"),
-            progress: 15,
-            achieved: false,
-            badgeImage: "/badges/gold-donor.png",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ]);
       } finally {
         setLoading(false);
       }

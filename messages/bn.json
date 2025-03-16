@@ -529,52 +529,51 @@
     }
   },
 
-  "UserDashboard": {
-    "sidebar": {
-      "overview": "ড্যাশবোর্ড",
-      "donations": "রক্তদান",
-      "requests": "রক্তের অনুরোধ",
-      "health": "স্বাস্থ্য ইতিহাস",
-      "achievements": "অর্জন",
-      "settings": "সেটিংস",
-      "logout": "লগ আউট",
-      "userAvatar": "ব্যবহারকারীর ছবি",
-      "userName": "জন ডো",
-      "userRole": "নিয়মিত দাতা"
-    },
+ "UserDashboard": {
     "overview": {
-      "welcome": "স্বাগতম, জন",
-      "donateNow": "এখনই দান করুন",
-      "requestBlood": "রক্ত অনুরোধ করুন",
-      "totalDonations": "মোট দান",
-      "lastDonation": "শেষ দান {date} তারিখে",
-      "livesSaved": "রক্ষিত জীবন",
-      "impactDescription": "প্রতিটি দান ৩টি পর্যন্ত জীবন বাঁচাতে পারে",
+      "welcome": "আপনার ড্যাশবোর্ডে স্বাগতম",
+      "totalDonations": "মোট রক্তদান",
+      "lastDonation": "শেষ রক্তদান: {date}",
+      "noDonations": "এখনও কোন রক্তদান নেই",
+      "livesSaved": "জীবন বাঁচানো হয়েছে",
+      "impactDescription": "প্রতিটি রক্তদান ৩ জন মানুষের জীবন বাঁচাতে পারে",
       "nextEligible": "পরবর্তী যোগ্যতা",
       "eligibleNow": "এখন যোগ্য",
-      "eligibleDescription": "আপনি আবার দান করতে পারেন",
+      "eligibleDescription": "আপনি এখন রক্তদান করতে পারেন",
       "donorRank": "দাতা র‍্যাঙ্ক",
-      "rankDescription": "গোল্ড পর্যন্ত আরও ৩টি দান",
-      "donationHistory": "দানের ইতিহাস",
+      "rankDescription": "আপনার রক্তদানের ইতিহাসের উপর ভিত্তি করে",
+      "donateNow": "এখনই দান করুন",
+      "requestBlood": "রক্ত অনুরোধ করুন",
+      "donationHistory": "রক্তদানের ইতিহাস",
+      "donations": "রক্তদান",
       "impact": "আপনার প্রভাব",
       "healthMetrics": "স্বাস্থ্য মেট্রিক্স",
+      "hemoglobin": "হিমোগ্লোবিন",
       "viewHealthDetails": "স্বাস্থ্য বিবরণ দেখুন",
       "activities": "কার্যক্রম"
     },
     "tabs": {
       "upcoming": "আসন্ন",
-      "recent": "সাম্প্রতিক"
+      "recent": "সাম্প্রতিক",
+      "noUpcoming": "কোন আসন্ন ইভেন্ট নেই",
+      "noRecent": "কোন সাম্প্রতিক কার্যক্রম নেই"
     },
     "events": {
-      "bloodDrive": "সম্প্রদায় রক্তদান অভিযান",
+      "bloodDrive": "রক্তদান ক্যাম্প",
       "cityHospital": "সিটি হাসপাতাল",
-      "healthCheckup": "দাতা স্বাস্থ্য পরীক্ষা",
+      "healthCheckup": "স্বাস্থ্য পরীক্ষা",
       "medicalCenter": "মেডিকেল সেন্টার"
     },
     "activity": {
       "donationCompleted": "আপনি একটি রক্তদান সম্পন্ন করেছেন",
-      "achievementUnlocked": "আপনি 'নিয়মিত দাতা' অর্জন আনলক করেছেন",
-      "requestFulfilled": "আপনার রক্তের অনুরোধ পূরণ করা হয়েছে"
+      "achievementUnlocked": "আপনি একটি নতুন অর্জন আনলক করেছেন",
+      "requestFulfilled": "আপনার রক্ত অনুরোধ পূরণ করা হয়েছে"
+    },
+    "errors": {
+      "title": "ড্যাশবোর্ড লোড করতে সমস্যা",
+      "fetchFailed": "ড্যাশবোর্ড ডেটা লোড করতে ব্যর্থ হয়েছে",
+      "unknown": "একটি অজানা ত্রুটি ঘটেছে",
+      "retry": "আবার চেষ্টা করুন"
     }
   },
 

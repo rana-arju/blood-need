@@ -1202,7 +1202,7 @@
     "deleteRecord": "Delete Health Record",
     "deleteRecordConfirmation": "This action cannot be undone. This will permanently delete your health record.",
     "date": "Date",
-   
+
     "hemoglobinTrend": "Hemoglobin Trend",
     "bloodPressure": "Blood Pressure",
     "weightTitle": "Weight",
@@ -1241,10 +1241,9 @@
       "actions": "Actions"
     },
     "confirmDelete": "Are you sure you want to delete this health record?",
-    "save": "Save",
-    "cancel": "Cancel",
+
     "edit": "Edit",
-    "delete": "Delete",
+
     "successAdd": "Health record added successfully",
     "successUpdate": "Health record updated successfully",
     "successDelete": "Health record deleted successfully",
@@ -1258,37 +1257,46 @@
       "welcome": "Welcome to Your Dashboard",
       "totalDonations": "Total Donations",
       "lastDonation": "Last donation: {date}",
+      "noDonations": "No donations yet",
       "livesSaved": "Lives Saved",
       "impactDescription": "Each donation can save up to 3 lives",
       "nextEligible": "Next Eligible",
       "eligibleNow": "Eligible Now",
-      "eligibleDescription": "You can donate again anytime",
+      "eligibleDescription": "You can donate blood now",
       "donorRank": "Donor Rank",
-      "rankDescription": "5 more donations to reach Gold",
+      "rankDescription": "Based on your donation history",
       "donateNow": "Donate Now",
       "requestBlood": "Request Blood",
       "donationHistory": "Donation History",
+      "donations": "Donations",
       "impact": "Your Impact",
       "healthMetrics": "Health Metrics",
-      "viewHealthDetails": "View Health Details",
-      "activities": "Activities",
       "hemoglobin": "Hemoglobin",
-      "donations": "Donations"
+      "viewHealthDetails": "View Health Details",
+      "activities": "Activities"
     },
     "events": {
-      "bloodDrive": "Community Blood Drive",
+      "bloodDrive": "Blood Drive",
       "cityHospital": "City Hospital",
-      "healthCheckup": "Donor Health Checkup",
+      "healthCheckup": "Health Checkup",
       "medicalCenter": "Medical Center"
     },
     "activity": {
-      "donationCompleted": "Successfully completed blood donation",
-      "achievementUnlocked": "Unlocked Silver Donor achievement",
+      "donationCompleted": "You completed a blood donation",
+      "achievementUnlocked": "You unlocked a new achievement",
       "requestFulfilled": "Your blood request was fulfilled"
     },
     "tabs": {
       "upcoming": "Upcoming",
-      "recent": "Recent"
+      "recent": "Recent",
+      "noUpcoming": "No upcoming events",
+      "noRecent": "No recent activity"
+    },
+    "errors": {
+      "title": "Error Loading Dashboard",
+      "fetchFailed": "Failed to load dashboard data",
+      "unknown": "An unknown error occurred",
+      "retry": "Try Again"
     }
   },
   "BloodRequestDetails": {

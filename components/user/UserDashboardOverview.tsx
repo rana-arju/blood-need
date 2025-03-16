@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   Card,
@@ -20,10 +21,15 @@ import {
   Bell,
   Clock,
   Award,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   LineChart,
   Line,
@@ -38,31 +44,9 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import { getUserDashboardData, type DashboardData } from "@/services/dashboard";
 
-// Mock data for charts
-const donationData = [
-  { month: "Jan", donations: 1 },
-  { month: "Feb", donations: 0 },
-  { month: "Mar", donations: 1 },
-  { month: "Apr", donations: 0 },
-  { month: "May", donations: 1 },
-  { month: "Jun", donations: 0 },
-];
-
-const healthData = [
-  { date: "Jan", hemoglobin: 14.2 },
-  { date: "Feb", hemoglobin: 13.8 },
-  { date: "Mar", hemoglobin: 14.0 },
-  { date: "Apr", hemoglobin: 14.5 },
-  { date: "May", hemoglobin: 14.3 },
-  { date: "Jun", hemoglobin: 14.1 },
-];
-
-const impactData = [
-  { name: "Lives Saved", value: 9 },
-  { name: "Potential", value: 3 },
-];
-
+// Default colors for charts
 const COLORS = ["#ef4444", "#d1d5db"];
 
 export function UserDashboardOverview() {
@@ -71,71 +55,95 @@ export function UserDashboardOverview() {
   const isMobile = useIsMobile();
   const isSmallMobile = useIsMobile(400);
   const isDark = theme === "dark";
+  const { data: session } = useSession();
 
-  const stats = [
-    {
-      title: t("overview.totalDonations"),
-      value: "3",
-      icon: <Droplet className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />,
-      description: t("overview.lastDonation", { date: "2024-02-15" }),
-    },
-    {
-      title: t("overview.livesSaved"),
-      value: "9",
-      icon: <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />,
-      description: t("overview.impactDescription"),
-    },
-    {
-      title: t("overview.nextEligible"),
-      value: t("overview.eligibleNow"),
-      icon: <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />,
-      description: t("overview.eligibleDescription"),
-    },
-    {
-      title: t("overview.donorRank"),
-      value: "Silver",
-      icon: <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />,
-      description: t("overview.rankDescription"),
-    },
-  ];
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: t("events.bloodDrive"),
-      date: "2024-03-15",
-      location: t("events.cityHospital"),
-      type: "donation",
-    },
-    {
-      id: 2,
-      title: t("events.healthCheckup"),
-      date: "2024-03-22",
-      location: t("events.medicalCenter"),
-      type: "checkup",
-    },
-  ];
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      if (!session?.user?.id) return;
 
-  const recentActivity = [
-    {
-      id: 1,
-      type: "donation",
-      date: "2024-02-15",
-      description: t("activity.donationCompleted"),
-    },
-    {
-      id: 2,
-      type: "achievement",
-      date: "2024-02-15",
-      description: t("activity.achievementUnlocked"),
-    },
-    {
-      id: 3,
-      type: "request",
-      date: "2024-01-20",
-      description: t("activity.requestFulfilled"),
-    },
-  ];
+      try {
+        setLoading(true);
+        const data = await getUserDashboardData(session.user.id);
+        console.log("dashbaord data", data);
+        
+        setDashboardData(data);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setError(t("errors.fetchFailed"));
+        toast.error(t("errors.fetchFailed"));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [session, t]);
+
+  // Generate stats cards data
+  const getStatsCards = () => {
+    if (!dashboardData) return [];
+
+    return [
+      {
+        title: t("overview.totalDonations"),
+        value: dashboardData.stats.totalDonations.toString(),
+        icon: <Droplet className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />,
+        description: dashboardData.stats.lastDonationDate
+          ? t("overview.lastDonation", {
+              date: dashboardData.stats.lastDonationDate,
+            })
+          : t("overview.noDonations"),
+      },
+      {
+        title: t("overview.livesSaved"),
+        value: dashboardData.stats.livesSaved.toString(),
+        icon: <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />,
+        description: t("overview.impactDescription"),
+      },
+      {
+        title: t("overview.nextEligible"),
+        value: dashboardData.stats.nextEligibleDate
+          ? format(
+              new Date(dashboardData.stats.nextEligibleDate),
+              "MMM dd, yyyy"
+            )
+          : t("overview.eligibleNow"),
+        icon: <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />,
+        description: t("overview.eligibleDescription"),
+      },
+      {
+        title: t("overview.donorRank"),
+        value: dashboardData.stats.donorRank,
+        icon: <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />,
+        description: t("overview.rankDescription"),
+      },
+    ];
+  };
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
+  if (error || !dashboardData) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center">
+        <AlertCircle className="h-12 w-12 text-destructive mb-4" />
+        <h2 className="text-xl font-bold mb-2">{t("errors.title")}</h2>
+        <p className="text-muted-foreground mb-4">
+          {error || t("errors.unknown")}
+        </p>
+        <Button onClick={() => window.location.reload()}>
+          {t("errors.retry")}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 sm:space-y-6 p-1 sm:p-4">
@@ -149,7 +157,7 @@ export function UserDashboardOverview() {
             size={isMobile ? "sm" : "default"}
             className="text-xs sm:text-sm h-8 sm:h-10"
           >
-            <Link href="/donate-now">{t("overview.donateNow")}</Link>
+            <Link href="/be-donor">{t("overview.donateNow")}</Link>
           </Button>
           <Button
             variant="outline"
@@ -163,7 +171,7 @@ export function UserDashboardOverview() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-        {stats.map((stat, index) => (
+        {getStatsCards().map((stat, index) => (
           <Card key={index} className="overflow-hidden dark:border-gray-700">
             <CardHeader className="pb-1 sm:pb-2 px-3 py-3 sm:px-6 sm:py-4">
               <div className="flex items-center justify-between">
@@ -197,7 +205,7 @@ export function UserDashboardOverview() {
               <ResponsiveContainer width="100%" height="100%">
                 {isMobile ? (
                   <BarChart
-                    data={donationData}
+                    data={dashboardData.donationChartData}
                     margin={{
                       top: 5,
                       right: 5,
@@ -224,7 +232,7 @@ export function UserDashboardOverview() {
                       }}
                       width={isSmallMobile ? 25 : 30}
                       allowDecimals={false}
-                      domain={[0, 1]}
+                      domain={[0, "dataMax" + 1]}
                     />
                     <Tooltip
                       contentStyle={{
@@ -243,7 +251,7 @@ export function UserDashboardOverview() {
                     />
                   </BarChart>
                 ) : (
-                  <LineChart data={donationData}>
+                  <LineChart data={dashboardData.donationChartData}>
                     <CartesianGrid
                       strokeDasharray="3 3"
                       stroke={isDark ? "#374151" : "#e5e7eb"}
@@ -255,7 +263,7 @@ export function UserDashboardOverview() {
                     <YAxis
                       stroke={isDark ? "#9ca3af" : "#6b7280"}
                       allowDecimals={false}
-                      domain={[0, 1]}
+                      domain={[0, "dataMax" + 1]}
                     />
                     <Tooltip
                       contentStyle={{
@@ -290,7 +298,7 @@ export function UserDashboardOverview() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={impactData}
+                    data={dashboardData.impactData}
                     cx="50%"
                     cy="50%"
                     innerRadius={isMobile ? 40 : 60}
@@ -303,7 +311,7 @@ export function UserDashboardOverview() {
                     }
                     labelLine={!isSmallMobile}
                   >
-                    {impactData.map((entry, index) => (
+                    {dashboardData.impactData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -338,7 +346,7 @@ export function UserDashboardOverview() {
               <ResponsiveContainer width="100%" height="100%">
                 {isMobile ? (
                   <BarChart
-                    data={healthData}
+                    data={dashboardData.healthChartData}
                     margin={{
                       top: 5,
                       right: 5,
@@ -383,7 +391,7 @@ export function UserDashboardOverview() {
                     />
                   </BarChart>
                 ) : (
-                  <LineChart data={healthData}>
+                  <LineChart data={dashboardData.healthChartData}>
                     <CartesianGrid
                       strokeDasharray="3 3"
                       stroke={isDark ? "#374151" : "#e5e7eb"}
@@ -422,7 +430,7 @@ export function UserDashboardOverview() {
                 size={isMobile ? "sm" : "default"}
                 className="text-xs sm:text-sm h-8 sm:h-10"
               >
-                <Link href="/user/health">
+                <Link href="/dashboard/health">
                   {t("overview.viewHealthDetails")}
                 </Link>
               </Button>
@@ -452,65 +460,159 @@ export function UserDashboardOverview() {
                 value="upcoming"
                 className="space-y-3 sm:space-y-4 mt-0"
               >
-                {upcomingEvents.map((event) => (
-                  <div
-                    key={event.id}
-                    className="flex items-start gap-3 sm:gap-4 p-2 sm:p-3 rounded-lg border border-border dark:border-gray-700"
-                  >
-                    <div className="p-1.5 sm:p-2 rounded-full bg-primary/10 dark:bg-primary/20">
-                      {event.type === "donation" ? (
-                        <Droplet className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
-                      ) : (
-                        <Activity className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm sm:text-base truncate">
-                        {event.title}
-                      </h3>
-                      <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground mt-1">
-                        <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                        <span>{event.date}</span>
-                        <span className="hidden xs:inline">•</span>
-                        <Users className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                        <span className="truncate">{event.location}</span>
+                {dashboardData.upcomingEvents.length > 0 ? (
+                  dashboardData.upcomingEvents.map((event) => (
+                    <div
+                      key={event.id}
+                      className="flex items-start gap-3 sm:gap-4 p-2 sm:p-3 rounded-lg border border-border dark:border-gray-700"
+                    >
+                      <div className="p-1.5 sm:p-2 rounded-full bg-primary/10 dark:bg-primary/20">
+                        {event.type === "donation" ? (
+                          <Droplet className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
+                        ) : (
+                          <Activity className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm sm:text-base truncate">
+                          {event.title}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground mt-1">
+                          <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                          <span>{event.date}</span>
+                          <span className="hidden xs:inline">•</span>
+                          <Users className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                          <span className="truncate">{event.location}</span>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center py-6 text-muted-foreground">
+                    {t("tabs.noUpcoming")}
                   </div>
-                ))}
+                )}
               </TabsContent>
               <TabsContent
                 value="recent"
                 className="space-y-3 sm:space-y-4 mt-0"
               >
-                {recentActivity.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start gap-3 sm:gap-4 p-2 sm:p-3 rounded-lg border border-border dark:border-gray-700"
-                  >
-                    <div className="p-1.5 sm:p-2 rounded-full bg-primary/10 dark:bg-primary/20">
-                      {activity.type === "donation" ? (
-                        <Droplet className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
-                      ) : activity.type === "achievement" ? (
-                        <Award className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
-                      ) : (
-                        <Bell className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs sm:text-sm truncate">
-                        {activity.description}
-                      </p>
-                      <div className="flex items-center gap-1 sm:gap-2 text-xs text-muted-foreground mt-1">
-                        <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                        <span>{activity.date}</span>
+                {dashboardData.recentActivity.length > 0 ? (
+                  dashboardData.recentActivity.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex items-start gap-3 sm:gap-4 p-2 sm:p-3 rounded-lg border border-border dark:border-gray-700"
+                    >
+                      <div className="p-1.5 sm:p-2 rounded-full bg-primary/10 dark:bg-primary/20">
+                        {activity.type === "donation" ? (
+                          <Droplet className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
+                        ) : activity.type === "achievement" ? (
+                          <Award className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
+                        ) : (
+                          <Bell className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-primary" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm truncate">
+                          {activity.description}
+                        </p>
+                        <div className="flex items-center gap-1 sm:gap-2 text-xs text-muted-foreground mt-1">
+                          <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                          <span>{activity.date}</span>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center py-6 text-muted-foreground">
+                    {t("tabs.noRecent")}
                   </div>
-                ))}
+                )}
               </TabsContent>
             </CardContent>
           </Tabs>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// Skeleton loader for the dashboard
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-4 sm:space-y-6 p-1 sm:p-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="flex gap-2">
+          <Skeleton className="h-10 w-24" />
+          <Skeleton className="h-10 w-28" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <Card key={i} className="overflow-hidden">
+            <CardHeader className="pb-1 sm:pb-2 px-3 py-3 sm:px-6 sm:py-4">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-6 w-6 rounded-full" />
+              </div>
+            </CardHeader>
+            <CardContent className="px-3 pb-3 sm:px-6 sm:pb-4">
+              <Skeleton className="h-6 w-12 mb-1" />
+              <Skeleton className="h-4 w-32" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader className="px-3 py-3 sm:px-6 sm:py-4">
+            <Skeleton className="h-5 w-32" />
+          </CardHeader>
+          <CardContent className="px-3 pb-3 sm:px-6 sm:pb-4">
+            <Skeleton className="h-[200px] w-full" />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="px-3 py-3 sm:px-6 sm:py-4">
+            <Skeleton className="h-5 w-24" />
+          </CardHeader>
+          <CardContent className="px-3 pb-3 sm:px-6 sm:pb-4">
+            <Skeleton className="h-[200px] w-full" />
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <Card>
+          <CardHeader className="px-3 py-3 sm:px-6 sm:py-4">
+            <Skeleton className="h-5 w-32" />
+          </CardHeader>
+          <CardContent className="px-3 pb-3 sm:px-6 sm:pb-4">
+            <Skeleton className="h-[180px] w-full mb-4" />
+            <div className="flex justify-center">
+              <Skeleton className="h-10 w-40" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="px-3 py-3 sm:px-6 sm:py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-8 w-40" />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-4 sm:pt-6 px-3 pb-3 sm:px-6 sm:pb-4">
+            <div className="space-y-3">
+              {[1, 2].map((i) => (
+                <Skeleton key={i} className="h-20 w-full" />
+              ))}
+            </div>
+          </CardContent>
         </Card>
       </div>
     </div>
