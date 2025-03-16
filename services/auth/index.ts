@@ -128,16 +128,15 @@ export const updateUserStatus = async (
 export const setUserPassword = async (
   userId: string,
   password: string,
-  token: string
-): Promise<User> => {
+)=> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user/${userId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/password/${userId}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userId}`,
         },
         body: JSON.stringify({ password }),
       }

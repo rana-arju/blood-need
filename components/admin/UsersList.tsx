@@ -228,7 +228,7 @@ export function UsersList() {
     }
 
     try {
-      await setUserPassword(passwordUser.id, newPassword, user.id);
+      await setUserPassword(passwordUser.id, newPassword);
       toast.success("Password updated successfully");
       setPasswordUser(null);
       setNewPassword("");

@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { setUserPassword } from "@/services/auth";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const passwordFormSchema = z
   .object({
-    currentPassword: z
-      .string()
-      .min(8, "Password must be at least 8 characters"),
     newPassword: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
@@ -29,11 +29,12 @@ const passwordFormSchema = z
   });
 
 export function SecuritySettings() {
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof passwordFormSchema>>({
     resolver: zodResolver(passwordFormSchema),
     defaultValues: {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -42,38 +43,29 @@ export function SecuritySettings() {
   async function onSubmit(values: z.infer<typeof passwordFormSchema>) {
     try {
       // Update password
-      console.log(values);
-      
-      toast("Password updated successfully");
-      form.reset();
+
+      const res = await setUserPassword(session?.user.id!, values.newPassword);
+      if (res?.success) {
+        toast.success(res?.message);
+        form.reset();
+        router.push("/dashboard/profile");
+      } else {
+        toast.error(res?.message);
+      }
     } catch {
-      toast("Failed to update password");
+      toast.error("Failed to update password");
     }
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-8 md:mt-20">
       <Card>
         <CardHeader>
-          <CardTitle>Change Password</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">Change Password</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="currentPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Current Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="newPassword"
@@ -81,7 +73,11 @@ export function SecuritySettings() {
                   <FormItem>
                     <FormLabel>New Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        type="password"
+                        {...field}
+                        placeholder="Enter new password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -95,7 +91,11 @@ export function SecuritySettings() {
                   <FormItem>
                     <FormLabel>Confirm New Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input
+                        type="password"
+                        {...field}
+                        placeholder="Confirm new password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
