@@ -529,7 +529,7 @@
     }
   },
 
- "UserDashboard": {
+  "UserDashboard": {
     "overview": {
       "welcome": "আপনার ড্যাশবোর্ডে স্বাগতম",
       "totalDonations": "মোট রক্তদান",
@@ -1159,6 +1159,18 @@
       "subtitle": "আমাদের রক্তদাতা এবং গ্রহীতাদের পর্যালোচনা পড়ুন",
       "addReview": "পর্যালোচনা যোগ করুন",
       "viewAll": "সব দেখুন"
+    },
+    "upcomingDrives": {
+      "title": "আসন্ন রক্তদান শিবির",
+      "subtitle": "আমাদের আসন্ন রক্তদান অনুষ্ঠানে যোগ দিন এবং জীবন বাঁচাতে সাহায্য করুন",
+      "noDrives": "এই মুহূর্তে কোন আসন্ন রক্তদান শিবির নেই। পরে আবার দেখুন!",
+      "fetchError": "রক্তদান শিবির লোড করতে ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+      "organizedBy": "আয়োজক",
+      "viewDetails": "বিস্তারিত দেখুন",
+      "date": "তারিখ",
+      "location": "স্থান",
+      "organizer": "আয়োজক",
+      "registerButton": "রক্তদানের জন্য নিবন্ধন করুন"
     }
   },
   "Reviews": {
@@ -1431,6 +1443,75 @@
         "selected": "নির্বাচিত",
         "confirmed": "নিশ্চিত",
         "cancelled": "বাতিল"
+      }
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "ড্যাশবোর্ড",
+      "users": "ব্যবহারকারী",
+      "bloodRequests": "রক্তের অনুরোধ",
+      "donors": "রক্তদাতা",
+      "bloodDrives": "রক্তদান ক্যাম্প",
+      "volunteers": "স্বেচ্ছাসেবক",
+      "reviews": "পর্যালোচনা"
+    },
+    "bloodDrives": {
+      "pageTitle": "রক্তদান শিবির ব্যবস্থাপনা",
+      "pageDescription": "রক্তদান শিবির এবং অনুষ্ঠান পরিচালনা করুন",
+      "title": "রক্তদান শিবির",
+      "subtitle": "সমস্ত রক্তদান শিবির এবং অনুষ্ঠান পরিচালনা করুন",
+      "searchPlaceholder": "রক্তদান শিবির খুঁজুন...",
+      "addButton": "রক্তদান শিবির যোগ করুন",
+      "addTitle": "নতুন রক্তদান শিবির যোগ করুন",
+      "editTitle": "রক্তদান শিবির সম্পাদনা করুন",
+      "noDrives": "কোন রক্তদান শিবির পাওয়া যায়নি",
+      "noSearchResults": "আপনার অনুসন্ধানের সাথে কোন রক্তদান শিবির মেলে না",
+      "fetchError": "রক্তদান শিবির লোড করতে ব্যর্থ হয়েছে",
+      "deleteSuccess": "রক্তদান শিবির সফলভাবে মুছে ফেলা হয়েছে",
+      "deleteError": "রক্তদান শিবির মুছতে ব্যর্থ হয়েছে",
+      "openMenu": "মেনু খুলুন",
+      "view": "দেখুন",
+      "edit": "সম্পাদনা করুন",
+      "delete": "মুছুন",
+      "deleteConfirmTitle": "রক্তদান শিবির মুছুন",
+      "deleteConfirmDescription": "আপনি কি নিশ্চিত যে আপনি এই রক্তদান শিবির মুছতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।",
+      "cancel": "বাতিল করুন",
+      "confirmDelete": "মুছুন",
+      "previous": "আগের",
+      "next": "পরবর্তী",
+      "pageInfo": "পৃষ্ঠা {current} / {total}",
+      "table": {
+        "title": "শিরোনাম",
+        "date": "তারিখ",
+        "location": "স্থান",
+        "organizer": "আয়োজক",
+        "actions": "কার্যক্রম"
+      },
+      "form": {
+        "title": "শিরোনাম",
+        "titlePlaceholder": "রক্তদান শিবিরের শিরোনাম লিখুন",
+        "date": "তারিখ",
+        "division": "বিভাগ",
+        "divisionPlaceholder": "বিভাগ লিখুন",
+        "district": "জেলা",
+        "districtPlaceholder": "জেলা লিখুন",
+        "upazila": "উপজেলা",
+        "upazilaPlaceholder": "উপজেলা লিখুন",
+        "address": "ঠিকানা",
+        "addressPlaceholder": "বিস্তারিত ঠিকানা লিখুন",
+        "organizer": "আয়োজক",
+        "organizerPlaceholder": "আয়োজকের নাম লিখুন",
+        "banner": "ব্যানার ছবির URL",
+        "bannerPlaceholder": "ব্যানার ছবির URL লিখুন (ঐচ্ছিক)",
+        "saving": "সংরক্ষণ করা হচ্ছে...",
+        "updateButton": "রক্তদান শিবির আপডেট করুন",
+        "createButton": "রক্তদান শিবির তৈরি করুন",
+        "updateSuccess": "রক্তদান শিবির সফলভাবে আপডেট করা হয়েছে",
+        "createSuccess": "রক্তদান শিবির সফলভাবে তৈরি করা হয়েছে",
+        "updateError": "রক্তদান শিবির আপডেট করতে ব্যর্থ হয়েছে",
+        "createError": "রক্তদান শিবির তৈরি করতে ব্যর্থ হয়েছে",
+        "notAuthenticated": "এই কাজটি করার জন্য আপনাকে লগ ইন করতে হবে"
       }
     }
   }

@@ -125,7 +125,7 @@ export function ProfileSettings({
     }
   };
 
-  async function onSubmit(values: z.infer<typeof profileFormSchema>) {
+  async function onSubmit(values: any) {
     try {
       const res = await updateUser(values, user?.id);
 

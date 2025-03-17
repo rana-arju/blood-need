@@ -11,10 +11,12 @@ import {
   UserCheck,
   Star,
   Menu,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
+import { useTranslations } from "next-intl";
+/*
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Users, label: "Users", href: "/admin/users" },
@@ -23,11 +25,22 @@ const sidebarItems = [
   { icon: UserCheck, label: "Volunteers", href: "/admin/volunteers" },
   { icon: Star, label: "Reviews", href: "/admin/reviews" },
 ];
+*/
+ 
 
 export function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-
+   const t = useTranslations("Admin.sidebar");
+ const sidebarItems = [
+   { icon: LayoutDashboard, label: t("dashboard"), href: "/admin" },
+   { icon: Users, label: t("users"), href: "/admin/users" },
+   { icon: Droplet, label: t("bloodRequests"), href: "/admin/blood-requests" },
+   { icon: Heart, label: t("donors"), href: "/admin/donors" },
+   { icon: Calendar, label: t("bloodDrives"), href: "/admin/blood-drives" },
+   { icon: UserCheck, label: t("volunteers"), href: "/admin/volunteers" },
+   { icon: Star, label: t("reviews"), href: "/admin/reviews" },
+ ];
   const isActive = (path: string) => pathname.endsWith(path);
   return (
     <>

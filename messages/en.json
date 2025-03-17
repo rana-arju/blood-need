@@ -1085,6 +1085,18 @@
       "submitButton": "Submit Review",
       "successMessage": "Thank you for your review!",
       "errorMessage": "There was an error submitting your review. Please try again."
+    },
+    "upcomingDrives": {
+      "title": "Upcoming Blood Drives",
+      "subtitle": "Join our upcoming blood donation events and help save lives",
+      "noDrives": "No upcoming blood drives at the moment. Check back later!",
+      "fetchError": "Failed to fetch blood drives. Please try again later.",
+      "organizedBy": "Organized by",
+      "viewDetails": "View Details",
+      "date": "Date",
+      "location": "Location",
+      "organizer": "Organizer",
+      "registerButton": "Register to Donate"
     }
   },
   "Reviews": {
@@ -1409,6 +1421,75 @@
         "selected": "Selected",
         "confirmed": "Confirmed",
         "cancelled": "Cancelled"
+      }
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "bloodRequests": "Blood Requests",
+      "donors": "Donors",
+      "bloodDrives": "Blood Drives",
+      "volunteers": "Volunteers",
+      "reviews": "Reviews"
+    },
+    "bloodDrives": {
+      "pageTitle": "Blood Drives Management",
+      "pageDescription": "Manage blood donation drives and events",
+      "title": "Blood Drives",
+      "subtitle": "Manage all blood donation drives and events",
+      "searchPlaceholder": "Search blood drives...",
+      "addButton": "Add Blood Drive",
+      "addTitle": "Add New Blood Drive",
+      "editTitle": "Edit Blood Drive",
+      "noDrives": "No blood drives found",
+      "noSearchResults": "No blood drives match your search",
+      "fetchError": "Failed to fetch blood drives",
+      "deleteSuccess": "Blood drive deleted successfully",
+      "deleteError": "Failed to delete blood drive",
+      "openMenu": "Open menu",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete Blood Drive",
+      "deleteConfirmDescription": "Are you sure you want to delete this blood drive? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirmDelete": "Delete",
+      "previous": "Previous",
+      "next": "Next",
+      "pageInfo": "Page {current} of {total}",
+      "table": {
+        "title": "Title",
+        "date": "Date",
+        "location": "Location",
+        "organizer": "Organizer",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Title",
+        "titlePlaceholder": "Enter blood drive title",
+        "date": "Date",
+        "division": "Division",
+        "divisionPlaceholder": "Enter division",
+        "district": "District",
+        "districtPlaceholder": "Enter district",
+        "upazila": "Upazila",
+        "upazilaPlaceholder": "Enter upazila",
+        "address": "Address",
+        "addressPlaceholder": "Enter detailed address",
+        "organizer": "Organizer",
+        "organizerPlaceholder": "Enter organizer name",
+        "banner": "Banner Image URL",
+        "bannerPlaceholder": "Enter banner image URL (optional)",
+        "saving": "Saving...",
+        "updateButton": "Update Blood Drive",
+        "createButton": "Create Blood Drive",
+        "updateSuccess": "Blood drive updated successfully",
+        "createSuccess": "Blood drive created successfully",
+        "updateError": "Failed to update blood drive",
+        "createError": "Failed to create blood drive",
+        "notAuthenticated": "You must be logged in to perform this action"
       }
     }
   }

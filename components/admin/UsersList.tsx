@@ -228,11 +228,15 @@ export function UsersList() {
     }
 
     try {
-      await setUserPassword(passwordUser.id, newPassword);
-      toast.success("Password updated successfully");
-      setPasswordUser(null);
-      setNewPassword("");
-      setConfirmPassword("");
+      const res = await setUserPassword(session?.user.id!, newPassword);
+      if (res?.success) {
+        toast.success(res?.message);
+        setPasswordUser(null);
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        toast.error(res?.message);
+      }
     } catch (error) {
       console.error("Error updating password:", error);
       toast.error("Failed to update password");
@@ -351,11 +355,18 @@ export function UsersList() {
                         <TableCell className="whitespace-nowrap text-right ">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" className="outline-none border-none">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="outline-none border-none"
+                              >
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="max-h-64 overflow-y-auto scroll-m-0">
+                            <DropdownMenuContent
+                              align="end"
+                              className="max-h-64 overflow-y-auto scroll-m-0"
+                            >
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem

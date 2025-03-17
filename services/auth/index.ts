@@ -155,31 +155,37 @@ export const setUserPassword = async (
 };
 
 // Update user details
-export const updateUser = async (userId: string, userData: Partial<User>, token: string): Promise<User> => {
+export const updateUser = async (
+  userData: Partial<User>,
+  userId: string
+) => {
   try {
     // Create a new object without the id field to avoid Prisma error
-    const { id, createdAt, updatedAt, ...dataToUpdate } = userData
+    const { id, createdAt, updatedAt, ...dataToUpdate } = userData;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user/${userId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(dataToUpdate),
-    })
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/user/${userId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userId}`,
+        },
+        body: JSON.stringify(dataToUpdate),
+      }
+    );
 
     if (!res.ok) {
-      throw new Error(`Error updating user: ${res.status}`)
+      throw new Error(`Error updating user: ${res.status}`);
     }
 
-    revalidateTag("Users")
-    return res.json()
+    revalidateTag("Users");
+    return res.json();
   } catch (error: any) {
-    console.error("Error updating user:", error)
-    throw error
+    console.error("Error updating user:", error);
+    throw error;
   }
-}
+};
 
 export const createUser = async (data: any) => {
   try {
