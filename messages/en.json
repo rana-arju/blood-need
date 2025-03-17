@@ -485,6 +485,7 @@
     "donations": "Donations",
     "impact": "Potentially saved {count} lives",
     "cta": "Join Our Donors",
+    "noDonors": "No donors have made donations yet. Be the first to donate!",
     "donors": {
       "1": {
         "name": "John Smith"
@@ -1490,7 +1491,10 @@
         "updateError": "Failed to update blood drive",
         "createError": "Failed to create blood drive",
         "notAuthenticated": "You must be logged in to perform this action"
-      }
+      },
+      "location": "Location",
+      "date": "Date",
+      "organizer" : "Organizer"
     }
   }
 }

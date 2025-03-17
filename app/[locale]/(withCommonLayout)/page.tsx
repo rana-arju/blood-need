@@ -5,13 +5,13 @@ import News from "@/components/News";
 import EducationalResources from "@/components/EducationalResources";
 import ImpactStatistics from "@/components/ImpactStatistics";
 import WelcomeSection from "@/components/welcome/welcome-section";
-import DonorLeaderboard from "@/components/donor-leaderboard";
 import QuickLinksSection from "@/components/quick-links/quick-links-section";
 import LatestBloodRequests from "@/components/home/LatestBloodRequests";
 import ReviewsSection from "@/components/home/ReviewSection";
 import UpcomingDrives from "@/components/home/UpcomingDrives";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import TopDonorsSection from "@/components/top-donors-section";
 const mockBloodRequests = [
   {
     id: "1",
@@ -78,7 +78,7 @@ export default  function Home() {
       }
       <LatestBloodRequests />
 
-      <DonorLeaderboard />
+      <TopDonorsSection />
       <EducationalResources />
       <DonationProcess />
       <QuickLinksSection />
