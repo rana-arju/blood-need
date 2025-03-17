@@ -62,7 +62,7 @@ const mockBloodRequests = [
     urgency: "low",
   },
 ];
-export default  function Home() {
+export default function Home() {
   const t = useTranslations("home");
   return (
     <div className="overflow-x-hidden">
@@ -82,9 +82,8 @@ export default  function Home() {
       <EducationalResources />
       <DonationProcess />
       <QuickLinksSection />
-      <Suspense fallback={<UpcomingDrivesSkeleton />}>
-        <UpcomingDrives />
-      </Suspense>
+      <UpcomingDrives />
+
       <ReviewsSection />
       <News />
     </div>

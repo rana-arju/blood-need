@@ -130,7 +130,7 @@ export default function RequestDetails({ id }: BloodRequestDetailsProps) {
       return "Invalid time";
     }
   };
-  console.log("req asdfasd", interestedUsers);
+  
 
   const shareRequest = async () => {
     if (navigator.share) {

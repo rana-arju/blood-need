@@ -56,27 +56,24 @@ export default function AddReviewModal({
       comment: "",
     },
   });
-  useEffect(() => {
-    if (!session?.user) {
-      router.push("/auth/signin");
-    }
-  }, [session, router]);
 
   const onSubmit = async (values: z.infer<typeof reviewSchema>) => {
     try {
-      // Here you would typically send the review data to your backend
-      console.log("Submitting review:", values);
+      if (!session?.user) {
+        router.push("/auth/signin");
+      }
+
       const modifiedReview = {
         comment: values?.comment,
         rating: Number(values?.rating),
         userId: session?.user?.id!,
       };
       const res = await createReview(modifiedReview, session?.user?.id!);
-      console.log("review res", res);
+      
       if (res?.success) {
         toast.success(res?.message);
-      }else{
-        toast.error(res?.message)
+      } else {
+        toast.error(res?.message);
       }
 
       form.reset();

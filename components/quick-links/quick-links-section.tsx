@@ -9,15 +9,12 @@ import {
   Shield,
   Users,
   Award,
-  TrendingUp,
   ArrowRight,
   ChartNoAxesCombined,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 
 export default function QuickLinksSection() {
   const t = useTranslations("QuickLinks");
-  const { theme } = useTheme();
 
   const links = [
     {

@@ -52,8 +52,8 @@ export default function VirtualBloodTest() {
         }
         // If it's not an array (like a string), return an empty array
         return [];
-      } catch (error) {
-        console.error(`Error getting options for ${key}:`, error);
+      } catch {
+       
         return [];
       }
     };
@@ -100,7 +100,7 @@ export default function VirtualBloodTest() {
   };
 
   const handleOptionSelect = (value: string) => {
-      console.log("Selected Option:", value);
+      
 
     setSelectedOption(value);
   };
@@ -122,8 +122,8 @@ export default function VirtualBloodTest() {
           .replace("+", "Positive")
           .replace("-", "Negative")}`
       );
-    } catch (error) {
-      console.error(`Error getting blood type info for ${bloodType}:`, error);
+    } catch  {
+     
       return "";
     }
   };

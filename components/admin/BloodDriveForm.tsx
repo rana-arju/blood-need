@@ -104,7 +104,7 @@ export function BloodDriveForm({ bloodDrive, onSuccess }: BloodDriveFormProps) {
         toast.success(t("updateSuccess"));
       } else {
         const res = await createBloodDrive(values, session.user.id);
-        console.log("Create blood drive", res);
+     
         if (res?.message) {
           toast.success(res?.message);
           form.reset()

@@ -43,7 +43,7 @@ export function ContactForm() {
     setIsSubmitting(true);
     try {
       // Submit form logic here
-      console.log(values);
+   
       
       toast("We'll get back to you as soon as possible.",
       );

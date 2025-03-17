@@ -37,12 +37,10 @@ export default function DonorLeaderboard({
           setLoading(false);
         })
         .catch((err) => {
-          console.error("Error fetching top donors:", err);
           setLoading(false);
         });
     }
   }, [initialDonors]);
-console.log("donors", donors);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {

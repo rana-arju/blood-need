@@ -313,7 +313,7 @@ export const updateDonorStatus = async (
   notes?: string
 ) => {
   try {
-    console.log(requestId, userId, status, notes);
+   
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/blood-requests/${requestId}/donors/${userId}/status`,
       {

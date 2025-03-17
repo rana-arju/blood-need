@@ -45,8 +45,8 @@ export default function UserDetailsPage() {
         setLoading(true);
         const userData = await getUserById(userId, session.user.id);
         setUser(userData?.data);
-      } catch (error) {
-        console.error("Error fetching user:", error);
+      } catch  {
+        console.error("Error fetching user");
         toast.error("Failed to load user details");
       } finally {
         setLoading(false);
@@ -145,7 +145,7 @@ export default function UserDetailsPage() {
       day: "numeric",
     });
   };
-console.log("user", user);
+
 
   return (
     <div className="space-y-6">

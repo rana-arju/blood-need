@@ -296,9 +296,7 @@ export const getAllUsers = async (
       ? `?${queryParams.toString()}`
       : "";
 
-    console.log(
-      `Fetching users with query: ${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/users${queryString}`
-    );
+
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/users${queryString}`,

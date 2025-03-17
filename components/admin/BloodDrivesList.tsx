@@ -98,7 +98,7 @@ export function BloodDrivesList() {
   const handleDelete = async (id: string) => {
     try {
       const res = await deleteBloodDrive(id);
-      console.log("delete res", res);
+    
       
       if (res?.success) {
         toast.success(t("deleteSuccess"));

@@ -30,8 +30,6 @@ export default function ReviewsSection() {
     const fetchReviews = async () => {
       const res = await getAllReviews();
       const reviews = res?.data;
-      console.log("reviews", res?.data);
-
       setReviews(reviews);
     };
 
@@ -77,7 +75,7 @@ export default function ReviewsSection() {
             modules={[Mousewheel, EffectCards]}
             className="w-full h-full"
           >
-            {reviews?.slice(0,6).map((review) => (
+            {reviews?.slice(0, 6).map((review) => (
               <SwiperSlide key={review.id}>
                 <Card
                   className={cn(
@@ -122,11 +120,13 @@ export default function ReviewsSection() {
         </div>
 
         <div className="flex justify-center space-x-4">
-          {session?.user && (
+          {session?.user ? (
             <Button onClick={() => setIsReviewModalOpen(true)}>
               <Plus className=" h-4 w-4" />
               {t("addReview")}
             </Button>
+          ) : (
+            ""
           )}
 
           <Button variant="outline" asChild>

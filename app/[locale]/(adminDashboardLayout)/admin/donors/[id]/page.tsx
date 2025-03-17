@@ -153,7 +153,7 @@ export default function DonorDetailsPage() {
       </div>
     );
   }
-console.log(donor);
+
 
   return (
     <div className="space-y-6">

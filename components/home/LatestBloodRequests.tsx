@@ -63,14 +63,6 @@ export default function LatestBloodRequests() {
     const requestDateTime = getCombinedDateTime(requiredDate, requireTime);
     const hoursUntilRequest = requestDateTime.diff(now, "hours");
 
-    console.log("Request date:", requiredDate);
-    console.log("Request time:", requireTime);
-    console.log(
-      "Combined datetime:",
-      requestDateTime.format("YYYY-MM-DD HH:mm")
-    );
-    console.log("Hours until request:", hoursUntilRequest);
-
     if (hoursUntilRequest < 0) {
       return "passed"; // Request time has passed
     } else if (hoursUntilRequest <= 6) {
@@ -187,8 +179,8 @@ export default function LatestBloodRequests() {
 
         // Take only the first 6 most urgent requests
         setRequests(sortedRequests.slice(0, 6));
-      } catch (error) {
-        console.error("Error fetching blood requests:", error);
+      } catch  {
+        console.error("Error fetching blood requests:");
       } finally {
         setLoading(false);
       }

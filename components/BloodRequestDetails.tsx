@@ -115,7 +115,7 @@ export function BloodRequestDetails({ id }: BloodRequestDetailsProps) {
     };
     fetchDonation();
   }, [request]);
-console.log("req", donation);
+
 
   if (isLoading) return <CustomNotFound />;
   if (error)
