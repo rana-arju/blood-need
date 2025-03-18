@@ -4,14 +4,21 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { CheckCircle, Heart, Target, Droplet, BellRing,  AlarmClockCheck } from "lucide-react";
-import Image from "next/image";
-import { useTheme } from "next-themes";
-import Link from "next/link";
+import {
+  CheckCircle,
+  Heart,
+  Target,
+  Droplet,
+  BellRing,
+  AlarmClockCheck,
+} from "lucide-react";
 
+import Link from "next/link";
+import { OptimizedHeroImage } from "@/components/OptimizedHeroImage";
+import { DescriptiveLink as NewDescriptiveLink } from "@/components/DescriptiveLink";
+import Image from "next/image";
 export default function WelcomeSection() {
   const t = useTranslations("Welcome");
-  const { theme } = useTheme();
 
   const features = [
     { icon: <CheckCircle className="w-5 h-5" />, text: t("features.service") },
@@ -144,10 +151,11 @@ export default function WelcomeSection() {
                       <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                         <Image
                           src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1741438933/blood-donation_2_frfuzm.png"
-                          alt="BloodNeed"
+                          alt="Your Blood Can Bring Smile In Any One Person Face"
                           width={40}
                           height={40}
-                          className="text-primary object-cover"
+                          priority={true}
+                          className="text-primary"
                         />
                       </div>
                       <h3 className="text-xl md:text-2xl font-bold">
@@ -223,11 +231,14 @@ export default function WelcomeSection() {
                     <div className="w-full h-[1px] bg-border my-6"></div>
 
                     <div className="flex justify-center">
-                      <Link href="/learn/blood-donation-101">
-                        <Button variant="outline" className="rounded-full">
-                          {t("buttons.learn")}
-                        </Button>
-                      </Link>
+                      <NewDescriptiveLink
+                        href="/learn/blood-donation-101"
+                        ariaLabel="Learn about blood donation basics and process"
+                        title="Blood Donation 101: Learn the basics of blood donation"
+                        className="text-white bg-primary hover:bg-primary/90 px-4 py-2 rounded-md"
+                      >
+                        Learn Blood Donation
+                      </NewDescriptiveLink>
                     </div>
                   </div>
                 </TabsContent>

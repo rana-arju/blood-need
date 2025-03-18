@@ -19,7 +19,8 @@ import { TopDonor } from "@/services/donor-leaderboard";
 import { Skeleton } from "./ui/skeleton";
 
 import LazyLoad from "./LazyLoad";
-import OptimizedImage from "./OptimizedImage";
+import { OptimizedImage } from "./OptimizedImage";
+
 
 export default function DonorLeaderboard({
   initialDonors,

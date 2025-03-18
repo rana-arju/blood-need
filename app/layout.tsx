@@ -10,9 +10,12 @@ import { getMessages } from "next-intl/server";
 import NotFound from "./not-found";
 import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "sonner";
-import { baseViewport} from "@/lib/seo-config";
+import { baseViewport } from "@/lib/seo-config";
 import { inter } from "@/lib/fonts";
 import { generateOrganizationSchema } from "@/lib/schema";
+
+import { initPerformanceMonitoring } from "@/utils/performance-monitoring";
+import { PerformanceMonitoringInitializer } from "@/components/Monitor";
 
 export const viewport = baseViewport;
 export const metadata = {
@@ -20,7 +23,6 @@ export const metadata = {
   description:
     "Connect blood donors with those in need, save lives through our blood donation community platform.",
 };
-
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -40,7 +42,7 @@ export default async function RootLayout({
   } catch {
     NotFound();
   }
- const organizationSchema = generateOrganizationSchema();
+  const organizationSchema = generateOrganizationSchema();
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -82,7 +84,6 @@ export default async function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-   
 
         {/* Preload critical resources */}
         <link rel="preload" href="/icons/icon.png" as="image" />
@@ -169,6 +170,7 @@ export default async function RootLayout({
           </SessionProvider>
         </NextIntlClientProvider>
       </body>
+      <PerformanceMonitoringInitializer />
     </html>
   );
 }

@@ -3,7 +3,9 @@ import { constructMetadata } from "@/lib/seo-config";
 import { generateBlogPostSchema } from "@/lib/schema";
 import { getTranslations } from "next-intl/server";
 import BlogDetailContent from "@/components/blog/BlogDetailContent";
+import { generateViewport } from "@/lib/viewport";
 
+export const viewport = generateViewport();
 export async function generateMetadata({
   params,
 }: {
@@ -72,7 +74,7 @@ export default function BlogDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <BlogDetailContent id={params.id} />
+      <BlogDetailContent  />
     </>
   );
 }

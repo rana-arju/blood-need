@@ -1,52 +1,66 @@
+"use client";
+
 import Image from "next/image";
-import { getOptimizedImageUrl } from "@/utils/image-optimization";
+import { useState, useEffect } from "react";
 
 interface OptimizedImageProps {
   src: string;
   alt: string;
-  width?: number;
-  height?: number;
-  className?: string;
+  width: number;
+  height: number;
   priority?: boolean;
+  className?: string;
   sizes?: string;
-  fill?: boolean;
   quality?: number;
-  loading?: "eager" | "lazy";
+  objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
+  objectPosition?: string;
 }
 
-export default function OptimizedImage({
+export function OptimizedImage({
   src,
   alt,
   width,
   height,
-  className,
   priority = false,
+  className = "",
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-  fill = false,
-  quality = 80,
-  loading = "lazy",
+  quality = 75,
+  objectFit = "cover",
+  objectPosition = "center",
 }: OptimizedImageProps) {
-  // Optimize the image URL
-  const optimizedSrc = getOptimizedImageUrl(src, width, quality);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(src);
 
-  // For external images (like Cloudinary), use regular Image with unoptimized
-  const isExternal =
-    src.startsWith("http") &&
-    !src.includes(process.env.NEXT_PUBLIC_APP_URL || "");
+  // Handle image loading errors
+  useEffect(() => {
+    setImgSrc(src);
+  }, [src]);
 
   return (
-    <Image
-      src={optimizedSrc || "/placeholder.svg"}
-      alt={alt}
-      width={fill ? undefined : width}
-      height={fill ? undefined : height}
-      className={className}
-      priority={priority}
-      sizes={sizes}
-      fill={fill}
-      quality={quality}
-      loading={loading}
-      unoptimized={isExternal}
-    />
+    <div
+      className={`relative overflow-hidden ${className}`}
+      style={{ aspectRatio: `${width}/${height}` }}
+    >
+      <Image
+        src={imgSrc || "/placeholder.svg"}
+        alt={alt}
+        fill={true}
+        priority={priority}
+        sizes={sizes}
+        quality={quality}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setImgSrc("/placeholder.svg")}
+        className={`transition-opacity duration-300 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          objectFit,
+          objectPosition,
+        }}
+      />
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+      )}
+    </div>
   );
 }

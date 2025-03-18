@@ -2,6 +2,7 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { type NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+// Create i18n middleware
 
 export const runtime = "nodejs";
 
@@ -72,7 +73,7 @@ export default async function middleware(req: NextRequest) {
 
   return intlMiddleware(req);
 }
-
+  
 export const config = {
   matcher: [
     "/((?!api|_next|_static|_vercel|favicon.ico|sitemap.xml).*)",

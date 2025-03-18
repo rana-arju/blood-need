@@ -9,8 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Heart } from "lucide-react";
+import { OptimizedHeroImage } from "./OptimizedHeroImage";
 
-import OptimizedImage from "./OptimizedImage";
 const slides = [
   {
     id: 4,
@@ -77,11 +77,11 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
           <SwiperSlide key={slide.id}>
             <div className="relative h-full w-full">
               <div className="absolute inset-0">
-                <OptimizedImage
+                <OptimizedHeroImage
                   src={slide.image}
                   alt={title}
-                  width={700}
-                  height={500}
+                 // width={700}
+//height={500}
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50" />

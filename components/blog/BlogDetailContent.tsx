@@ -1,6 +1,14 @@
 "use client";
-
 import { useEffect, useState } from "react";
+
+// Extend the Window interface to include hljs
+declare global {
+  interface Window {
+    hljs: {
+      highlightElement: (element: HTMLElement) => void;
+    };
+  }
+}
 import { Button } from "@/components/ui/button";
 import {
   CalendarDays,
@@ -14,12 +22,24 @@ import {
 } from "lucide-react";
 import { blogPosts, type BlogPost } from "@/data/blogData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
+import { useParams } from "next/navigation";
+import { DescriptiveLink } from "@/components/DescriptiveLink";
+import { OptimizedImage } from "@/components/OptimizedImage";
+import { useDynamicScript } from "@/utils/script-optimization";
 
-export default function BlogDetailContent({ id }: { id: string }) {
+export default function BlogDetailContent() {
+  const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
 
+  // Load syntax highlighting only if needed
+  const hasCodeBlocks =
+    post?.content?.includes("<pre>") || post?.content?.includes("<code>");
+  const highlightJsLoaded = useDynamicScript(
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js",
+    "highlight-js",
+    hasCodeBlocks
+  );
 
   useEffect(() => {
     // Find the current post
@@ -42,6 +62,15 @@ export default function BlogDetailContent({ id }: { id: string }) {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // Apply syntax highlighting
+  useEffect(() => {
+    if (highlightJsLoaded && hasCodeBlocks && window.hljs) {
+      document.querySelectorAll("pre code").forEach((block) => {
+        window.hljs.highlightElement(block as HTMLElement);
+      });
+    }
+  }, [highlightJsLoaded, hasCodeBlocks, post]);
+
   if (!post) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -53,7 +82,13 @@ export default function BlogDetailContent({ id }: { id: string }) {
             The article you're looking for doesn't exist or has been removed.
           </p>
           <Button asChild>
-            <Link href="/blog">Back to Blog</Link>
+            <DescriptiveLink
+              href="/blog"
+              ariaLabel="Return to blog listing page"
+              title="Back to Blog"
+            >
+              Back to Blog
+            </DescriptiveLink>
           </Button>
         </div>
       </div>
@@ -65,10 +100,13 @@ export default function BlogDetailContent({ id }: { id: string }) {
       {/* Hero Banner */}
       <section className="relative h-[300px] md:h-[400px] overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={post.image || "/placeholder.svg"}
+          <OptimizedImage
+            src={post.image}
             alt={post.title}
-            className="h-full w-full object-cover"
+            width={1200}
+            height={600}
+            priority={true}
+            className="h-full w-full"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
@@ -139,6 +177,7 @@ export default function BlogDetailContent({ id }: { id: string }) {
                       variant="outline"
                       size="icon"
                       className="rounded-full"
+                      aria-label="Like this article"
                     >
                       <Heart className="h-4 w-4" />
                     </Button>
@@ -146,6 +185,7 @@ export default function BlogDetailContent({ id }: { id: string }) {
                       variant="outline"
                       size="icon"
                       className="rounded-full"
+                      aria-label="Share this article"
                     >
                       <Share className="h-4 w-4" />
                     </Button>
@@ -153,6 +193,7 @@ export default function BlogDetailContent({ id }: { id: string }) {
                       variant="outline"
                       size="icon"
                       className="rounded-full"
+                      aria-label="Comment on this article"
                     >
                       <MessageCircle className="h-4 w-4" />
                     </Button>
@@ -163,10 +204,15 @@ export default function BlogDetailContent({ id }: { id: string }) {
               {/* Navigation */}
               <div className="flex justify-between items-center mb-8">
                 <Button variant="outline" asChild>
-                  <Link href="/blog" className="flex items-center">
+                  <DescriptiveLink
+                    href="/blog"
+                    className="flex items-center"
+                    ariaLabel="Return to blog listing page"
+                    title="Back to Blog"
+                  >
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Blog
-                  </Link>
+                  </DescriptiveLink>
                 </Button>
               </div>
             </div>
@@ -189,7 +235,13 @@ export default function BlogDetailContent({ id }: { id: string }) {
                   className="w-full bg-white text-red-600 hover:bg-gray-100 hover:text-red-600"
                   asChild
                 >
-                  <Link href="/be-donor">Register as Donor</Link>
+                  <DescriptiveLink
+                    href="/be-donor"
+                    ariaLabel="Register as a blood donor"
+                    title="Register as a blood donor and save lives"
+                  >
+                    Register as Donor
+                  </DescriptiveLink>
                 </Button>
               </div>
 
@@ -207,19 +259,25 @@ export default function BlogDetailContent({ id }: { id: string }) {
                         key={related.id}
                         className="flex gap-4 pb-4 border-b last:border-0 last:pb-0"
                       >
-                        <img
-                          src={related.image || "/placeholder.svg"}
-                          alt={related.title}
-                          className="w-20 h-20 object-cover rounded-md flex-shrink-0"
-                        />
+                        <div className="w-20 h-20 flex-shrink-0">
+                          <OptimizedImage
+                            src={related.image}
+                            alt={related.title}
+                            width={80}
+                            height={80}
+                            className="rounded-md"
+                          />
+                        </div>
                         <div>
                           <h4 className="font-semibold line-clamp-2 mb-1">
-                            <Link
+                            <DescriptiveLink
                               href={`/blog/${related.id}`}
                               className="hover:text-red-600 transition-colors"
+                              ariaLabel={`Read article: ${related.title}`}
+                              title={related.title}
                             >
                               {related.title}
-                            </Link>
+                            </DescriptiveLink>
                           </h4>
                           <div className="flex items-center text-gray-500 text-xs">
                             <CalendarDays className="w-3 h-3 mr-1" />
@@ -243,10 +301,12 @@ export default function BlogDetailContent({ id }: { id: string }) {
                   {Array.from(
                     new Set(blogPosts.map((post) => post.category))
                   ).map((category) => (
-                    <Link
+                    <DescriptiveLink
                       key={category}
                       href={`/blog?category=${category}`}
                       className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-100 transition-colors"
+                      ariaLabel={`View all ${category} articles`}
+                      title={`Browse all ${category} articles`}
                     >
                       <span>{category}</span>
                       <span className="bg-gray-100 text-gray-700 text-xs py-1 px-2 rounded-full">
@@ -255,7 +315,7 @@ export default function BlogDetailContent({ id }: { id: string }) {
                             .length
                         }
                       </span>
-                    </Link>
+                    </DescriptiveLink>
                   ))}
                 </div>
               </div>

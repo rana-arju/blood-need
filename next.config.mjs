@@ -1,7 +1,12 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import withPWA from "next-pwa";
- import CopyPlugin from "copy-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import CompressionPlugin from "compression-webpack-plugin"
 const withNextIntl = createNextIntlPlugin();
+const withAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -78,30 +83,17 @@ const nextConfig = {
     ];
   },
 
-  async rewrites() {
-    return [
-      {
-        source: "/:locale/icons/:path*",
-        destination: "/icons/:path*",
-      },
-      {
-        source: "/:locale/manifest.json",
-        destination: "/manifest.json",
-      },
-      {
-        source: "/:locale/screenshots/:path*",
-        destination: "/screenshots/:path*",
-      },
-      {
-        source: "/:locale/leaflet/:path*",
-        destination: "/leaflet/:path*",
-      },
-      {
-        source: "/custom-sw.js",
-        destination: "/custom-sw.js",
-      },
-    ];
-  },
+async rewrites() {
+  return [
+    {
+      source: "/:locale/:path*(icons|screenshots|leaflet)/:file*",
+      destination: "/:path*/:file*",
+    },
+    { source: "/:locale/manifest.json", destination: "/manifest.json" },
+    { source: "/custom-sw.js", destination: "/custom-sw.js" },
+  ];
+},
+
   webpack: (config, { dev, isServer }) => {
     // Optimize SVG
     config.module.rules.push({
@@ -109,21 +101,34 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
-    // Add service worker
+
+    // Add compression for production builds
     if (!dev && !isServer) {
-   
       config.plugins.push(
-        new CopyPlugin({
-          patterns: [
-            {
-              from: "public/custom-sw.js",
-              to: "static/chunks/custom-sw.js",
-            },
-          ],
+        new CompressionPlugin({
+          algorithm: "gzip",
+          test: /\.(js|css|html|svg)$/,
+          threshold: 10240,
+          minRatio: 0.8,
         })
       );
     }
 
+    // Tree shake moment.js if used
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      moment$: "moment/moment.js",
+    };
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      // Replace React with Preact in production
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        react: "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",
+      };
+    }
     return config;
   },
 };
@@ -240,6 +245,6 @@ const withPWAConfig = withPWA({
 });
 
 // Combine configurations
-const combinedConfig = withPWAConfig(withNextIntl(nextConfig));
-
+//const combinedConfig = withPWAConfig(withNextIntl(nextConfig));
+const combinedConfig = withAnalyzer(withPWAConfig(withNextIntl(nextConfig)));
 export default combinedConfig;
