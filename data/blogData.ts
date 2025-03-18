@@ -4,7 +4,7 @@ export interface BlogPost {
   title: string;
   image: string;
   category: string;
-  date: string;
+  createdAt: string;
   readTime: number;
   author: string;
   authorImage: string;
@@ -20,7 +20,7 @@ export const blogPosts: BlogPost[] = [
     image:
       "https://innovativeartisan.com/demo/html/blad-ai/assets/images/hm1.png",
     category: "Awareness",
-    date: "June 14, 2023",
+    createdAt: "June 14, 2023",
     readTime: 5,
     author: "Dr. Sarah Johnson",
     authorImage: "https://randomuser.me/api/portraits/women/44.jpg",
@@ -71,7 +71,7 @@ export const blogPosts: BlogPost[] = [
     image:
       "https://images.unsplash.com/photo-1615461066841-6116e61058f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     category: "Education",
-    date: "May 8, 2023",
+    createdAt: "May 8, 2023",
     readTime: 4,
     author: "Michael Chang",
     authorImage: "https://randomuser.me/api/portraits/men/32.jpg",
@@ -118,7 +118,7 @@ export const blogPosts: BlogPost[] = [
     image:
       "https://images.unsplash.com/photo-1579154341098-e4e158cc7f55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     category: "Tips",
-    date: "April 17, 2023",
+    createdAt: "April 17, 2023",
     readTime: 6,
     author: "Jennifer Martinez",
     authorImage: "https://randomuser.me/api/portraits/women/63.jpg",
@@ -206,7 +206,7 @@ export const blogPosts: BlogPost[] = [
     image:
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     category: "Education",
-    date: "March 5, 2023",
+    createdAt: "March 5, 2023",
     readTime: 7,
     author: "Dr. Robert Williams",
     authorImage: "https://randomuser.me/api/portraits/men/75.jpg",

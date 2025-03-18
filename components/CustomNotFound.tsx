@@ -2,7 +2,7 @@ import React from 'react'
 
 const CustomNotFound = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
       {/* Blood Drop Container */}
       <div className="relative w-20 h-20 flex items-center justify-center">
         {/* Blood Drop SVG - more realistic with tapered tip */}
@@ -22,14 +22,13 @@ const CustomNotFound = () => {
       </div>
 
       {/* Title */}
-      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-gray-200">
-        There are no blood requests
+      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-200">
+        Blood Request..
       </h2>
 
       {/* Description */}
       <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
-        Currently, there are no active blood requests available check back
-        later.
+        Currently, Blood Request Details Loading...
       </p>
     </div>
   );

@@ -122,7 +122,7 @@ const Blogs = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center text-gray-500 text-sm mb-3">
                       <CalendarDays className="w-4 h-4 mr-1" />
-                      <span>{post.date}</span>
+                      <span>{post.createdAt}</span>
                       <span className="mx-2">•</span>
                       <Clock className="w-4 h-4 mr-1" />
                       <span>{post.readTime} min read</span>

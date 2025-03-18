@@ -15,8 +15,16 @@ const userRoutes = [
   "/dashboard/security",
 ];
 const adminRoutes = ["/admin", "/admin/users", "/admin/blood-drives", "/admin/blood-requests", "/admin/donors", "/admin/reviews", "/admin/users", "/admin/volunteers"];
-const publicRoutes = ["/", "/auth/signin", "/auth/signup", "/about", "/contact","/privacy","/request"];
-
+const publicRoutes = [
+  "/",
+  "/auth/signin",
+  "/auth/signup",
+  "/about",
+  "/contact",
+  "/privacy",
+  "/request",
+  "/offline",
+];
 const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(req: NextRequest) {
@@ -29,9 +37,9 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
     // Exclude /custom-sw.js from locale handling
-    if (pathname === "/custom-sw.js") {
-      return NextResponse.next();
-    }
+   if (pathname === "/custom-sw.js" || pathname === "/offline") {
+     return NextResponse.next();
+   }
   const segments = pathname.split("/").filter(Boolean);
   const lang = segments[0];
   const cleanedPath = `/${segments.slice(1).join("/")}`;

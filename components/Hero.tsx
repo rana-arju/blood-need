@@ -3,13 +3,14 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Heart } from "lucide-react";
-import Image from "next/image";
+
+import OptimizedImage from "./OptimizedImage";
 const slides = [
   {
     id: 4,
@@ -76,7 +77,7 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
           <SwiperSlide key={slide.id}>
             <div className="relative h-full w-full">
               <div className="absolute inset-0">
-                <Image
+                <OptimizedImage
                   src={slide.image}
                   alt={title}
                   width={700}
@@ -106,12 +107,10 @@ export default function Hero({ title, subtitle, ctaText }: HeroProps) {
                     style={{ animationDelay: "0.6s" }}
                   >
                     <Link href={slide.buttonLink}>
-                    
                       <Heart className="h-5 w-5 mr-2" />
                       {ctaText}
                     </Link>
                   </Button>
-               
                 </div>
               </div>
             </div>
