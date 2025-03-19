@@ -36,8 +36,9 @@ interface RootLayoutProps {
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: RootLayoutProps) {
+  const { locale } = await params;
   const [session, messages] = await Promise.all([
     getServerSession(authOptions),
     getMessages(locale as any).catch(() => null), // Prevent errors from breaking the page
@@ -72,7 +73,7 @@ export default async function RootLayout({
         />
         <meta
           name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+          content="maximum-scale=5, minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=yes, viewport-fit=cover"
         />
       </head>
       <body className={inter.className}>
@@ -117,7 +118,7 @@ export default async function RootLayout({
             </SessionProvider>
           </NextIntlClientProvider>
         </Suspense>
-        <Script strategy="afterInteractive" src="../utils/registerSW.ts" />
+        <Script strategy="afterInteractive" src="/registerSW.ts" />
 
         {/* Google Analytics */}
         <Script

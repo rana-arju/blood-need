@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
+
 import BloodDropLoader from "./BloodDropLoader";
 
 interface UserProfile {

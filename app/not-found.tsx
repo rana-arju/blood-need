@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Droplet } from "lucide-react";
 import AnimatedBloodDrops from "@/components/AnimatedBloodDrops";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <AnimatedBloodDrops />
-      <div className="max-w-md w-full space-y-8 text-center relative z-10">
-        <div className="flex justify-center">
-          <Droplet className="h-24 w-24 text-red-500 animate-pulse" />
-        </div>
-        <h2 className="mt-6  font-extrabold text-gray-900 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden py-5">
+      <div className="max-w-md w-full space-y-8 text-center relative z-10 ">
+        
+          <AnimatedBloodDrops />
+     
+        <h2 className=" font-bold text-gray-900 text-xl sm:text-2xl md:text-3xl lg:text-5xl">
           404 - Page Not Found
         </h2>
         <p className="mt-2 text-lg text-gray-600">

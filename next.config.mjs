@@ -96,6 +96,7 @@ const nextConfig = {
       },
       { source: "/:locale/manifest.json", destination: "/manifest.json" },
       { source: "/custom-sw.js", destination: "/custom-sw.js" },
+      { source: "/registerSW.ts", destination: "/registerSW.ts" },
     ];
   },
 };
