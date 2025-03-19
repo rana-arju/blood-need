@@ -45,7 +45,7 @@ interface BloodRequest {
   district: string;
   upazila: string;
   urgency: "Low" | "Medium" | "High";
-  postedAt: string;
+  createdAt: string;
   contactName: string;
   whatsappNumber: string;
   contactNumber: string;
@@ -207,7 +207,7 @@ export function BloodRequestDetails({ id, locale }: BloodRequestDetailsProps) {
           <div className="space-y-3">
             <p>
               <Calendar className="inline w-4 h-4 mr-1" /> {t("posted")}:{" "}
-              {moment(request.postedAt).format("LLL")}
+              {moment(request.createdAt).format("LLL")}
             </p>
             <p>
               <Calendar className="inline w-4 h-4 mr-1" /> {t("requiredDate")}:{" "}

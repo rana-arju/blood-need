@@ -141,7 +141,7 @@ export default async function RootLayout({
           </SessionProvider>
         </NextIntlClientProvider>
       </body>
-      <PerformanceMonitoringInitializer />
+    
     </html>
   );
 }

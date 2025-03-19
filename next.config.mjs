@@ -37,6 +37,7 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
     optimizeCss: true,
+
     optimizePackageImports: [
       "lucide-react",
       "date-fns",
@@ -46,11 +47,7 @@ const nextConfig = {
   },
   poweredByHeader: false,
   // Optimize bundle size
-  compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
-  },
-  // Optimize output
-  output: "standalone",
+  compiler: { removeConsole: process.env.NODE_ENV === "production" },
 
   // Compress assets
   compress: true,
@@ -88,7 +85,7 @@ const nextConfig = {
         source: "/:locale/icons/:file*",
         destination: "/icons/:file*",
       },
-   
+
       {
         source: "/:locale/screenshots/:file*",
         destination: "/screenshots/:file*",
@@ -101,44 +98,6 @@ const nextConfig = {
       { source: "/custom-sw.js", destination: "/custom-sw.js" },
     ];
   },
-
-  webpack: (config, { dev, isServer }) => {
-    // Optimize SVG
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
-
-    // Add compression for production builds
-    if (!dev && !isServer) {
-      config.plugins.push(
-        new CompressionPlugin({
-          algorithm: "gzip",
-          test: /\.(js|css|html|svg)$/,
-          threshold: 10240,
-          minRatio: 0.8,
-        })
-      );
-    }
-
-    // Tree shake moment.js if used
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      moment$: "moment/moment.js",
-    };
-    // Optimize bundle size
-    if (!dev && !isServer) {
-      // Replace React with Preact in production
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        react: "preact/compat",
-        "react-dom/test-utils": "preact/test-utils",
-        "react-dom": "preact/compat",
-      };
-    }
-    return config;
-  },
-  
 };
 
 const withPWAConfig = withPWA({

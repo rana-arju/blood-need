@@ -69,7 +69,7 @@ const BloodRequestCard: React.FC<BloodRequestCardProps> = ({
               </p>
               <p className="text-sm text-muted-foreground flex items-center">
                 <Calendar className="w-4 h-4 mr-2" />
-                {moment(requiredDate).format("MMM Do YY")}
+                {moment(requiredDate, "MMMM D, YYYY").toISOString()}
               </p>
             </div>
           </div>

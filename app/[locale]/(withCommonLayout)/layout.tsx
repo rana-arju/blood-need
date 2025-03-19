@@ -8,7 +8,6 @@ import ChatBot from "@/components/ChatBot";
 export const metadata = {
   title: "Blood Donation Community",
   description: "Connect blood donors with those in need",
-  manifest: "/manifest.json",
 };
 
 export default async function RootLayout({
