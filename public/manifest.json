@@ -1,6 +1,6 @@
 {
   "name": "Blood Need",
-  "short_name": "BloodNeed",
+  "short_name": "Blood Need",
   "start_url": "/",
   "id": "bloodNeed",
   "display": "standalone",
@@ -35,13 +35,31 @@
   ],
   "screenshots": [
     {
+      "src": "/screenshots/desktop.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpg",
+      "form_factor": "wide"
+    },    {
       "src": "/screenshots/screenshot1.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "wide"
     },
+ 
     {
-      "src": "/screenshots/mobile.jpg",
+      "src": "/screenshots/screenshot1.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/screenshot2.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/screenshot3.jpg",
       "sizes": "1080x1920",
       "type": "image/jpg",
       "form_factor": "narrow"

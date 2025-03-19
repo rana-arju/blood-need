@@ -14,10 +14,11 @@ import { Toaster } from "sonner";
 import { inter } from "@/lib/fonts";
 import { generateOrganizationSchema } from "@/lib/schema";
 
-import { PerformanceMonitoringInitializer } from "@/components/Monitor";
 import { generateViewport } from "@/lib/viewport";
 import PerformanceMonitoring from "@/components/PerformanceMonitoring";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import LoadingDrop from "@/components/LoadingDrop";
 
 export const viewport = generateViewport();
 
@@ -37,35 +38,23 @@ export default async function RootLayout({
   children,
   params: { locale },
 }: RootLayoutProps) {
-  const session = await getServerSession(authOptions);
-  let messages;
-  try {
-    messages = await getMessages(locale as any);
-  } catch {
-    NotFound();
-  }
+  const [session, messages] = await Promise.all([
+    getServerSession(authOptions),
+    getMessages(locale as any).catch(() => null), // Prevent errors from breaking the page
+  ]);
+
+  if (!messages) return <NotFound />;
+
   const organizationSchema = generateOrganizationSchema();
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://res.cloudinary.com"
-          crossOrigin="anonymous"
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
         />
 
         {/* Add structured data */}
@@ -87,15 +76,21 @@ export default async function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
-          <SessionProvider session={session}>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {/* Add performance monitoring */}
-              <PerformanceMonitoring />
-              <main>{children}</main>
+        <Suspense fallback={<LoadingDrop />}>
+          <NextIntlClientProvider messages={messages}>
+            <SessionProvider session={session}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              >
+                {/* Add performance monitoring */}
+                <PerformanceMonitoring />
+                <main>{children}</main>
 
-              {/* Register service worker */}
-              <Script
+                {/* Register service worker */}
+
+                {/*  <Script
                 id="register-sw"
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
@@ -115,17 +110,25 @@ export default async function RootLayout({
                   `,
                 }}
               />
+              */}
 
-              {/* Google Analytics */}
-              <Script
-                strategy="afterInteractive"
-                src="https://www.googletagmanager.com/gtag/js?id=G-B3XRYK729L"
-              />
-              <Script
-                id="google-analytics"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `
+                <Toaster richColors position="top-center" />
+              </ThemeProvider>
+            </SessionProvider>
+          </NextIntlClientProvider>
+        </Suspense>
+        <Script strategy="afterInteractive" src="../utils/registerSW.ts" />
+
+        {/* Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-B3XRYK729L"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
@@ -133,15 +136,9 @@ export default async function RootLayout({
                       page_path: window.location.pathname,
                     });
                   `,
-                }}
-              />
-
-              <Toaster richColors position="top-center" />
-            </ThemeProvider>
-          </SessionProvider>
-        </NextIntlClientProvider>
+          }}
+        />
       </body>
-    
     </html>
   );
 }

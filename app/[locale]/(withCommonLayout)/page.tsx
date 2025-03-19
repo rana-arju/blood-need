@@ -89,20 +89,3 @@ export default function Home() {
     </div>
   );
 }
-function UpcomingDrivesSkeleton() {
-  return (
-    <section className="py-12 bg-white dark:bg-gray-900 w-full">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <Skeleton className="h-10 w-64 mx-auto mb-2" />
-          <Skeleton className="h-6 w-96 mx-auto" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, index) => (
-            <Skeleton key={index} className="h-64 rounded-lg" />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
