@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -6,22 +8,23 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Phone, MapPin, Calendar, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 interface DonorCardProps {
   donor: any;
 }
 
 export default function DonorCard({ donor }: DonorCardProps) {
+  const t = useTranslations("Donors");
   const user = donor.user;
-  //user.district = getLocationName("district", user.district);
   const lastDonation = user.lastDonationDate
     ? formatDistanceToNow(new Date(user.lastDonationDate), { addSuffix: true })
-    : "No donation record";
+    : t("noDonationRecord");
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md dark:bg-gray-800">
@@ -29,16 +32,20 @@ export default function DonorCard({ donor }: DonorCardProps) {
         <div className="flex items-center space-x-4">
           {user?.image ? (
             <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white relative">
-              <Image
+              <OptimizedImage
                 src={user.image}
-                alt={user.name[0]}
-                fill
+                alt={t("donorImageAlt", { name: user.name })}
+                width={80}
+                height={80}
                 className="object-cover"
+                priority={false}
               />
             </div>
           ) : (
             <Avatar className="w-20 h-20 border-4 border-white">
-              <AvatarFallback>
+              <AvatarFallback
+                aria-label={t("donorInitials", { name: user.name })}
+              >
                 {user.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -57,23 +64,40 @@ export default function DonorCard({ donor }: DonorCardProps) {
       <CardContent className="p-4 pt-2">
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <Phone className="h-4 w-4 text-muted-foreground" />
+            <Phone
+              className="h-4 w-4 text-muted-foreground"
+              aria-hidden="true"
+            />
             <span>{donor.phone}</span>
           </div>
-          {/*   <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-muted-foreground" />
-            <span>{user.district}</span>
-          </div>
-          */}
+          {user.district && (
+            <div className="flex items-center gap-2">
+              <MapPin
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <span>{user.district}</span>
+            </div>
+          )}
           <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span>Last donation: {lastDonation}</span>
+            <Calendar
+              className="h-4 w-4 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <span>
+              {t("lastDonation")}: {lastDonation}
+            </span>
           </div>
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between">
         <Button variant="outline" size="sm" asChild>
-          <Link href={`/donors/${donor.id}`}>View Profile</Link>
+          <Link
+            href={`/donors/${donor.id}`}
+            aria-label={t("viewProfileAriaLabel", { name: user.name })}
+          >
+            {t("viewProfile")}
+          </Link>
         </Button>
         <Button
           variant="default"
@@ -87,9 +111,10 @@ export default function DonorCard({ donor }: DonorCardProps) {
                 ? `https://wa.me/${donor.whatsappNumber.replace(/\D/g, "")}`
                 : `https://wa.me/${donor.phone.replace(/\D/g, "")}`
             }
+            aria-label={t("contactAriaLabel", { name: user.name })}
           >
-            <MessageCircle className="mr-2 h-4 w-4" />
-            Contact
+            <MessageCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+            {t("contact")}
           </Link>
         </Button>
       </CardFooter>

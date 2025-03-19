@@ -1,8 +1,7 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import withPWA from "next-pwa";
-import CopyPlugin from "copy-webpack-plugin";
 import withBundleAnalyzer from "@next/bundle-analyzer";
-import CompressionPlugin from "compression-webpack-plugin"
+import CompressionPlugin from "compression-webpack-plugin";
 const withNextIntl = createNextIntlPlugin();
 const withAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -83,16 +82,25 @@ const nextConfig = {
     ];
   },
 
-async rewrites() {
-  return [
-    {
-      source: "/:locale/:path*(icons|screenshots|leaflet)/:file*",
-      destination: "/:path*/:file*",
-    },
-    { source: "/:locale/manifest.json", destination: "/manifest.json" },
-    { source: "/custom-sw.js", destination: "/custom-sw.js" },
-  ];
-},
+  async rewrites() {
+    return [
+      {
+        source: "/:locale/icons/:file*",
+        destination: "/icons/:file*",
+      },
+   
+      {
+        source: "/:locale/screenshots/:file*",
+        destination: "/screenshots/:file*",
+      },
+      {
+        source: "/:locale/leaflet/:file*",
+        destination: "/leaflet/:file*",
+      },
+      { source: "/:locale/manifest.json", destination: "/manifest.json" },
+      { source: "/custom-sw.js", destination: "/custom-sw.js" },
+    ];
+  },
 
   webpack: (config, { dev, isServer }) => {
     // Optimize SVG
@@ -100,7 +108,6 @@ async rewrites() {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
 
     // Add compression for production builds
     if (!dev && !isServer) {
@@ -131,6 +138,7 @@ async rewrites() {
     }
     return config;
   },
+  
 };
 
 const withPWAConfig = withPWA({
@@ -138,7 +146,7 @@ const withPWAConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-  sw: "/custom-sw.js",
+
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,

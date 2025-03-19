@@ -35,7 +35,7 @@ export function generateOrganizationSchema(
     name: "Blood Need - Blood Donation Community",
 
     url: process.env.NEXT_PUBLIC_APP_URL,
-    logo: `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`,
+    logo: `https://res.cloudinary.com/db8l1ulfq/image/upload/v1742392048/logo_4_krdesb.png`,
     sameAs: [
       "https://facebook.com/bloodneed",
       "https://twitter.com/bloodneed",
@@ -140,15 +140,14 @@ export function generateBlogPostSchema(post: any, url: string) {
     dateModified: post.updatedAt,
     author: {
       "@type": "Person",
-      name: post.user.name,
-     
+      name: post.author,
     },
     publisher: {
       "@type": "Organization",
       name: "Blood Donation Community",
       logo: {
         "@type": "ImageObject",
-        url: `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`,
+        url: `https://res.cloudinary.com/db8l1ulfq/image/upload/v1742392048/logo_4_krdesb.png`,
       },
     },
     url: url,
@@ -217,7 +216,7 @@ export function generateAwarenessPageSchema() {
         name: "Blood Donation Community",
         logo: {
           "@type": "ImageObject",
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/logo.png`,
+          url: `https://res.cloudinary.com/db8l1ulfq/image/upload/v1742392048/logo_4_krdesb.png`,
         },
       },
     },

@@ -23,9 +23,9 @@ import {
 import { blogPosts, type BlogPost } from "@/data/blogData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useParams } from "next/navigation";
-import { DescriptiveLink } from "@/components/DescriptiveLink";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { useDynamicScript } from "@/utils/script-optimization";
+import DescriptiveLink from "../DescriptiveLink";
 
 export default function BlogDetailContent() {
   const { id } = useParams<{ id: string }>();
@@ -85,7 +85,7 @@ export default function BlogDetailContent() {
             <DescriptiveLink
               href="/blog"
               ariaLabel="Return to blog listing page"
-              title="Back to Blog"
+           
             >
               Back to Blog
             </DescriptiveLink>
@@ -208,7 +208,7 @@ export default function BlogDetailContent() {
                     href="/blog"
                     className="flex items-center"
                     ariaLabel="Return to blog listing page"
-                    title="Back to Blog"
+                   
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Blog
@@ -238,7 +238,7 @@ export default function BlogDetailContent() {
                   <DescriptiveLink
                     href="/be-donor"
                     ariaLabel="Register as a blood donor"
-                    title="Register as a blood donor and save lives"
+                    //title="Register as a blood donor and save lives"
                   >
                     Register as Donor
                   </DescriptiveLink>
@@ -274,7 +274,7 @@ export default function BlogDetailContent() {
                               href={`/blog/${related.id}`}
                               className="hover:text-red-600 transition-colors"
                               ariaLabel={`Read article: ${related.title}`}
-                              title={related.title}
+//title={related.title}
                             >
                               {related.title}
                             </DescriptiveLink>
@@ -306,7 +306,7 @@ export default function BlogDetailContent() {
                       href={`/blog?category=${category}`}
                       className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-gray-100 transition-colors"
                       ariaLabel={`View all ${category} articles`}
-                      title={`Browse all ${category} articles`}
+                     // title={`Browse all ${category} articles`}
                     >
                       <span>{category}</span>
                       <span className="bg-gray-100 text-gray-700 text-xs py-1 px-2 rounded-full">

@@ -15,8 +15,8 @@ import {
 
 import Link from "next/link";
 import { OptimizedHeroImage } from "@/components/OptimizedHeroImage";
-import { DescriptiveLink as NewDescriptiveLink } from "@/components/DescriptiveLink";
 import Image from "next/image";
+import DescriptiveLink from "../DescriptiveLink";
 export default function WelcomeSection() {
   const t = useTranslations("Welcome");
 
@@ -231,14 +231,15 @@ export default function WelcomeSection() {
                     <div className="w-full h-[1px] bg-border my-6"></div>
 
                     <div className="flex justify-center">
-                      <NewDescriptiveLink
+                    
+                      <DescriptiveLink
                         href="/learn/blood-donation-101"
                         ariaLabel="Learn about blood donation basics and process"
-                        title="Blood Donation 101: Learn the basics of blood donation"
+                       
                         className="text-white bg-primary hover:bg-primary/90 px-4 py-2 rounded-md"
                       >
                         Learn Blood Donation
-                      </NewDescriptiveLink>
+                      </DescriptiveLink>
                     </div>
                   </div>
                 </TabsContent>

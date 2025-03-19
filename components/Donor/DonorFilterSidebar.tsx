@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import LocationSelector from "@/components/LocationSelector";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
 
 interface DonorFilterSidebarProps {
   onFilterChange: (filters: Record<string, any>) => void;
@@ -29,6 +30,8 @@ interface DonorFilterSidebarProps {
 const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
   onFilterChange,
 }) => {
+  const t = useTranslations("Donors.filters");
+
   const [localFilters, setLocalFilters] = useState({
     blood: "all",
     division: "",
@@ -98,16 +101,16 @@ const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
   return (
     <div className="space-y-4 p-4 bg-card rounded-lg border">
       <div>
-        <Label htmlFor="blood">Blood Group</Label>
+        <Label htmlFor="blood">{t("bloodGroup")}</Label>
         <Select
           value={localFilters.blood}
           onValueChange={(value) => handleChange("blood", value)}
         >
           <SelectTrigger id="blood">
-            <SelectValue placeholder="Select blood group" />
+            <SelectValue placeholder={t("selectBloodGroup")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="all">{t("all")}</SelectItem>
             <SelectItem value="A+">A+</SelectItem>
             <SelectItem value="A-">A-</SelectItem>
             <SelectItem value="B+">B+</SelectItem>
@@ -121,19 +124,19 @@ const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
       </div>
 
       <div>
-        <Label htmlFor="gender">Gender</Label>
+        <Label htmlFor="gender">{t("gender")}</Label>
         <Select
           value={localFilters.gender}
           onValueChange={(value) => handleChange("gender", value)}
         >
           <SelectTrigger id="gender">
-            <SelectValue placeholder="Select gender" />
+            <SelectValue placeholder={t("selectGender")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            <SelectItem value="all">{t("all")}</SelectItem>
+            <SelectItem value="Male">{t("male")}</SelectItem>
+            <SelectItem value="Female">{t("female")}</SelectItem>
+            <SelectItem value="Other">{t("other")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -161,7 +164,7 @@ const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
       />
 
       <div className="space-y-2">
-        <Label>Last Donation Before</Label>
+        <Label>{t("lastDonationBefore")}</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -169,12 +172,13 @@ const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
               className={`w-full justify-start text-left font-normal ${
                 !localFilters.lastDonationDate && "text-muted-foreground"
               }`}
+              aria-label={t("selectDateAriaLabel")}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-4 w-4" aria-hidden="true" />
               {localFilters.lastDonationDate ? (
                 format(localFilters.lastDonationDate, "PPP")
               ) : (
-                <span>Select date</span>
+                <span>{t("selectDate")}</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -199,20 +203,20 @@ const DonorFilterSidebar: React.FC<DonorFilterSidebarProps> = ({
           htmlFor="eligibleOnly"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Eligible donors only
+          {t("eligibleDonorsOnly")}
         </label>
       </div>
 
       <div className="flex flex-col gap-2">
         <Button className="w-full" onClick={handleApplyFilters}>
-          Apply Filters
+          {t("applyFilters")}
         </Button>
         <Button
           variant="outline"
           className="w-full"
           onClick={handleResetFilters}
         >
-          Reset Filters
+          {t("resetFilters")}
         </Button>
       </div>
     </div>

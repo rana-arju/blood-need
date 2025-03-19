@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "set ANALYZE=true && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix"
@@ -85,6 +85,7 @@
     "use-sound": "^5.0.0",
     "vaul": "^0.9.6",
     "web-push": "^3.6.7",
+    "web-vitals": "^4.2.4",
     "zod": "^3.24.1"
   },
   "devDependencies": {

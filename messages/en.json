@@ -993,7 +993,7 @@
   "About": {
     "badge": "About Us",
     "metaTitle": "About This blood need platform and developer.",
-    "metaDescription" : "Blood Need is a community-driven platform dedicated to connecting blood donors with recipients in need. It is for bangladeshi people.",
+    "metaDescription": "Blood Need is a community-driven platform dedicated to connecting blood donors with recipients in need. It is for bangladeshi people.",
     "title": "About Blood Need",
     "subtitle": "Connecting blood donors with those in need",
     "platform": {
@@ -1317,7 +1317,7 @@
       "retry": "Try Again"
     }
   },
- 
+
   "Admin": {
     "sidebar": {
       "dashboard": "Dashboard",
@@ -1433,6 +1433,92 @@
     "loginRequired": "Please login to donate",
     "donationSuccess": "Thank you for your interest in donating!",
     "donationError": "Failed to register your interest. Please try again."
-   
+  },
+  "Donors": {
+    "title": "All Blood Donors",
+    "description": "Find blood donors near you and connect with them to save lives. Filter by blood type, location, and more.",
+    "viewProfile": "View Profile",
+    "contact": "Contact",
+    "lastDonation": "Last donation",
+    "noDonationRecord": "No donation record",
+    "noDonorsFound": "No donors found",
+    "tryAdjustingFilters": "Try adjusting your search or filters",
+    "showingResults": "Showing {showing} of {total} donors",
+    "donorImageAlt": "{name}'s profile picture",
+    "donorInitials": "{name}'s initials",
+    "viewProfileAriaLabel": "View {name}'s full profile",
+    "contactAriaLabel": "Contact {name}",
+    "eligibleToDonate": "Eligible to donate",
+    "notEligibleYet": "Not eligible yet",
+    "callAriaLabel": "Call {phone}",
+    "emailAriaLabel": "Email {email}",
+    "whatsappAriaLabel": "Contact {name} via WhatsApp",
+    "contactViaWhatsapp": "Contact via WhatsApp",
+    "emailSubject": "I Want Blood. Please help me.",
+    "emailBody": "I Want Blood. Please help me.",
+    "gender": "Gender",
+    "genders": {
+      "Male": "Male",
+      "Female": "Female",
+      "Other": "Other"
+    },
+    "notSpecified": "Not specified",
+    "personalDetails": "Personal Details",
+    "dateOfBirth": "Date of Birth",
+    "emergencyContact": "Emergency Contact",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "memberSince": "Member Since",
+    "medicalInformation": "Medical Information",
+    "height": "Height",
+    "weight": "Weight",
+    "cm": "cm",
+    "kg": "kg",
+    "notAvailable": "N/A",
+    "medicalConditions": "Medical Conditions",
+    "currentMedications": "Current Medications",
+    "noMedicalInfo": "No additional medical information provided",
+    "donationHistory": "Donation History",
+    "totalDonations": "Total Donations",
+    "noDonationHistory": "No donation history available",
+    "shareTitle": "Blood Donor: {name} ({bloodType}) in {location}",
+    "tabs": {
+      "details": "Details",
+      "medical": "Medical",
+      "history": "Donation"
+    },
+    "filters": {
+      "bloodGroup": "Blood Group",
+      "selectBloodGroup": "Select blood group",
+      "gender": "Gender",
+      "selectGender": "Select gender",
+      "all": "All",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "lastDonationBefore": "Last Donation Before",
+      "selectDate": "Select date",
+      "selectDateAriaLabel": "Select last donation date",
+      "eligibleDonorsOnly": "Eligible donors only",
+      "applyFilters": "Apply Filters",
+      "resetFilters": "Reset Filters"
+    },
+    "errors": {
+      "title": "Error",
+      "fetchFailed": "An error occurred while fetching donors",
+      "donorNotFound": "The donor you're looking for doesn't exist or has been removed."
+    },
+    "meta": {
+      "title": "Blood Donors Directory | Find Blood Donors Near You",
+      "description": "Find blood donors near you by blood type, location, and more. Connect directly with donors to save lives in emergency situations.",
+      "ogTitle": "Find Blood Donors Near You | Blood Need",
+      "ogDescription": "Search our directory of blood donors by blood type, location, and more. Connect directly with donors to save lives.",
+      "twitterTitle": "Find Blood Donors | Blood Need",
+      "twitterDescription": "Search our directory of blood donors by blood type, location, and more.",
+      "donorTitle": "{name} - {bloodType} Blood Donor Profile",
+      "donorDescription": "{name} is a {bloodType} blood donor in {location}. Contact them directly for blood donation.",
+      "notFound": "Donor Not Found | Blood Need",
+      "notFoundDescription": "The donor profile you are looking for does not exist or has been removed."
+    }
   }
 }

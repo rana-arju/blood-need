@@ -9,6 +9,8 @@ import {
 import { CalendarDays, Clock, Heart, Droplet, Tag } from "lucide-react";
 import { blogPosts } from "@/data/blogData";
 import Link from "next/link";
+import moment from "moment";
+import { OptimizedImage } from "./OptimizedImage";
 
 export function BlogSection() {
   // Display only 3 featured blog posts on homepage
@@ -40,9 +42,11 @@ export function BlogSection() {
             >
               <CardHeader className="p-0">
                 <div className="relative overflow-hidden">
-                  <img
+                  <OptimizedImage
                     src={post.image}
                     alt={post.title}
+                    width={400}
+                    height={225}
                     className="w-full h-56 object-cover transition-transform hover:scale-105 duration-500"
                   />
                   <div className="absolute top-4 left-4 bg-red-600 text-white text-xs font-semibold py-1 px-2 rounded">
@@ -53,7 +57,7 @@ export function BlogSection() {
               <CardContent className="p-6">
                 <div className="flex items-center text-gray-500 text-sm mb-3">
                   <CalendarDays className="w-4 h-4 mr-1" />
-                  <span>{post.date}</span>
+                  <span>{moment(post.createdAt).format("LL")}</span>
                   <span className="mx-2">•</span>
                   <Clock className="w-4 h-4 mr-1" />
                   <span>{post.readTime} min read</span>

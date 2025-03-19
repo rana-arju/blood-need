@@ -10,20 +10,22 @@ import { getMessages } from "next-intl/server";
 import NotFound from "./not-found";
 import { NextIntlClientProvider } from "next-intl";
 import { Toaster } from "sonner";
-import { baseViewport } from "@/lib/seo-config";
+
 import { inter } from "@/lib/fonts";
 import { generateOrganizationSchema } from "@/lib/schema";
 
-import { initPerformanceMonitoring } from "@/utils/performance-monitoring";
 import { PerformanceMonitoringInitializer } from "@/components/Monitor";
+import { generateViewport } from "@/lib/viewport";
+import PerformanceMonitoring from "@/components/PerformanceMonitoring";
+import { Metadata } from "next";
 
-export const viewport = baseViewport;
-export const metadata = {
+export const viewport = generateViewport();
+
+export const metadata: Metadata = {
   title: "Blood Need - Blood Donation Community",
   description:
     "Connect blood donors with those in need, save lives through our blood donation community platform.",
 };
-
 interface RootLayoutProps {
   children: React.ReactNode;
   params: {
@@ -46,34 +48,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
-          }}
-        />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icons/icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-        <meta name="google" content="notranslate" />
-        <link
-          rel="canonical"
-          href={`${process.env.NEXT_PUBLIC_APP_URL}/${locale}`}
-        />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-        />
-
-        {/* Preconnect to critical domains */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -84,44 +62,37 @@ export default async function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
 
-        {/* Preload critical resources */}
-        <link rel="preload" href="/icons/icon.png" as="image" />
-        <link rel="preload" href="/placeholder.svg" as="image" />
+        {/* Add structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+
+        <meta name="google" content="notranslate" />
+        <link
+          rel="canonical"
+          href={`${process.env.NEXT_PUBLIC_APP_URL}/${locale}`}
+        />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
       </head>
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {/* Add performance monitoring */}
+              <PerformanceMonitoring />
               <main>{children}</main>
-
-              {/* Preload critical resources */}
-              <Script
-                id="preload-resources"
-                strategy="beforeInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `
-                    function preloadResources() {
-                      // Preconnect to critical domains
-                      const preconnectDomains = [
-                        'https://fonts.googleapis.com',
-                        'https://fonts.gstatic.com',
-                        'https://res.cloudinary.com',
-                      ];
-                    
-                      preconnectDomains.forEach(href => {
-                        const link = document.createElement('link');
-                        link.rel = 'preconnect';
-                        link.href = href;
-                        link.crossOrigin = 'anonymous';
-                        document.head.appendChild(link);
-                      });
-                    }
-                    
-                    preloadResources();
-                  `,
-                }}
-              />
 
               {/* Register service worker */}
               <Script

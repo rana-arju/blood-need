@@ -20,6 +20,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import InstallPWA from "./InstallPWA";
 import { useNotificationSubscription } from "@/utils/pushNotifications";
 import { usePathname, useRouter } from "next/navigation";
+import { OptimizedImage } from "./OptimizedImage";
 
 export default function Header() {
   const router = useRouter();
@@ -145,8 +146,18 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 backdrop-blur-md z-50 transition-all duration-200 bg-background/80 border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center overflow-hidden whitespace-nowrap">
         <Link href="/">
-          <div className="flex justify-start items-center">
-            <Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
+          <div className="flex justify-start items-center gap-2 cursor-pointer">
+            {
+              //<Droplet className="h-6 w-6 text-blood-600 mr-2 text-primary" />
+            }
+
+            <OptimizedImage
+              src="https://res.cloudinary.com/db8l1ulfq/image/upload/v1742392560/logo_5_wftl6b.png"
+              alt="Blood Need"
+              height={64}
+              width={64}
+              className=" object-cover w-full h-7"
+            />
             <span className="font-bold flex items-center gap-1 text-lg md:text-2xl">
               <span className="text-primary "> Blood</span>
               <span className="text-gray-800 dark:text-white">Need</span>

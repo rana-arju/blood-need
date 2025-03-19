@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import useMediaQuery from "@/utils/useMediaQuery";
 import { getAllDonors } from "@/services/beDonor";
 import DonorSearchBar from "@/components/Donor/DonorSearchBar";
 import DonorFilterDrawer from "@/components/Donor/DonorFilterDrawer";
@@ -13,6 +11,8 @@ import DonorFilterSidebar from "@/components/Donor/DonorFilterSidebar";
 import DonorCardSkeleton from "@/components/Donor/DonorCardSkeleton";
 import DonorCard from "@/components/Donor/DonorCard";
 import { Pagination } from "@/components/Pagination";
+import useMediaQuery from "@/utils/useMediaQuery";
+
 export default function DonorsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();

@@ -11,7 +11,7 @@ import {
 import { CalendarDays, Clock, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { DescriptiveLink } from "@/components/DescriptiveLink";
+import DescriptiveLink from "../DescriptiveLink";
 
 export function OptimizedBlogList({ blogPosts }:any) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -162,7 +162,7 @@ export function OptimizedBlogList({ blogPosts }:any) {
                   <DescriptiveLink
                     href={`/blog/${post.id}`}
                     ariaLabel={`Read full article about ${post.title}`}
-                    title={post.title}
+//title={post.title}
                   >
                     Read Full Article
                   </DescriptiveLink>

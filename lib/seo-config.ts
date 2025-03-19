@@ -17,9 +17,11 @@ export const baseMetadata = {
     "blood lagbe",
     "blood chai",
     "rokto lagbe",
-    "rokto chai"
+    "rokto chai",
   ],
-  authors: [{ name: "Mohammad Rana Arju", url: "https://rana-arju.vercel.app" }],
+  authors: [
+    { name: "Mohammad Rana Arju", url: "https://rana-arju.vercel.app" },
+  ],
   creator: "Mohammad Rana Arju",
   publisher: "Blood Donation Community",
   formatDetection: {

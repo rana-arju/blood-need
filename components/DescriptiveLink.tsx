@@ -1,34 +1,39 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface DescriptiveLinkProps {
   href: string;
   children: ReactNode;
-  className?: string;
   ariaLabel?: string;
-  title?: string;
-  target?: "_blank" | "_self" | "_parent" | "_top";
-  rel?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
-export function DescriptiveLink({
+export default function DescriptiveLink({
   href,
   children,
-  className = "",
   ariaLabel,
-  title,
-  target,
-  rel = target === "_blank" ? "noopener noreferrer" : undefined,
+  className,
+  onClick,
 }: DescriptiveLinkProps) {
-  // Ensure links have descriptive text for accessibility and SEO
+  // Extract the path without domain
+  const path = href.startsWith("http") ? href : href.split("?")[0];
+
+  // Generate descriptive aria-label if not provided
+  const descriptiveLabel =
+    ariaLabel ||
+    (typeof children === "string"
+      ? children
+      : `Navigate to ${path.replace(/\//g, " ").trim()}`);
+
   return (
     <Link
       href={href}
+      aria-label={descriptiveLabel}
       className={className}
-      aria-label={ariaLabel}
-      title={title}
-      target={target}
-      rel={rel}
+      onClick={onClick}
     >
       {children}
     </Link>
