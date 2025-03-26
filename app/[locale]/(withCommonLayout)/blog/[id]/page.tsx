@@ -1,10 +1,10 @@
-import { blogPosts } from "@/data/blogData";
-import { constructMetadata } from "@/lib/seo-config";
-import { generateBlogPostSchema } from "@/lib/schema";
+//import { blogPosts } from "@/data/blogData";
+//import { constructMetadata } from "@/lib/seo-config";
+//import { generateBlogPostSchema } from "@/lib/schema";
 
 import BlogDetailContent from "@/components/blog/BlogDetailContent";
-import { generateViewport } from "@/lib/viewport";
-
+// import { generateViewport } from "@/lib/viewport";
+/*
 export const viewport = generateViewport();
 export async function generateMetadata({
   params,
@@ -51,12 +51,9 @@ export async function generateStaticParams() {
     id: post.id.toString(),
   }));
 }
-
-export default async function BlogDetailPage({
-  params,
-}: {
-  params: { id: string; locale: string };
-}) {
+*/
+export default async function BlogDetailPage() {
+  /*
   const {id, locale} = await params
   const post = blogPosts.find((post) => post.id === Number(id));
 
@@ -64,7 +61,7 @@ export default async function BlogDetailPage({
     return null;
   }
 
-  /*
+  
   const blogSchema = generateBlogPostSchema(
     post,
     `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/blog/${id}`
