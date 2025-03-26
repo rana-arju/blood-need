@@ -64,17 +64,14 @@ export default async function BlogDetailPage({
     return null;
   }
 
+  /*
   const blogSchema = generateBlogPostSchema(
     post,
     `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/blog/${id}`
   );
-
+*/
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
-      />
       <BlogDetailContent  />
     </>
   );
