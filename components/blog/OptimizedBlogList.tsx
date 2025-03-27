@@ -52,25 +52,30 @@ export function OptimizedBlogList({ blogPosts }:any) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (
-          entries[0].isIntersecting &&
-          visiblePosts.length < filteredPosts.length
+          entries[0].isIntersecting
         ) {
-          setPage((prevPage) => prevPage + 1);
+          // Check inside the callback
+          setPage((prevPage) => {
+            const nextPage = prevPage + 1;
+            const maxPages = Math.ceil(filteredPosts.length / postsPerPage);
+            return nextPage <= maxPages ? nextPage : prevPage;
+          });
         }
       },
       { threshold: 0.1 }
     );
-
+  
     if (observerRef.current) {
       observer.observe(observerRef.current);
     }
-
+  
     return () => {
       if (observerRef.current) {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [visiblePosts.length, filteredPosts.length]);
+  }, []); // ⬅️ empty array: run only once on mount
+  
 
   return (
     <>

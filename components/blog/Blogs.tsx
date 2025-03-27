@@ -1,4 +1,4 @@
-"use client";
+
 import { blogPosts } from "@/data/blogData";
 import { OptimizedBlogList } from "./OptimizedBlogList";
 

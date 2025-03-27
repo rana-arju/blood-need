@@ -1520,5 +1520,56 @@
       "notFound": "Donor Not Found | Blood Need",
       "notFoundDescription": "The donor profile you are looking for does not exist or has been removed."
     }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "description": "Choose your preferred sign in method",
+      "emailLabel": "Email",
+      "emailPlaceholder": "m@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submitButton": "Sign in with Email",
+      "orContinueWith": "Or continue with",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "demoUser": "User",
+      "demoAdmin": "Admin",
+      "invalidCredentials": "Invalid email or password",
+      "welcomeBack": "Welcome Back",
+      "heroText": "Your donation can save lives. Join our community of blood donors today.",
+      "loggingIn": "Signing in...",
+      "tagline": "Every drop counts. Donate blood, save lives."
+    },
+    "signUp": {
+      "title": "Sign Up for Blood Donation Community",
+      "description": "Create a new account to start donating or requesting blood",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter full name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter strong password",
+      "submitButton": "Sign Up",
+      "orContinueWith": "Or continue with",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "registrationFailed": "Registration failed",
+      "registrationSuccess": "Registration successful!",
+      "autoLoginFailed": "Auto login failed after registration",
+      "joinCommunity": "Join Our Community",
+      "heroText": "Become a hero by donating blood. Your contribution can save multiple lives.",
+      "registering": "Creating account...",
+      "tagline": "Be a lifesaver. Join our blood donation community today."
+    },
+    "signOut": {
+      "signingOut": "Signing out..."
+    },
+    "authError": {
+      "title": "Authentication Error",
+      "configError": "There is a problem with the server configuration.",
+      "genericError": "An error occurred during authentication.",
+      "returnButton": "Return to Sign In"
+    }
   }
 }
