@@ -1,60 +1,55 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { CalendarDays, Clock, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import DescriptiveLink from "../DescriptiveLink";
 
-export function OptimizedBlogList({ blogPosts }:any) {
+export function OptimizedBlogList({ blogPosts }: any) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [visiblePosts, setVisiblePosts] = useState([]);
   const [page, setPage] = useState(1);
   const postsPerPage = 9;
   const observerRef = useRef(null);
 
   // Extract unique categories
-  const categories = Array.from(
-    new Set(blogPosts.map((post:any) => post.category))
+  const categories = useMemo(
+    () => Array.from(new Set(blogPosts.map((post: any) => post.category))),
+    [blogPosts]
   );
 
-  // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter((post:any) => {
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? post.category === selectedCategory
-      : true;
-    return matchesSearch && matchesCategory;
-  });
+  // Memoize filtered posts to prevent unnecessary recalculations
+  const filteredPosts = useMemo(() => {
+    return blogPosts.filter((post: any) => {
+      const matchesSearch =
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory
+        ? post.category === selectedCategory
+        : true;
+      return matchesSearch && matchesCategory;
+    });
+  }, [blogPosts, searchTerm, selectedCategory]);
 
   // Update visible posts when filters or page changes
   useEffect(() => {
     setVisiblePosts(filteredPosts.slice(0, page * postsPerPage));
   }, [filteredPosts, page]);
 
-  // Reset page when filters change
+  // Reset pagination when filters change
   useEffect(() => {
-    setPage(1);
-  }, [searchTerm, selectedCategory]);
+    if (page !== 1) setPage(1);
+  }, [filteredPosts]);
 
   // Intersection observer for infinite scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (
-          entries[0].isIntersecting
-        ) {
-          // Check inside the callback
+        if (entries[0].isIntersecting) {
           setPage((prevPage) => {
             const nextPage = prevPage + 1;
             const maxPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -64,21 +59,15 @@ export function OptimizedBlogList({ blogPosts }:any) {
       },
       { threshold: 0.1 }
     );
-  
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-  
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, []); // ⬅️ empty array: run only once on mount
-  
+
+    if (observerRef.current) observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [filteredPosts.length]); // Re-run when `filteredPosts.length` changes
 
   return (
     <>
+      {/* Search and Category Filter */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
         <div className="relative w-full md:w-1/3">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -94,25 +83,21 @@ export function OptimizedBlogList({ blogPosts }:any) {
 
         <div className="flex flex-wrap gap-2">
           <Button
-            variant={selectedCategory === null ? "default" : "outline"}
+            variant={!selectedCategory ? "default" : "outline"}
             size="sm"
-            className={
-              selectedCategory === null ? "bg-red-600 hover:bg-red-700" : ""
-            }
-            onClick={() => setSelectedCategory(null)}
+            className={!selectedCategory ? "bg-red-600 hover:bg-red-700" : ""}
+            onClick={() => setSelectedCategory("")}
           >
             All
           </Button>
 
-          {categories.map((category:any,index) => (
+          {categories.map((category: any, index) => (
             <Button
               key={index}
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               className={
-                selectedCategory === category
-                  ? "bg-red-600 hover:bg-red-700"
-                  : ""
+                selectedCategory === category ? "bg-red-600 hover:bg-red-700" : ""
               }
               onClick={() => setSelectedCategory(category)}
             >
@@ -122,9 +107,10 @@ export function OptimizedBlogList({ blogPosts }:any) {
         </div>
       </div>
 
+      {/* Blog Posts Grid */}
       {visiblePosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {visiblePosts.map((post:any) => (
+          {visiblePosts.map((post: any) => (
             <Card
               key={post.id}
               className="h-full overflow-hidden hover:shadow-lg transition-shadow"
@@ -146,17 +132,13 @@ export function OptimizedBlogList({ blogPosts }:any) {
               <CardContent className="p-6">
                 <div className="flex items-center text-gray-500 text-sm mb-3">
                   <CalendarDays className="w-4 h-4 mr-1" />
-                  <span>{post.date}</span>
+                  <span>{post.createdAt}</span>
                   <span className="mx-2">•</span>
                   <Clock className="w-4 h-4 mr-1" />
                   <span>{post.readTime} min read</span>
                 </div>
-                <h3 className="text-xl font-bold mb-3 line-clamp-2">
-                  {post.title}
-                </h3>
-                <p className="text-gray-600 line-clamp-3 mb-4">
-                  {post.excerpt}
-                </p>
+                <h3 className="text-xl font-bold mb-3 line-clamp-2">{post.title}</h3>
+                <p className="text-gray-600 line-clamp-3 mb-4">{post.excerpt}</p>
               </CardContent>
               <CardFooter className="px-6 pb-6 pt-0">
                 <Button
@@ -167,7 +149,6 @@ export function OptimizedBlogList({ blogPosts }:any) {
                   <DescriptiveLink
                     href={`/blog/${post.id}`}
                     ariaLabel={`Read full article about ${post.title}`}
-//title={post.title}
                   >
                     Read Full Article
                   </DescriptiveLink>
@@ -178,21 +159,6 @@ export function OptimizedBlogList({ blogPosts }:any) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <div className="w-12 h-12 mx-auto text-red-600 mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </div>
           <h3 className="text-xl font-bold mb-2">No Articles Found</h3>
           <p className="text-gray-600 mb-4">
             We couldn't find any articles matching your search criteria.
@@ -201,7 +167,7 @@ export function OptimizedBlogList({ blogPosts }:any) {
             variant="outline"
             onClick={() => {
               setSearchTerm("");
-              setSelectedCategory(null);
+              setSelectedCategory("");
             }}
           >
             Reset Filters
@@ -209,9 +175,8 @@ export function OptimizedBlogList({ blogPosts }:any) {
         </div>
       )}
 
-      {visiblePosts.length < filteredPosts.length && (
-        <div ref={observerRef} className="h-10 mt-8" />
-      )}
+      {/* Infinite Scroll Trigger */}
+      {visiblePosts.length < filteredPosts.length && <div ref={observerRef} className="h-10 mt-8" />}
     </>
   );
 }

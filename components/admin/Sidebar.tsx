@@ -12,6 +12,7 @@ import {
   Star,
   Menu,
   Calendar,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -40,6 +41,11 @@ export function Sidebar() {
    { icon: Calendar, label: t("bloodDrives"), href: "/admin/blood-drives" },
    { icon: UserCheck, label: t("volunteers"), href: "/admin/volunteers" },
    { icon: Star, label: t("reviews"), href: "/admin/reviews" },
+   {
+    label: "Blog Management",
+    href: "/admin/blogs",
+    icon: FileText,
+  }
  ];
   const isActive = (path: string) => pathname.endsWith(path);
   return (
