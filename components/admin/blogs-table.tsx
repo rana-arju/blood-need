@@ -17,8 +17,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Card, CardContent } from "@/components/ui/card"
-import { Edit, MoreHorizontal, Trash } from "lucide-react"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Edit, MoreHorizontal, Plus, Trash } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import moment from "moment"
 import { useSession } from "next-auth/react"
@@ -31,6 +31,7 @@ interface Blog {
   createdAt: string
   updatedAt: string
   userId: string
+  tags?: string[]
 }
 
 export function BlogsTable() {
@@ -39,25 +40,33 @@ export function BlogsTable() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [blogToDelete, setBlogToDelete] = useState<string | null>(null)
-
-    const { data: session } = useSession();
-  
-
+  const [isDeleting, setIsDeleting] = useState(false)
+const {data:sessions} = useSession()
   useEffect(() => {
     fetchBlogs()
   }, [])
+console.log(sessions);
 
   const fetchBlogs = async () => {
     try {
       setIsLoading(true)
+      const token = sessions?.user?.id
+
+
+      console.log("Fetching all blogs")
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          "content-type": "application/json",
         },
+        cache: "no-store",
       })
 
+      console.log("Fetch all blogs response status:", res.status)
+
       const data = await res.json()
-console.log("Data", data);
+      console.log("Fetch all blogs response data:", data)
 
       if (data.success && data.data) {
         setBlogs(data.data)
@@ -76,14 +85,29 @@ console.log("Data", data);
 
   const handleDelete = async (id: string) => {
     try {
+      setIsDeleting(true)
+      
+
+      if (!sessions?.user?.id) {
+        toast.error("Authentication token not found. Please log in again.")
+        router.push("/auth/signin")
+        return
+      }
+
+      console.log("Deleting blog with ID:", id)
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${session?.user?.id}`,
+          Authorization: `Bearer ${sessions?.user?.id}`,
         },
+        cache: "no-store",
       })
 
+      console.log("Delete blog response status:", res.status)
+
       const data = await res.json()
+      console.log("Delete blog response data:", data)
 
       if (data.success) {
         toast.success(data.message || "Blog deleted successfully")
@@ -96,12 +120,14 @@ console.log("Data", data);
       console.error("Error deleting blog:", error)
       toast.error("An error occurred while deleting the blog")
     } finally {
+      setIsDeleting(false)
       setBlogToDelete(null)
     }
   }
 
   const truncateText = (text: string, maxLength: number) => {
-    if (text?.length <= maxLength) return text
+    if (!text) return ""
+    if (text.length <= maxLength) return text
     return text.substring(0, maxLength) + "..."
   }
 
@@ -135,11 +161,59 @@ console.log("Data", data);
       </Card>
     )
   }
-  console.log("blogs",blogs);
 
-  return (
-    <Card>
-      <CardContent className="p-0">
+  // Render a card-based layout for mobile and small screens
+  const renderMobileView = () => {
+    return (
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {blogs.length === 0 ? (
+          <Card>
+            <CardContent className="text-center py-8">No blogs found. Create your first blog post!</CardContent>
+          </Card>
+        ) : (
+          blogs.map((blog) => (
+            <Card key={blog.id}>
+              <CardHeader className="p-4 pb-2 flex-row gap-4 items-center">
+                <div className="relative h-12 w-12 rounded-md overflow-hidden flex-shrink-0">
+                  <Image
+                    src={
+                      blog.image ||
+                      "https://res.cloudinary.com/db8l1ulfq/image/upload/v1742841645/y9DpT_fyxpqp.jpg" ||
+                      "/placeholder.svg"
+                    }
+                    alt={blog.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <CardTitle className="text-base">{truncateText(blog.title, 50)}</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0 text-sm">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Created: {moment(blog.createdAt).format("LL")}</span>
+                </div>
+              </CardContent>
+              <CardFooter className="p-4 pt-0 flex justify-end gap-2">
+                <Button variant="outline" size="sm" onClick={() => router.push(`/admin/blogs/edit/${blog.id}`)}>
+                  <Edit className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => setBlogToDelete(blog.id)}>
+                  <Trash className="h-4 w-4 mr-1" />
+                  Delete
+                </Button>
+              </CardFooter>
+            </Card>
+          ))
+        )}
+      </div>
+    )
+  }
+
+  // Render a table for desktop and larger screens
+  const renderDesktopView = () => {
+    return (
+      <div className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow>
@@ -202,6 +276,22 @@ console.log("Data", data);
             )}
           </TableBody>
         </Table>
+      </div>
+    )
+  }
+
+  return (
+    <Card>
+      <CardHeader className="px-6 py-4 flex flex-row items-center justify-between">
+        <CardTitle>Blog Posts</CardTitle>
+        <Button onClick={() => router.push("/admin/blogs/new")}>
+          <Plus className="h-4 w-4 mr-2" />
+          New Blog
+        </Button>
+      </CardHeader>
+      <CardContent className="p-0">
+        {renderMobileView()}
+        {renderDesktopView()}
       </CardContent>
 
       <AlertDialog open={!!blogToDelete} onOpenChange={(open) => !open && setBlogToDelete(null)}>
@@ -213,12 +303,13 @@ console.log("Data", data);
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
               onClick={() => blogToDelete && handleDelete(blogToDelete)}
+              disabled={isDeleting}
             >
-              Delete
+              {isDeleting ? "Deleting..." : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

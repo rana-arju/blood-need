@@ -42,7 +42,7 @@ export function Sidebar() {
    { icon: UserCheck, label: t("volunteers"), href: "/admin/volunteers" },
    { icon: Star, label: t("reviews"), href: "/admin/reviews" },
    {
-    label: "Blog Management",
+    label: "Blog",
     href: "/admin/blogs",
     icon: FileText,
   }

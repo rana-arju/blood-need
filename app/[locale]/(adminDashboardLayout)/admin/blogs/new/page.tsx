@@ -1,15 +1,9 @@
-import { AddBlogForm } from "@/components/admin/add-blog-form"
-import type { Metadata } from "next"
-
-export const metadata: Metadata = {
-  title: "Create Blog | Admin Dashboard",
-  description: "Create a new blog post",
-}
+import { AddBlogForm } from "@/components/admin/add-blog-form";
 
 export default function NewBlogPage() {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Create New Blog Post</h1>
+    <div className="container mx-auto py-6 space-y-6">
+      <h1 className="text-2xl font-bold">Create New Blog</h1>
       <AddBlogForm />
     </div>
   )

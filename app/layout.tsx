@@ -118,7 +118,7 @@ export default async function RootLayout({
             </SessionProvider>
           </NextIntlClientProvider>
         </Suspense>
-        <Script strategy="afterInteractive" src="/registerSW.ts" />
+        <Script strategy="afterInteractive" src="/registerSW.js" />
 
         {/* Google Analytics */}
         <Script
