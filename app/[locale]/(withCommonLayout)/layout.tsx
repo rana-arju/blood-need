@@ -25,7 +25,7 @@ export default async function RootLayout({
       </div>
       <BottomNavigation />
       <Footer />
-      <ChatBot />
+     
     </div>
   );
 }

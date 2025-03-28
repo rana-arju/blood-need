@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@auth/core": "latest",
+    "@firebase/messaging": "^0.12.17",
     "@hookform/resolvers": "^3.10.0",
     "@next/bundle-analyzer": "^15.2.3",
     "@next/eslint-plugin-next": "^15.1.7",
@@ -53,6 +54,7 @@
     "compression-webpack-plugin": "^11.1.0",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
+    "firebase": "^11.5.0",
     "framer-motion": "^12.4.3",
     "input-otp": "1.4.1",
     "leaflet": "^1.9.4",

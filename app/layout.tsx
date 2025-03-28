@@ -19,6 +19,7 @@ import PerformanceMonitoring from "@/components/PerformanceMonitoring";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import LoadingDrop from "@/components/LoadingDrop";
+import { ContactWidget } from "@/components/contact/ContactWidget";
 
 export const viewport = generateViewport();
 
@@ -114,6 +115,12 @@ export default async function RootLayout({
               */}
 
                 <Toaster richColors position="top-center" />
+                      {/* Contact Widget */}
+              <ContactWidget
+                phoneNumber="+8801700000000"
+                facebookPage="blooddonationcommunity"
+                whatsappNumber="8801700000000"
+              />
               </ThemeProvider>
             </SessionProvider>
           </NextIntlClientProvider>
