@@ -1,182 +1,275 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { CalendarDays, Clock, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { OptimizedImage } from "@/components/OptimizedImage";
-import DescriptiveLink from "../DescriptiveLink";
+import type React from "react"
 
-export function OptimizedBlogList({ blogPosts }: any) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [visiblePosts, setVisiblePosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const postsPerPage = 9;
-  const observerRef = useRef(null);
+import { useState, useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { CalendarDays, Clock, Search, Loader2 } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { OptimizedImage } from "@/components/OptimizedImage"
+import DescriptiveLink from "../DescriptiveLink"
+import sanitizeHtml from "sanitize-html"
+import { getAllBlog } from "@/services/blog"
+import moment from "moment"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Skeleton } from "@/components/ui/skeleton"
 
-  // Extract unique categories
-  const categories = useMemo(
-    () => Array.from(new Set(blogPosts.map((post: any) => post.category))),
-    [blogPosts]
-  );
+export function OptimizedBlogList({ initialBlogPosts }: { initialBlogPosts: any[] }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("searchTerm") || "")
+  const [blogPosts, setBlogPosts] = useState(initialBlogPosts)
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [totalPosts, setTotalPosts] = useState(0)
+  const limit = 9
+  const observerRef = useRef(null)
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Memoize filtered posts to prevent unnecessary recalculations
-  const filteredPosts = useMemo(() => {
-    return blogPosts.filter((post: any) => {
-      const matchesSearch =
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory
-        ? post.category === selectedCategory
-        : true;
-      return matchesSearch && matchesCategory;
-    });
-  }, [blogPosts, searchTerm, selectedCategory]);
+  const getFirstWords = (html: string, wordLimit: number) => {
+    // Remove all HTML tags to get plain text
+    const plainText = sanitizeHtml(html, { allowedTags: [] }).trim()
 
-  // Update visible posts when filters or page changes
-  useEffect(() => {
-    setVisiblePosts(filteredPosts.slice(0, page * postsPerPage));
-  }, [filteredPosts, page]);
+    // Split by spaces and take the first `wordLimit` words
+    const words = plainText.split(/\s+/).slice(0, wordLimit).join(" ")
 
-  // Reset pagination when filters change
-  useEffect(() => {
-    if (page !== 1) setPage(1);
-  }, [filteredPosts]);
+    return words + (plainText.split(/\s+/).length > wordLimit ? "..." : "")
+  }
+
+  const fetchBlogs = async (reset = false) => {
+    try {
+      setLoading(true)
+      const currentPage = reset ? 1 : page
+
+      const filters = searchTerm ? { searchTerm } : undefined
+      const pagination = {
+        page: currentPage,
+        limit,
+        sortBy: "createdAt",
+        sortOrder: "desc" as "desc",
+      }
+
+      const res = await getAllBlog(filters, pagination)
+
+      if (reset) {
+        setBlogPosts(res.data)
+      } else {
+        setBlogPosts((prev) => [...prev, ...res.data])
+      }
+
+      setTotalPosts(res.meta.total)
+      setHasMore(currentPage * limit < res.meta.total)
+
+      if (!reset) {
+        setPage((prev) => prev + 1)
+      } else {
+        setPage(2)
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Handle search input changes with debounce
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchTerm(value)
+
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+
+    searchTimeoutRef.current = setTimeout(() => {
+      // Update URL with search term
+      const params = new URLSearchParams(searchParams.toString())
+      if (value) {
+        params.set("searchTerm", value)
+      } else {
+        params.delete("searchTerm")
+      }
+
+      // Replace the URL without reloading the page
+      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`
+      window.history.replaceState({}, "", newUrl)
+
+      fetchBlogs(true)
+    }, 500)
+  }
 
   // Intersection observer for infinite scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setPage((prevPage) => {
-            const nextPage = prevPage + 1;
-            const maxPages = Math.ceil(filteredPosts.length / postsPerPage);
-            return nextPage <= maxPages ? nextPage : prevPage;
-          });
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          fetchBlogs()
         }
       },
-      { threshold: 0.1 }
-    );
+      { threshold: 0.1 },
+    )
 
-    if (observerRef.current) observer.observe(observerRef.current);
+    if (observerRef.current) observer.observe(observerRef.current)
 
-    return () => observer.disconnect();
-  }, [filteredPosts.length]); // Re-run when `filteredPosts.length` changes
+    return () => {
+      if (observerRef.current) observer.disconnect()
+    }
+  }, [hasMore, loading])
+
+  // Initial fetch
+  useEffect(() => {
+    fetchBlogs(true)
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
+  }, [])
 
   return (
     <>
-      {/* Search and Category Filter */}
+      {/* Search Bar */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
-        <div className="relative w-full md:w-1/3">
+        <div className="relative w-full md:w-1/2">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
             type="text"
             placeholder="Search articles..."
             className="pl-10"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             aria-label="Search blog posts"
           />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant={!selectedCategory ? "default" : "outline"}
-            size="sm"
-            className={!selectedCategory ? "bg-red-600 hover:bg-red-700" : ""}
-            onClick={() => setSelectedCategory("")}
-          >
-            All
-          </Button>
-
-          {categories.map((category: any, index) => (
-            <Button
-              key={index}
-              variant={selectedCategory === category ? "default" : "outline"}
-              size="sm"
-              className={
-                selectedCategory === category ? "bg-red-600 hover:bg-red-700" : ""
-              }
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Button>
-          ))}
         </div>
       </div>
 
       {/* Blog Posts Grid */}
-      {visiblePosts.length > 0 ? (
+      {blogPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {visiblePosts.map((post: any) => (
+          {blogPosts.map((post: any) => (
             <Card
               key={post.id}
-              className="h-full overflow-hidden hover:shadow-lg transition-shadow"
+              className="h-full overflow-hidden hover:shadow-lg transition-shadow dark:bg-gray-800 dark:border-gray-700"
             >
               <CardHeader className="p-0">
                 <div className="relative overflow-hidden h-56">
                   <OptimizedImage
-                    src={post.image}
+                    src={post.image || "/placeholder.svg?height=400&width=600"}
                     alt={post.title}
                     width={400}
                     height={225}
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 left-4 bg-red-600 text-white text-xs font-semibold py-1 px-2 rounded">
-                    {post.category}
-                  </div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="absolute top-4 left-4 bg-red-600 text-white text-xs font-semibold py-1 px-2 rounded">
+                      {post.tags[0]}
+                    </div>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="flex items-center text-gray-500 text-sm mb-3">
+                <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-3">
                   <CalendarDays className="w-4 h-4 mr-1" />
-                  <span>{post.createdAt}</span>
+                  <span>{moment(post.createdAt).format("LL")}</span>
                   <span className="mx-2">•</span>
                   <Clock className="w-4 h-4 mr-1" />
-                  <span>{post.readTime} min read</span>
+                  <span>5 min read</span>
                 </div>
-                <h3 className="text-xl font-bold mb-3 line-clamp-2">{post.title}</h3>
-                <p className="text-gray-600 line-clamp-3 mb-4">{post.excerpt}</p>
+                <h3 className="text-xl font-bold mb-3 line-clamp-2 dark:text-white">{post.title}</h3>
+                <div className="prose max-w-none dark:text-gray-300">
+                  <p>{getFirstWords(post.content, 20)}</p>
+                </div>
               </CardContent>
               <CardFooter className="px-6 pb-6 pt-0">
                 <Button
                   variant="outline"
-                  className="w-full border-primary text-primary hover:bg-primary hover:text-white"
+                  className="w-full border-primary text-primary hover:bg-primary hover:text-white dark:border-primary dark:text-primary dark:hover:bg-priamry/50 dark:hover:text-white"
                   asChild
                 >
-                  <DescriptiveLink
-                    href={`/blog/${post.id}`}
-                    ariaLabel={`Read full article about ${post.title}`}
-                  >
-                    Read Full Article
+                  <DescriptiveLink href={`/blog/${post.id}`} ariaLabel={`Read full article about ${post.title}`}>
+                    Read More
                   </DescriptiveLink>
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
+      ) : loading && page === 1 ? (
+        <BlogListSkeleton />
       ) : (
-        <div className="text-center py-12">
+        <div className="text-center py-12 dark:text-white">
           <h3 className="text-xl font-bold mb-2">No Articles Found</h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
             We couldn't find any articles matching your search criteria.
           </p>
           <Button
             variant="outline"
             onClick={() => {
-              setSearchTerm("");
-              setSelectedCategory("");
+              setSearchTerm("")
+              const newUrl = window.location.pathname
+              window.history.replaceState({}, "", newUrl)
+              fetchBlogs(true)
             }}
           >
-            Reset Filters
+            Reset Search
           </Button>
         </div>
       )}
 
+      {/* Loading indicator */}
+      {loading && page > 1 && (
+        <div className="flex justify-center mt-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )}
+
       {/* Infinite Scroll Trigger */}
-      {visiblePosts.length < filteredPosts.length && <div ref={observerRef} className="h-10 mt-8" />}
+      {hasMore && !loading && <div ref={observerRef} className="h-10 mt-8" />}
+
+      {/* Total posts counter */}
+      <div className="text-center mt-8 text-gray-500 dark:text-gray-400">
+        {blogPosts.length > 0 && (
+          <p>
+            Showing {blogPosts.length} of {totalPosts} articles
+          </p>
+        )}
+      </div>
     </>
-  );
+  )
 }
+
+// Loading skeleton component
+function BlogListSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Card key={index} className="h-full overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader className="p-0">
+            <Skeleton className="h-56 w-full" />
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-4 rounded-full" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+            <Skeleton className="h-7 w-full mb-2" />
+            <Skeleton className="h-7 w-3/4 mb-4" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          </CardContent>
+          <CardFooter className="px-6 pb-6 pt-0">
+            <Skeleton className="h-10 w-full" />
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
