@@ -115,12 +115,12 @@ export default async function RootLayout({
               */}
 
                 <Toaster richColors position="top-center" />
-                      {/* Contact Widget */}
-              <ContactWidget
-                phoneNumber="+8801700000000"
-                facebookPage="blooddonationcommunity"
-                whatsappNumber="8801700000000"
-              />
+                {/* Contact Widget */}
+                <ContactWidget
+                  phoneNumber="+8801881220413"
+                  facebookPage="techdictionary"
+                  whatsappNumber="+8801881220413"
+                />
               </ThemeProvider>
             </SessionProvider>
           </NextIntlClientProvider>

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect } from "react"
-import { ChevronDown, X, Send, Smile } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useRef, useEffect } from "react";
+import { ChevronDown, X, Send, Smile } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface WhatsAppChatProps {
-  whatsappNumber: string
-  initialMessage?: string
-  onClose: () => void
+  whatsappNumber: string;
+  initialMessage?: string;
+  onClose: () => void;
 }
 
 export function WhatsAppChat({
@@ -17,41 +17,46 @@ export function WhatsAppChat({
   initialMessage = "হ্যালো, আমি কিছু জানতে চাই / আমার একটি সমস্যা হয়েছে। দয়া করে সাহায্য করুন।",
   onClose,
 }: WhatsAppChatProps) {
-  const [message, setMessage] = useState(initialMessage)
-  const [showChat, setShowChat] = useState(true)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [currentTime, setCurrentTime] = useState("")
+  const [message, setMessage] = useState(initialMessage);
+  const [showChat, setShowChat] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
     // Set current time format
-    const now = new Date()
-    setCurrentTime(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))
+    const now = new Date();
+    setCurrentTime(
+      now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    );
 
     // Focus the input field
     if (inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [])
+  }, []);
 
   const handleSend = () => {
     if (message.trim()) {
       // Encode the message for the URL
-      const encodedMessage = encodeURIComponent(message)
+      const encodedMessage = encodeURIComponent(message);
       // Open WhatsApp with the pre-filled message
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank")
-      onClose()
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
+        "_blank"
+      );
+      onClose();
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSend()
+      handleSend();
     }
-  }
+  };
 
   const toggleChat = () => {
-    setShowChat(!showChat)
-  }
+    setShowChat(!showChat);
+  };
 
   return (
     <div className="w-[300px] md:w-[400px]  z-50 absolute bottom-20 right-0 mb-4 rounded-lg shadow-lg overflow-hidden animate-fade-in-up">
@@ -66,7 +71,12 @@ export function WhatsAppChat({
           className="p-1 rounded-full hover:bg-green-600 dark:hover:bg-green-700 transition-colors"
           aria-label={showChat ? "Minimize chat" : "Expand chat"}
         >
-          <ChevronDown className={cn("w-5 h-5 transition-transform", !showChat && "rotate-180")} />
+          <ChevronDown
+            className={cn(
+              "w-5 h-5 transition-transform",
+              !showChat && "rotate-180"
+            )}
+          />
         </button>
       </div>
 
@@ -75,13 +85,15 @@ export function WhatsAppChat({
         <div className="bg-[url('https://res.cloudinary.com/db8l1ulfq/image/upload/v1743166210/whatsapp_b6xlxs.png')] bg-repeat bg-gray-100 dark:bg-gray-800 h-64 p-4 overflow-y-auto">
           <div className="max-w-[85%] bg-white dark:bg-gray-700 rounded-lg p-3 ml-auto shadow-sm">
             <div className="text-gray-800 dark:text-gray-200 text-sm">
-                <p className="text-md font-bold  text-gray-800 dark:text-gray-200">
+              <p className="text-md font-bold  text-gray-800 dark:text-gray-200">
                 💬 স্বাগতম Blood Need কমিউনিটিতে!
-                </p>
-          
-আমরা রক্তদাতা ও রক্তপ্রত্যাশীদের সংযোগ করতে সাহায্য করি। আপনাকে কীভাবে সাহায্য করতে পারি? 🩸🙏
+              </p>
+              আমরা রক্তদাতা ও রক্তপ্রত্যাশীদের সংযোগ করতে সাহায্য করি। আপনাকে
+              কীভাবে সাহায্য করতে পারি? 🩸🙏
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-right mt-1">{currentTime}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-right mt-1">
+              {currentTime}
+            </p>
           </div>
         </div>
       )}
@@ -125,7 +137,7 @@ export function WhatsAppChat({
         <X className="w-5 h-5" />
       </button>
     </div>
-  )
+  );
 }
 
 function WhatsAppLogo() {
@@ -133,6 +145,5 @@ function WhatsAppLogo() {
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 12 12 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12zm.031 5.462c3.879 0 7.035 3.155 7.035 7.035 0 1.363-.395 2.683-1.159 3.833l.707 3.392-3.525-.722a6.962 6.962 0 01-3.057.697c-3.88 0-7.035-3.155-7.035-7.035 0-3.879 3.155-7.2 7.035-7.2zm3.781 10.255a1.428 1.428 0 00.918-.427c.248-.248.385-.578.378-.928a1.458 1.458 0 00-.378-.928 1.458 1.458 0 00-.919-.427h-1.407c-.376 0-.708.142-.95.412l-.126.127c-.25.25-.376.587-.376.95 0 .365.126.701.376.95l.126.127c.242.27.574.412.95.412h1.408zm-4.734-6.28h-.065a.563.563 0 00-.398.17l-.126.128a.593.593 0 00-.146.396v3.61c0 .295.12.588.328.796.209.209.502.329.796.329h3.553c.3 0 .562-.125.755-.332a1.14 1.14 0 00.312-.793c0-.296-.104-.557-.294-.736l-.152-.143a1.023 1.023 0 00-.736-.314h-2.083a.43.43 0 01-.432-.432v-2.246a.563.563 0 00-.17-.398l-.128-.126a.563.563 0 00-.403-.17h-.062z" />
     </svg>
-  )
+  );
 }
-
