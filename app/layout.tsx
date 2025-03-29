@@ -20,6 +20,10 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import LoadingDrop from "@/components/LoadingDrop";
 import { ContactWidget } from "@/components/contact/ContactWidget";
+import FirebaseInit from "./firebase-init";
+import FirebaseConfigScript from "./[locale]/(withCommonLayout)/firebase-config-script";
+import { NotificationPermission } from "@/components/notification/NotificationPermission";
+import { NotificationProvider } from "@/contexts/notification-context";
 
 export const viewport = generateViewport();
 
@@ -81,52 +85,61 @@ export default async function RootLayout({
         <Suspense fallback={<LoadingDrop />}>
           <NextIntlClientProvider messages={messages}>
             <SessionProvider session={session}>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-              >
-                {/* Add performance monitoring */}
-                <PerformanceMonitoring />
-                <main>{children}</main>
+              <NotificationProvider>
+                {/* Firebase initialization */}
+                <FirebaseInit />
+                {/* Firebase config script */}
+                <FirebaseConfigScript />
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                >
+                  {/* Add performance monitoring */}
+                  <PerformanceMonitoring />
+                  <main>{children}</main>
 
-                {/* Register service worker */}
-
-                {/*  <Script
-                id="register-sw"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `
-                    if ('serviceWorker' in navigator) {
-                      window.addEventListener('load', function() {
-                        navigator.serviceWorker.register('/custom-sw.js', { scope: '/' }).then(
-                          function(registration) {
-                            console.log('Service Worker registration successful with scope: ', registration.scope);
-                          },
-                          function(err) {
-                            console.log('Service Worker registration failed: ', err);
-                          }
-                        );
-                      });
-                    }
-                  `,
-                }}
-              />
-              */}
-
-                <Toaster richColors position="top-center" />
-                {/* Contact Widget */}
-                <ContactWidget
-                  phoneNumber="+8801881220413"
-                  facebookPage="techdictionary"
-                  whatsappNumber="+8801881220413"
-                />
-              </ThemeProvider>
+                  <Toaster richColors position="top-center" />
+                  {/* Contact Widget */}
+                  <ContactWidget
+                    phoneNumber="+8801881220413"
+                    facebookPage="techdictionary"
+                    whatsappNumber="+8801881220413"
+                  />
+                  {/* Notification permission prompt */}
+                  <NotificationPermission />
+                </ThemeProvider>
+              </NotificationProvider>
             </SessionProvider>
           </NextIntlClientProvider>
         </Suspense>
-        <Script strategy="afterInteractive" src="/registerSW.js" />
-
+        {/* Register service worker */}
+        <Script
+          id="sw-registration-helper"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Define swRegistration on window for FirebaseInit to use
+              window.swRegistration = null;
+              
+              // Helper function to check if service worker is registered
+              async function checkServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                  try {
+                    const registration = await navigator.serviceWorker.ready;
+                    window.swRegistration = registration;
+                    console.log('Service worker is ready:', registration.scope);
+                  } catch (error) {
+                    console.error('Service worker not ready:', error);
+                  }
+                }
+              }
+              
+              // Check on page load
+              checkServiceWorker();
+            `,
+          }}
+        />
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"

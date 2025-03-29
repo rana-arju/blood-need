@@ -37,17 +37,16 @@ export function useNotificationSubscription() {
 
       const newSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
-        ,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
       });
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/subscribe`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/web-push/subscribe`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session.user.id}`,
+            Authorization: `Bearer ${session?.user?.id}`,
           },
           body: JSON.stringify({ subscription: newSubscription }),
         }
@@ -56,14 +55,14 @@ export function useNotificationSubscription() {
       if (response.ok) {
         console.log("Subscription saved on the server.");
         setIsSubscribed(true);
-         return true;
+        return true;
       } else {
         console.error("Failed to save subscription on the server.");
         return false;
       }
     } catch (error) {
       console.error("Error during subscription:", error);
-       return false;
+      return false;
     }
   };
 

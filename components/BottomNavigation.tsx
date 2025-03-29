@@ -83,13 +83,13 @@ export default function BottomNavigation() {
           <NavItem href="/request-blood" icon={Droplet} label="Request" />
 
           <InstallPWA pos="bottom" />
-          <li>
+        
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex flex-col items-center"
+                  className="flex flex-col items-center text-gray-500 "
                   onClick={() => setSidebarOpen(true)}
                 >
                   <Menu size={24} />
@@ -120,7 +120,7 @@ export default function BottomNavigation() {
                 </nav>
               </SheetContent>
             </Sheet>
-          </li>
+        
         </ul>
       </nav>
     </>

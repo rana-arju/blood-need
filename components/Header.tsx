@@ -21,6 +21,7 @@ import InstallPWA from "./InstallPWA";
 import { useNotificationSubscription } from "@/utils/pushNotifications";
 import { usePathname, useRouter } from "next/navigation";
 import { OptimizedImage } from "./OptimizedImage";
+import { NotificationBadge } from "./notification/NotificationBadge";
 
 export default function Header() {
   const router = useRouter();

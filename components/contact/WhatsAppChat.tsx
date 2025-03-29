@@ -114,7 +114,7 @@ export function WhatsAppChat({
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Write your message..."
-            className="flex-1 py-2 px-3 rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 dark:text-gray-200"
+            className="flex-1 w-full py-2 px-3 rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 dark:text-gray-200"
             aria-label="Message input"
           />
           <button

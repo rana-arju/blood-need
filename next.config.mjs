@@ -76,16 +76,68 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: "/firebase-messaging-sw.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Service-Worker-Allowed",
+            value: "/",
+          },
+        ],
+      },
+      {
+        source:
+          "/(firebase-messaging-sw|custom-firebase-messaging-sw|custom-sw|sw)\\.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Service-Worker-Allowed",
+            value: "/",
+          },
+        ],
+      },
+      {
+        source: "/workbox-:hash.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 
-  async rewrites() {
+ async rewrites() {
     return [
+      // Standard static asset rewrites
       {
         source: "/:locale/icons/:file*",
         destination: "/icons/:file*",
       },
-
+      {
+        source: "/:locale/profile.png",
+        destination: "/profile.png",
+      },
       {
         source: "/:locale/screenshots/:file*",
         destination: "/screenshots/:file*",
@@ -95,15 +147,76 @@ const nextConfig = {
         destination: "/leaflet/:file*",
       },
       { source: "/:locale/manifest.json", destination: "/manifest.json" },
-      { source: "/:locale/custom-sw.js", destination: "/custom-sw.js" },
+
+      // Service worker rewrites - critical for Firebase messaging
+      {
+        source: "/firebase-messaging-sw.js",
+        destination: "/firebase-messaging-sw.js",
+      },
+      {
+        source: "/:locale/firebase-messaging-sw.js",
+        destination: "/firebase-messaging-sw.js",
+      },
+      {
+        source: "/custom-firebase-messaging-sw.js",
+        destination: "/custom-firebase-messaging-sw.js",
+      },
+
+      {
+        source: "/:locale/custom-firebase-messaging-sw.js",
+        destination: "/custom-firebase-messaging-sw.js",
+      },
+      {
+        source: "/custom-sw.js",
+        destination: "/custom-sw.js",
+      },
+      {
+        source: "/:locale/custom-sw.js",
+        destination: "/custom-sw.js",
+      },
+      {
+        source: "/registerSW.js",
+        destination: "/registerSW.js",
+      },
+      {
+        source: "/:locale/registerSW.js",
+        destination: "/registerSW.js",
+      },
+      {
+        source: "/sw.js",
+        destination: "/sw.js",
+      },
+      {
+        source: "/:locale/sw.js",
+        destination: "/sw.js",
+      },
+      {
+        source: "/workbox-:hash.js",
+        destination: "/workbox-:hash.js",
+      },
+      {
+        source: "/:locale/workbox-:hash.js",
+        destination: "/workbox-:hash.js",
+      },
+      {
+        source: "/offline.html",
+        destination: "/offline.html",
+      },
+      {
+        source: "/:locale/offline.html",
+        destination: "/offline.html",
+      },
+
+      // PWA related rewrites
       { source: "/:locale/registerSW.js", destination: "/registerSW.js" },
     ];
   },
 };
 
+
 const withPWAConfig = withPWA({
   dest: "public",
-  register: true,
+  register: false,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
 

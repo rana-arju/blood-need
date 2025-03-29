@@ -67,7 +67,7 @@ export function ContactWidget({
   return (
     <div
       ref={widgetRef}
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end"
+      className="fixed bottom-16 md:bottom-6 right-6 z-50 flex flex-col items-end"
       role="region"
       aria-label="Contact options"
     >

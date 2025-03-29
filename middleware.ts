@@ -6,6 +6,16 @@ import { getToken } from "next-auth/jwt";
 
 export const runtime = "nodejs";
 
+const serviceWorkerFiles = [
+  "/firebase-messaging-sw.js",
+  "/custom-firebase-messaging-sw.js",
+  "/custom-sw.js",
+  "/sw.js",
+  "/workbox-*.js",
+  "/registerSW.js",
+  "/manifest.json",
+  "/offline.html",
+];
 const userRoutes = [
   "/dashboard",
   "/dashboard/profile",
@@ -15,7 +25,16 @@ const userRoutes = [
   "/dashboard/requests",
   "/dashboard/security",
 ];
-const adminRoutes = ["/admin", "/admin/users", "/admin/blood-drives", "/admin/blood-requests", "/admin/donors", "/admin/reviews", "/admin/users", "/admin/volunteers"];
+const adminRoutes = [
+  "/admin",
+  "/admin/users",
+  "/admin/blood-drives",
+  "/admin/blood-requests",
+  "/admin/donors",
+  "/admin/reviews",
+  "/admin/users",
+  "/admin/volunteers",
+];
 const publicRoutes = [
   "/",
   "/auth/signin",
@@ -36,11 +55,19 @@ export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   const { pathname } = req.nextUrl;
+  if (
+    serviceWorkerFiles.some((file) => {
+      if (file.includes("*")) {
+        const filePattern = new RegExp(file.replace("*", ".*"));
+        return filePattern.test(pathname);
+      }
+      return pathname === file;
+    })
+  ) {
+    console.log(`[Middleware] Bypassing locale handling for: ${pathname}`);
+    return NextResponse.next();
+  }
 
-    // Exclude /custom-sw.js from locale handling
-   if (pathname === "/custom-sw.js" || pathname === "/offline") {
-     return NextResponse.next();
-   }
   const segments = pathname.split("/").filter(Boolean);
   const lang = segments[0];
   const cleanedPath = `/${segments.slice(1).join("/")}`;
@@ -73,12 +100,13 @@ export default async function middleware(req: NextRequest) {
 
   return intlMiddleware(req);
 }
-  
+
 export const config = {
   matcher: [
-    "/((?!api|_next|_static|_vercel|favicon.ico|sitemap.xml).*)",
+    // Match all paths except static files and API routes
+    "/((?!_next|api|static|public|assets|images|favicon.ico).*)",
     "/",
-    "/(bn|en)/:path*", // ✅ Ensures routes with language prefixes are matched
+    "/(bn|en)/:path*",
     "/dashboard",
     "/dashboard/:page",
     "/admin",
