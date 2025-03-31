@@ -59,13 +59,7 @@ export default function SignInForm() {
     setIsLoading(false)
 
     if (result?.ok) {
-          toast.success("Login Successfull", {
-                  style: {
-                    background: "#10B981",
-                    color: "white",
-                  },
-                  icon: "🎉",
-                })
+          toast.success("Login Successfull")
       router.push("/")
     } else {
       toast.error(t("signIn.invalidCredentials"))

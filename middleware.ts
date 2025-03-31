@@ -15,6 +15,8 @@ const serviceWorkerFiles = [
   "/registerSW.js",
   "/manifest.json",
   "/offline.html",
+  "/service-worker.js",
+  "/firebase-messaging-sw-template.js",
 ];
 const userRoutes = [
   "/dashboard",

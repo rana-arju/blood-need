@@ -167,6 +167,10 @@ const nextConfig = {
         destination: "/custom-firebase-messaging-sw.js",
       },
       {
+        source: "/:locale/service-worker.js",
+        destination: "/service-worker.js",
+      },
+      {
         source: "/custom-sw.js",
         destination: "/custom-sw.js",
       },

@@ -7,7 +7,9 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
+import { initializeApp, getApps } from "firebase/app";
 import {
   getMessaging,
   getToken,
@@ -15,15 +17,10 @@ import {
   isSupported,
 } from "firebase/messaging";
 
-import {
-  getVapidKey,
-  notificationService,
-  registerFCMToken,
-} from "@/services/notification";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { registerServiceWorker } from "@/utils/register-service-worker";
 
-// Define TypeScript interfaces
 export interface Notification {
   id: string;
   title: string;
@@ -44,11 +41,24 @@ interface NotificationContextType {
   markAsRead: (id: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   removeNotification: (id: string) => Promise<void>;
+  notificationsEnabled: boolean | null;
+  isLoading: boolean;
+  enableNotifications: () => Promise<{ success: boolean; error?: any }>;
+  disableNotifications: () => Promise<{ success: boolean; error?: any }>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(
   undefined
 );
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+};
 
 export function NotificationProvider({
   children,
@@ -56,15 +66,42 @@ export function NotificationProvider({
   children: React.ReactNode;
 }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState<boolean | null>(
     null
   );
+  const [notificationsEnabled, setNotificationsEnabled] = useState<
+    boolean | null
+  >(null);
+  const [swRegistration, setSwRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-  // Check notification permission on mount
+  const registeringPromiseRef = useRef<Promise<any> | null>(null);
+  const firebaseInitializedRef = useRef(false);
+  const messagingRef = useRef<any>(null);
+
+  // Initialize Firebase
+  useEffect(() => {
+    if (
+      !firebaseInitializedRef.current &&
+      typeof window !== "undefined" &&
+      !getApps().length
+    ) {
+      try {
+        initializeApp(firebaseConfig);
+        firebaseInitializedRef.current = true;
+        console.log("Firebase initialized");
+      } catch (error) {
+        console.error("Firebase init failed:", error);
+      }
+    }
+  }, []);
+
+  // Check permission status
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -75,9 +112,14 @@ export function NotificationProvider({
       }
 
       const permission = Notification.permission;
-      setPermissionGranted(permission === "granted");
+      const isGranted = permission === "granted";
+      setPermissionGranted(isGranted);
 
-      if (permission === "granted" && userId) {
+      const stored = localStorage.getItem("notificationsEnabled");
+      const isEnabled = isGranted && stored === "true";
+      setNotificationsEnabled(isEnabled);
+
+      if (isEnabled && userId) {
         await registerForPushNotifications();
       }
     };
@@ -86,61 +128,52 @@ export function NotificationProvider({
   }, [userId]);
 
   // Register for push notifications
-  const registerForPushNotifications = async () => {
-    try {
-      const isFirebaseSupported = await isSupported();
+  const registerForPushNotifications = useCallback(async () => {
+    if (!userId) return { success: false, error: "User not logged in" };
+    if (registeringPromiseRef.current) return registeringPromiseRef.current;
 
-      if (!isFirebaseSupported) {
-        console.warn("Firebase messaging is not supported in this browser");
-        return;
-      }
+    const register = async () => {
+      try {
+        // Check if FCM is supported
+        if (!(await isSupported())) {
+          return { success: false, error: "FCM not supported" };
+        }
 
-      const messaging = getMessaging();
+        // Register service worker
+        const registration = await registerServiceWorker();
+        if (!registration) throw new Error("SW registration failed");
+        setSwRegistration(registration);
 
-      // Get VAPID key from backend
-      const vapidKey = await getVapidKey();
+        // Initialize messaging
+        const messaging = getMessaging();
+        messagingRef.current = messaging;
 
-      // Register service worker manually
-      const swRegistration = await navigator.serviceWorker.register(
-        "/custom-firebase-messaging-sw.js"
-      );
-      console.log("Service Worker registered successfully:", swRegistration);
+        // Get FCM token
+        const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
+        if (!vapidKey) throw new Error("No VAPID key");
 
-      console.log("swRegistration", swRegistration);
+        let token: string | null = null;
+        try {
+          token = await getToken(messaging, {
+            vapidKey,
+            serviceWorkerRegistration: registration,
+          });
+        } catch (error) {
+          console.error("Error getting token:", error);
+          throw error;
+        }
 
-      // Pass Firebase config to service worker
-      if (swRegistration.active) {
-        swRegistration.active.postMessage({
-          type: "FIREBASE_CONFIG",
-          config: {
-            FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-            FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-            FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-            FIREBASE_STORAGE_BUCKET:
-              process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-            FIREBASE_MESSAGING_SENDER_ID:
-              process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-            FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-          },
-        });
-      }
+        if (!token) throw new Error("FCM token fetch failed");
 
-      // Get registration token with custom service worker
-      const currentToken = await getToken(messaging, {
-        vapidKey,
-        serviceWorkerRegistration: swRegistration,
-      });
+        // Register token with backend
+        await registerFCMToken(token, userId);
 
-      if (currentToken && userId) {
-        // Send the token to your server
-        await registerFCMToken(currentToken, userId);
-        console.log("FCM registration token registered:", currentToken);
+        setNotificationsEnabled(true);
+        localStorage.setItem("notificationsEnabled", "true");
 
         // Set up foreground message handler
         onMessage(messaging, (payload) => {
-          console.log("Foreground message received:", payload);
-
-          // Add the new notification to state
+          console.log("Foreground FCM message:", payload);
           if (payload.notification) {
             const newNotification: Notification = {
               id: payload.messageId || `temp-${Date.now()}`,
@@ -149,13 +182,11 @@ export function NotificationProvider({
               url: payload.data?.url,
               isRead: false,
               createdAt: new Date().toISOString(),
-              userId: userId || "current-user",
+              userId,
             };
-
             setNotifications((prev) => [newNotification, ...prev]);
             setUnreadCount((prev) => prev + 1);
 
-            // Show toast
             toast.success(newNotification.title, {
               description: newNotification.body,
               action: newNotification.url ? (
@@ -171,150 +202,234 @@ export function NotificationProvider({
             });
           }
         });
-      } else {
-        console.warn("No registration token available");
+
+        return { success: true };
+      } catch (error) {
+        console.error("Push registration failed:", error);
+        return { success: false, error };
       }
+    };
+
+    registeringPromiseRef.current = register().finally(() => {
+      registeringPromiseRef.current = null;
+    });
+
+    return registeringPromiseRef.current;
+  }, [userId]);
+
+  // Register FCM token with backend
+  const registerFCMToken = async (token: string, userId: string) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/token/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userId}`,
+          },
+          body: JSON.stringify({ token }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to register FCM token");
+      }
+
+      return true;
     } catch (error) {
-      console.error("Error registering for push notifications:", error);
+      console.error("Error registering FCM token:", error);
+      return false;
     }
   };
 
   // Request notification permission
   const requestPermission = async (): Promise<boolean> => {
-    if (!("Notification" in window)) {
-      setPermissionGranted(false);
-      return false;
-    }
+    if (!userId || typeof window === "undefined") return false;
 
     try {
+      setIsLoading(true);
+
+      // Request browser permission
       const permission = await Notification.requestPermission();
       const granted = permission === "granted";
       setPermissionGranted(granted);
 
-      if (granted && userId) {
-        await registerForPushNotifications();
+      if (granted) {
+        // Register for push notifications
+        const result = await registerForPushNotifications();
+        if (result.success) {
+          setNotificationsEnabled(true);
+          localStorage.setItem("notificationsEnabled", "true");
+          return true;
+        }
       }
 
+      setIsLoading(false);
       return granted;
     } catch (error) {
-      console.error("Error requesting notification permission:", error);
-      setPermissionGranted(false);
+      console.error("Permission request error:", error);
+      setIsLoading(false);
       return false;
     }
   };
 
-  // Load notifications from API
-  const loadNotifications = useCallback(
-    async (page: number, limit: number) => {
-      if (!userId) {
-        console.warn("Cannot load notifications: No user ID available");
-        return;
+  // Enable notifications
+  const enableNotifications = () =>
+    requestPermission().then((granted) => ({
+      success: granted,
+      error: granted ? undefined : "Permission denied",
+    }));
+
+  // Disable notifications
+  const disableNotifications = async () => {
+    if (!userId) return { success: false, error: "No user" };
+
+    setIsLoading(true);
+    try {
+      setNotificationsEnabled(false);
+      localStorage.setItem("notificationsEnabled", "false");
+
+      if (swRegistration) {
+        const subscription = await swRegistration.pushManager.getSubscription();
+        if (subscription) await subscription.unsubscribe();
       }
 
+      // Unregister from backend
+      try {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/token/remove`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userId}`,
+            },
+            body: JSON.stringify({ token: localStorage.getItem("fcm_token") }),
+          }
+        );
+      } catch (error) {
+        console.error("Error unregistering token:", error);
+      }
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (error) {
+      console.error("Disable notification error:", error);
+      setIsLoading(false);
+      return { success: false, error };
+    }
+  };
+
+  // Load notifications from backend
+  const loadNotifications = useCallback(
+    async (page: number, limit: number) => {
+      if (!userId) return;
       try {
         setLoading(true);
-        const response = await notificationService.getNotifications(
-          page,
-          limit,
-          userId
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications?page=${page}&limit=${limit}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userId}`,
+            },
+          }
         );
 
-        if (page === 1) {
-          setNotifications(response.notifications);
-        } else {
-          setNotifications((prev) => [...prev, ...response.notifications]);
+        if (!response.ok) {
+          throw new Error("Failed to fetch notifications");
         }
 
-        setUnreadCount(response.unreadCount);
+        const data = await response.json();
+
+        setNotifications((prev) =>
+          page === 1 ? data.data : [...prev, ...data.data]
+        );
+        setUnreadCount(data.data.filter((n: any) => !n.isRead).length);
       } catch (error) {
-        console.error("Error loading notifications:", error);
-        toast.error("Failed to load notifications. Please try again.");
+        toast.error("Failed to load notifications.");
       } finally {
         setLoading(false);
       }
     },
-    [userId, toast]
+    [userId]
   );
 
   // Mark notification as read
   const markAsRead = useCallback(
     async (id: string) => {
-      if (!userId) {
-        console.warn("Cannot mark notification as read: No user ID available");
-        return;
-      }
-
+      if (!userId) return;
       try {
-        await notificationService.markAsRead(id, userId);
-
-        setNotifications((prev) =>
-          prev.map((notification) =>
-            notification.id === id
-              ? { ...notification, isRead: true }
-              : notification
-          )
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/read/${id}`,
+          {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${userId}`,
+            },
+          }
         );
 
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+        );
         setUnreadCount((prev) => Math.max(0, prev - 1));
       } catch (error) {
-        console.error("Error marking notification as read:", error);
-        toast.error("Failed to mark notification as read.");
+        toast.error("Error marking as read.");
       }
     },
-    [userId, toast]
+    [userId]
   );
 
   // Mark all notifications as read
   const markAllAsRead = useCallback(async () => {
-    if (!userId) {
-      console.warn(
-        "Cannot mark all notifications as read: No user ID available"
-      );
-      return;
-    }
-
+    if (!userId) return;
     try {
-      await notificationService.markAllAsRead(userId);
-
-      setNotifications((prev) =>
-        prev.map((notification) => ({ ...notification, isRead: true }))
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/read-all`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${userId}`,
+          },
+        }
       );
 
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
       setUnreadCount(0);
     } catch (error) {
-      console.error("Error marking all notifications as read:", error);
-      toast.error("Failed to mark all notifications as read.");
+      toast.error("Error marking all as read.");
     }
-  }, [userId, toast]);
+  }, [userId]);
 
   // Remove notification
   const removeNotification = useCallback(
     async (id: string) => {
-      if (!userId) {
-        console.warn("Cannot remove notification: No user ID available");
-        return;
-      }
-
+      if (!userId) return;
       try {
-        await notificationService.removeNotification(id, userId);
-
-        const notificationToRemove = notifications.find((n) => n.id === id);
-        setNotifications((prev) =>
-          prev.filter((notification) => notification.id !== id)
+        await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${userId}`,
+            },
+          }
         );
 
-        if (notificationToRemove && !notificationToRemove.isRead) {
+        const toRemove = notifications.find((n) => n.id === id);
+        setNotifications((prev) => prev.filter((n) => n.id !== id));
+        if (toRemove && !toRemove.isRead) {
           setUnreadCount((prev) => Math.max(0, prev - 1));
         }
       } catch (error) {
-        console.error("Error removing notification:", error);
-        toast.error("Failed to remove notification.");
+        toast.error("Error removing notification.");
       }
     },
-    [notifications, userId, toast]
+    [notifications, userId]
   );
 
-  // Create context value
   const contextValue: NotificationContextType = {
     notifications,
     unreadCount,
@@ -325,6 +440,10 @@ export function NotificationProvider({
     markAsRead,
     markAllAsRead,
     removeNotification,
+    notificationsEnabled,
+    isLoading,
+    enableNotifications,
+    disableNotifications,
   };
 
   return (
@@ -334,15 +453,11 @@ export function NotificationProvider({
   );
 }
 
-// Custom hook to use the notification context
-export function useNotifications(): NotificationContextType {
+export function useNotifications() {
   const context = useContext(NotificationContext);
-
-  if (context === undefined) {
+  if (!context)
     throw new Error(
-      "useNotifications must be used within a NotificationProvider"
+      "useNotifications must be used within NotificationProvider"
     );
-  }
-
   return context;
 }

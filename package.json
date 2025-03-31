@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "set ANALYZE=true && next build",
+    "build": "node scripts/generate-sw.js && set ANALYZE=true && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix"
@@ -91,6 +91,8 @@
     "vaul": "^0.9.6",
     "web-push": "^3.6.7",
     "web-vitals": "^4.2.4",
+    "workbox-core": "^7.3.0",
+    "workbox-sw": "^7.3.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import "./globals.css";
+
 import "../styles/swiper-custom.css";
 import { getServerSession } from "next-auth/next";
 import type React from "react";
@@ -20,10 +21,11 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import LoadingDrop from "@/components/LoadingDrop";
 import { ContactWidget } from "@/components/contact/ContactWidget";
-import FirebaseInit from "./firebase-init";
+//import FirebaseInit from "./firebase-init";
 import FirebaseConfigScript from "./[locale]/(withCommonLayout)/firebase-config-script";
-import { NotificationPermission } from "@/components/notification/NotificationPermission";
 import { NotificationProvider } from "@/contexts/notification-context";
+import FirebaseInit from "./firebase-init";
+import NotificationWrapper from "@/components/notification/NotificationWrapper";
 
 export const viewport = generateViewport();
 
@@ -80,6 +82,45 @@ export default async function RootLayout({
           name="viewport"
           content="maximum-scale=5, minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=yes, viewport-fit=cover"
         />
+        {/* Register service worker early */}
+        <Script
+          id="registerSW"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js', { 
+                  scope: '/' 
+                })
+                .then(function(registration) {
+                  console.log('[SW] Early registration successful:', registration.scope);
+                  window.swRegistration = registration;
+                })
+                .catch(function(error) {
+                  console.error('[SW] Early registration failed:', error);
+                });
+              }
+            `,
+          }}
+        />
+        {/*<Script
+          id="firebase-sw-check"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Check if service worker is supported
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  // Log service worker support
+                  console.log('Service Worker is supported');
+                });
+              } else {
+                console.log('Service Worker is NOT supported');
+              }
+            `,
+          }}
+        />
+        */}
       </head>
       <body className={inter.className}>
         <Suspense fallback={<LoadingDrop />}>
@@ -88,8 +129,13 @@ export default async function RootLayout({
               <NotificationProvider>
                 {/* Firebase initialization */}
                 <FirebaseInit />
+
                 {/* Firebase config script */}
-                <FirebaseConfigScript />
+                {
+                  //<FirebaseConfigScript />
+                }
+                {/* Notification permission prompt */}
+                <NotificationWrapper />
                 <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
@@ -106,15 +152,56 @@ export default async function RootLayout({
                     facebookPage="techdictionary"
                     whatsappNumber="+8801881220413"
                   />
-                  {/* Notification permission prompt */}
-                  <NotificationPermission />
                 </ThemeProvider>
               </NotificationProvider>
             </SessionProvider>
           </NextIntlClientProvider>
         </Suspense>
+
         {/* Register service worker */}
+
+        {/*   <Script
+          id="register-sw"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+                    if ('serviceWorker' in navigator) {
+                      window.addEventListener('load', function() {
+                        navigator.serviceWorker.register('/custom-sw.js', { scope: '/' }).then(
+                          function(registration) {
+                            console.log('Service Worker registration successful with scope: ', registration.scope);
+                          },
+                          function(err) {
+                            console.log('Service Worker registration failed: ', err);
+                          }
+                        );
+                      });
+                    }
+                  `,
+          }}
+        />
+        */}
+
+        {/* Google Analytics */}
         <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-B3XRYK729L"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-B3XRYK729L', {
+                      page_path: window.location.pathname,
+                    });
+                  `,
+          }}
+        />
+        {/*   <Script
           id="sw-registration-helper"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -140,23 +227,29 @@ export default async function RootLayout({
             `,
           }}
         />
-        {/* Google Analytics */}
+        */}
         <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-B3XRYK729L"
-        />
-        <Script
-          id="google-analytics"
+          id="register-sw"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'G-B3XRYK729L', {
-                      page_path: window.location.pathname,
-                    });
-                  `,
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          console.log('[FCM Debug] Registering service worker');
+          
+          navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function(registration) {
+              console.log('[FCM Debug] Service Worker registered successfully:', registration.scope);
+              window.swRegistration = registration;
+            })
+            .catch(function(err) {
+              console.error('[FCM Debug] Service Worker registration failed:', err);
+            });
+        });
+      } else {
+        console.warn('[FCM Debug] Service workers not supported in this browser');
+      }
+    `,
           }}
         />
       </body>

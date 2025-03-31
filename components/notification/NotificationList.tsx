@@ -12,6 +12,7 @@ import { useNotifications } from "@/contexts/notification-context";
 import type { Notification } from "@/contexts/notification-context";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import moment from "moment";
 
 export function NotificationList() {
   const {
@@ -112,7 +113,7 @@ export function NotificationList() {
           onClick={handleMarkAllAsRead}
           variant="outline"
           size="sm"
-          disabled={loading || notifications.every((n:any) => n.isRead)}
+          disabled={loading || notifications.every((n: any) => n.isRead)}
         >
           <Check className="h-4 w-4 mr-2" />
           Mark all as read
@@ -230,7 +231,7 @@ function NotificationItem({
 
           <div className="flex items-center justify-between mt-2">
             <span className="text-xs text-muted-foreground">
-              {formatNotificationDate(notification.createdAt)}
+              {moment(notification.createdAt).format('LLL')}
             </span>
 
             <div className="flex items-center gap-2">

@@ -19,11 +19,14 @@ import { Button } from "@/components/ui/button";
 import { DialogTitle } from "./ui/dialog";
 import InstallPWA from "./InstallPWA";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 export default function BottomNavigation() {
   const t = useTranslations("common");
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const isActive = (path: string) => pathname.endsWith(path);
 
@@ -40,12 +43,16 @@ export default function BottomNavigation() {
       <Link
         href={href}
         className={`flex flex-col items-center ${
-          isActive(href) ? "text-primary" : "text-gray-500"
-        }`}
+          isActive(href)
+            ? "text-primary"
+            : isDark
+            ? "text-gray-400 hover:text-gray-300"
+            : "text-gray-500 hover:text-gray-700"
+        } transition-colors duration-200`}
         onClick={() => setSidebarOpen(false)}
       >
         <Icon size={24} />
-        <span className="text-xs">{label}</span>
+        <span className="text-xs mt-1">{label}</span>
       </Link>
     </li>
   );
@@ -62,9 +69,13 @@ export default function BottomNavigation() {
     <li>
       <Link
         href={href}
-        className={`flex items-center space-x-2 ${
-          isActive(href) ? "text-primary" : "text-gray-500"
-        }`}
+        className={`flex items-center space-x-2 p-2 rounded-md ${
+          isActive(href)
+            ? "text-primary bg-primary/10"
+            : isDark
+            ? "text-gray-300 hover:bg-gray-800"
+            : "text-gray-700 hover:bg-gray-100"
+        } transition-all duration-200`}
         onClick={() => setSidebarOpen(false)}
       >
         <Icon size={20} />
@@ -75,52 +86,77 @@ export default function BottomNavigation() {
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50">
+      <nav
+        className={`md:hidden fixed bottom-0 left-0 right-0 ${
+          isDark
+            ? "bg-gray-900 border-t border-gray-800"
+            : "bg-white border-t border-gray-200"
+        } shadow-lg z-50 transition-colors duration-300`}
+      >
         <ul className="flex justify-around items-center h-16">
           <NavItem href="/" icon={Home} label="Home" />
           <NavItem href="/donors" icon={Heart} label="Donors" />
           <NavItem href="/requests" icon={Droplets} label="Requests" />
-          <NavItem href="/request-blood" icon={Droplet} label="Request" />
+          <NavItem
+            href="/request-blood"
+            icon={Droplet}
+            label="Request"
+          />
 
           <InstallPWA pos="bottom" />
-        
-            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex flex-col items-center text-gray-500 "
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <Menu size={24} />
-                  <span className="text-xs">More</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <nav className="flex flex-col h-full">
-                  <DialogTitle className="sr-only">Menu</DialogTitle>
-                  <ul className="space-y-4">
-                    <SidebarItem href="/about" icon={Info} label={t("about")} />
+
+          <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`flex flex-col items-center ${
+                  isDark
+                    ? "text-gray-400 hover:text-gray-300"
+                    : "text-gray-500 hover:text-gray-700"
+                } transition-colors duration-200`}
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu size={24} />
+                <span className="text-xs mt-1">More</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className={isDark ? "bg-gray-900 text-gray-100" : ""}
+            >
+              <nav className="flex flex-col h-full">
+                <DialogTitle className="sr-only">Menu</DialogTitle>
+                <div className="py-4">
+                  <h3
+                    className={`${
+                      isDark ? "text-gray-300" : "text-gray-700"
+                    } font-medium mb-2`}
+                  >
+                    Menu
+                  </h3>
+                  <ul className="space-y-1">
+                    <SidebarItem href="/about" icon={Info} label="About Us" />
                     <SidebarItem
                       href="/be-donor"
                       icon={HeartPulse}
-                      label={t("beADonor")}
-                    />{" "}
+                      label="Be Donor"
+                    />
                     <SidebarItem
                       href="/virtual-test"
                       icon={FlaskConical}
-                      label={t("bloodTest")}
-                    />{" "}
+                      label="Blood Test"
+                    />
                     <SidebarItem
                       href="/blog"
                       icon={NotebookPen}
-                      label={t("blog")}
+                      label="Blogs"
                     />
                   </ul>
-                </nav>
-              </SheetContent>
-            </Sheet>
-        
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </ul>
       </nav>
     </>

@@ -232,15 +232,7 @@ export default function Header() {
               </li>
             </ul>
           )}
-          {session && (
-            <Link
-              href="/notifications"
-              className="text-foreground hover:text-primary"
-            >
-              <Bell size={22} />
-            </Link>
-          )}
-
+          {session && <NotificationBadge />}
           <ThemeToggle />
           <LanguageSwitcher />
         </div>

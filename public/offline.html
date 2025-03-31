@@ -7,49 +7,45 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background-color: #f5f5f5;
-      color: #333;
+      margin: 0;
+      padding: 20px;
       text-align: center;
+      background-color: #f8f9fa;
+      color: #333;
     }
     .container {
-      max-width: 600px;
-      padding: 2rem;
+      max-width: 500px;
+      padding: 30px;
       background-color: white;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     h1 {
       color: #e53e3e;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
     }
     p {
-      margin-bottom: 1.5rem;
+      margin-bottom: 20px;
       line-height: 1.6;
     }
     .icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      color: #e53e3e;
+      font-size: 60px;
+      margin-bottom: 20px;
     }
     .button {
       display: inline-block;
       background-color: #e53e3e;
       color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 4px;
+      padding: 10px 20px;
+      border-radius: 5px;
       text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.2s;
-    }
-    .button:hover {
-      background-color: #c53030;
+      font-weight: bold;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -61,18 +57,6 @@
     <p>Please check your connection and try again.</p>
     <a href="/" class="button">Try Again</a>
   </div>
-  <script>
-    // Check if we're back online
-    window.addEventListener('online', () => {
-      window.location.reload();
-    });
-    
-    // Try to reload the page when the button is clicked
-    document.querySelector('.button').addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.reload();
-    });
-  </script>
 </body>
 </html>
 
