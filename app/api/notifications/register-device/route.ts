@@ -4,7 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { token, userId } = body;
-    console.log("body", body);
     
 
     if (!token || !userId) {

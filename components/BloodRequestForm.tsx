@@ -31,13 +31,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import LocationSelector from "./LocationSelector";
 import { bloodRequest } from "@/services/bloodRegister";
@@ -128,6 +122,9 @@ export default function BloodRequestForm() {
         ...values,
         userId: user?.id,
       };
+
+      console.log("values", values);
+
       const response = await bloodRequest(modifiedValues, user?.id);
 
       if (response.success) {

@@ -103,24 +103,6 @@ export default async function RootLayout({
             `,
           }}
         />
-        {/*<Script
-          id="firebase-sw-check"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Check if service worker is supported
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  // Log service worker support
-                  console.log('Service Worker is supported');
-                });
-              } else {
-                console.log('Service Worker is NOT supported');
-              }
-            `,
-          }}
-        />
-        */}
       </head>
       <body className={inter.className}>
         <Suspense fallback={<LoadingDrop />}>
@@ -228,7 +210,7 @@ export default async function RootLayout({
           }}
         />
         */}
-        <Script
+        {/*    <Script
           id="register-sw"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -252,6 +234,7 @@ export default async function RootLayout({
     `,
           }}
         />
+       */}
       </body>
     </html>
   );

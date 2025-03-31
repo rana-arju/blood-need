@@ -12,6 +12,7 @@ import {
 import divisionsData from "@/data/divisions.json";
 import districtsData from "@/data/districts.json";
 import upazilasData from "@/data/upazilas.json";
+import { districts, divisions, getDistrictIdByName, getDivisionIdByName, upazilas } from "@/utils/location-utils";
 
 interface LocationSelectorProps {
   type: "division" | "district" | "upazila";
@@ -36,11 +37,12 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
 
   useEffect(() => {
     if (type === "division") {
-      setOptions(divisionsData);
+      setOptions(divisions);
     } else if (type === "district") {
       if (division) {
-        const filteredDistricts = districtsData.filter(
-          (d) => d.division_id === division
+        const divisionId = getDivisionIdByName(division);
+        const filteredDistricts = districts.filter(
+          (d) => d.division_id === divisionId
         );
         setOptions(filteredDistricts);
       } else {
@@ -48,8 +50,9 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
       }
     } else if (type === "upazila") {
       if (district) {
-        const filteredUpazilas = upazilasData.filter(
-          (u) => u.district_id === district
+        const districtId = getDistrictIdByName(district);
+        const filteredUpazilas = upazilas.filter(
+          (u) => u.district_id === districtId
         );
         setOptions(filteredUpazilas);
       } else {
@@ -65,7 +68,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={option.id} value={option.id}>
+          <SelectItem key={option.id} value={option.name}>
             {option.name}
           </SelectItem>
         ))}

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 
 const NotificationPermission = dynamic(
-  () => import("./NotificationPermission"),
+  () => import("./NotificationPermission").then((mod) => mod.default),
   { ssr: false }
 );
 

@@ -7,13 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Twitter, Instagram, Youtube, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export default function Footer() {
   const t = useTranslations("Footer");
-  const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,22 +27,15 @@ export default function Footer() {
     }, 1000);
   };
 
-  const isDark = theme === "dark";
-
   return (
     <footer
-      className={`${
-        isDark ? "bg-gray-900 text-gray-300" : "bg-gray-100 text-gray-700"
-      } mb-16 md:mb-0 transition-colors duration-300`}
+      className="dark:bg-gray-900 dark:text-gray-300 bg-gray-100 text-gray-700
+       mb-16 md:mb-0 transition-colors duration-300"
     >
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           <div>
-            <h3
-              className={`${
-                isDark ? "text-white" : "text-gray-900"
-              } text-xl font-bold mb-4`}
-            >
+            <h3 className="dark:text-white text-gray-900 text-xl font-bold mb-4">
               {t("aboutUs")}
             </h3>
             <p className="mb-4">{t("aboutUsText")}</p>
@@ -55,9 +46,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className={`${
-                isDark ? "text-white" : "text-gray-900"
-              } text-xl font-bold mb-4`}
+              className="dark:text-white text-gray-900
+               text-xl font-bold mb-4"
             >
               {t("quickLinks")}
             </h3>
@@ -99,9 +89,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className={`${
-                isDark ? "text-white" : "text-gray-900"
-              } text-xl font-bold mb-4`}
+              className="dark:text-white text-gray-900
+               text-xl font-bold mb-4"
             >
               {t("important")}
             </h3>
@@ -144,9 +133,8 @@ export default function Footer() {
 
           <div>
             <h3
-              className={`${
-                isDark ? "text-white" : "text-gray-900"
-              } text-xl font-bold mb-4`}
+              className="dark:text-white text-gray-900
+               text-xl font-bold mb-4"
             >
               {t("subscribe")}
             </h3>
@@ -159,11 +147,7 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className={`${
-                    isDark
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}
+                  className="dark:bg-gray-800 dark:border-gray-700 bg-white border-gray-300"
                 />
                 <Button
                   type="submit"
@@ -214,9 +198,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div
-        className={`border-t ${isDark ? "border-gray-800" : "border-gray-200"}`}
-      >
+      <div className={`border-t dark:border-gray-800 border-gray-200`}>
         <div className="container py-6 text-center">
           © {new Date().getFullYear()}{" "}
           <Link
