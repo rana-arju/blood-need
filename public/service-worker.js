@@ -143,7 +143,7 @@ console.log(event.data?.text());
   const options = {
     body: notificationData.notification?.body || "You have a new notification",
     icon: "/icons/icon-192x192.png",
-    badge: "/icons/icon-192x192.png",
+    badge: "/icons/badge.png",
     data: {
       url: notificationData.data?.url || "/",
       ...notificationData.data,
