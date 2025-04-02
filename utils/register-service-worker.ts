@@ -1,54 +1,38 @@
 // Helper function to register service worker
 export const registerServiceWorker =
   async (): Promise<ServiceWorkerRegistration | null> => {
-    if (typeof window === "undefined" || !("serviceWorker" in navigator)) {
+    if (!("serviceWorker" in navigator)) {
+      console.log("Service workers not supported");
       return null;
     }
 
     try {
-      // Check if service worker is already registered
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      let registration = registrations.find(
-        (reg) =>
-          reg.active &&
-          reg.active.scriptURL.includes("firebase-messaging-sw.js")
-      );
-
-      // If not registered, register it
-      if (!registration) {
-        console.log("Registering firebase-messaging-sw.js");
-        registration = await navigator.serviceWorker.register(
-          "/firebase-messaging-sw.js",
-          {
-            scope: "/",
-          }
-        );
-
-        // Wait for the service worker to be activated
-        if (registration.installing) {
-          console.log("Waiting for service worker to be activated");
-          await new Promise<void>((resolve) => {
-            const stateChangeListener = (e: Event) => {
-              if ((e.target as ServiceWorker).state === "activated") {
-                console.log("Service worker activated");
-                resolve();
-                registration?.installing?.removeEventListener(
-                  "statechange",
-                  stateChangeListener
-                );
-              }
-            };
-            if (registration?.installing) {
-              registration.installing.addEventListener(
-                "statechange",
-                stateChangeListener
-              );
-            }
-          });
-        }
+      // Check if we already have a registration in the window object
+      if (window.swRegistration) {
+        console.log("Using existing service worker registration");
+        return window.swRegistration;
       }
 
-      console.log("Service worker registration successful:", registration);
+      // Check if service worker is already controlling the page
+      if (navigator.serviceWorker.controller) {
+        console.log("Service worker is already controlling the page");
+        const registration = await navigator.serviceWorker.ready;
+        window.swRegistration = registration;
+        return registration;
+      }
+
+      // Register service worker if not already registered
+      console.log("Registering service worker");
+      const registration = await navigator.serviceWorker.register(
+        "/firebase-messaging-sw.js",
+        {
+          scope: "/",
+        }
+      );
+
+      window.swRegistration = registration;
+      console.log("Service worker registered:", registration);
+
       return registration;
     } catch (error) {
       console.error("Error registering service worker:", error);

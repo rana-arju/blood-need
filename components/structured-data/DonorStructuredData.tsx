@@ -1,4 +1,3 @@
-import { getLocationName } from "@/utils/locationUtils";
 import type { Person, WithContext } from "schema-dts";
 
 interface DonorStructuredDataProps {

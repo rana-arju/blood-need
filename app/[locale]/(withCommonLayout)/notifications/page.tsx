@@ -1,5 +1,6 @@
 "use client";
 
+import NotificationButton from "@/components/notification/notification-button";
 import { NotificationList } from "@/components/notification/NotificationList";
 import { Button } from "@/components/ui/button";
 import { useNotifications } from "@/contexts/notification-context";
@@ -54,6 +55,7 @@ export default function NotificationsPage() {
           </div>
         </div>
       )}
+      <NotificationButton />
 
       <NotificationList />
     </div>

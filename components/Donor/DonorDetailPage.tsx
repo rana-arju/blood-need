@@ -134,9 +134,10 @@ export default function DonorDetailPage({ donor }: DonorDetailPageProps) {
                   aria-hidden="true"
                 />
                 <span>
-                  {[user.address, user.upazila, user.district, user.division]
+                  {(user.address == null && user.upazila == null && user.district == null && user.division == null) ? "Not Provided" : [user.address, user.upazila, user.district, user.division]
                     .filter(Boolean)
                     .join(", ")}
+                 
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -154,10 +155,7 @@ export default function DonorDetailPage({ donor }: DonorDetailPageProps) {
                   aria-hidden="true"
                 />
                 <span>
-                  {t("gender")}: {" "}
-                  {user.gender
-                    ? user.gender
-                    : t("notSpecified")}
+                  {t("gender")}: {user.gender ? user.gender : t("notSpecified")}
                 </span>
               </div>
               <div className="pt-4">

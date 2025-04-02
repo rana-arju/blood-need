@@ -9,9 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { getMyProfile } from "@/services/auth";
 import { ProfileSettings } from "./ProfileSettings";
-import { getLocationName } from "@/utils/locationUtils";
 import BloodDropLoader from "../BloodDropLoader";
 import { useTranslations } from "next-intl";
+import moment from "moment";
 
 export function ProfileDetails() {
   const t = useTranslations("Forms.profile");
@@ -28,20 +28,7 @@ export function ProfileDetails() {
           const profile = await getMyProfile(user.id);
           const profileData = profile?.data;
 
-          // Convert location IDs to names
-          profileData.division = await getLocationName(
-            "division",
-            profileData.division
-          );
-          profileData.district = await getLocationName(
-            "district",
-            profileData.district
-          );
-          profileData.upazila = await getLocationName(
-            "upazila",
-            profileData.upazila
-          );
-
+          
           setUserData(profileData);
         } catch (error) {
           console.error("Error fetching user profile:", error);
@@ -67,9 +54,7 @@ export function ProfileDetails() {
     setUserData({
       ...userData,
       ...updatedData,
-      division: await getLocationName("division", updatedData.division),
-      district: await getLocationName("district", updatedData.district),
-      upazila: await getLocationName("upazila", updatedData.upazila),
+
     });
 
     // Update the session
@@ -132,7 +117,7 @@ export function ProfileDetails() {
                 <h3 className="font-semibold">{t("labels.dateOfBirth")}</h3>
                 <p>
                   {userData.dateOfBirth
-                    ? new Date(userData.dateOfBirth).toLocaleDateString()
+                    ? moment(userData.dateOfBirth).format("LL")
                     : "Not provided"}
                 </p>
               </div>
@@ -140,7 +125,7 @@ export function ProfileDetails() {
                 <h3 className="font-semibold">{t("labels.lastDonation")}</h3>
                 <p>
                   {userData.lastDonationDate
-                    ? new Date(userData.lastDonationDate).toLocaleDateString()
+                    ? moment(userData.lastDonationDate).format("LL")
                     : "Not provided"}
                 </p>
               </div>

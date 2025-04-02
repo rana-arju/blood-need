@@ -1,63 +1,61 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { token, userId } = body;
-    
+    const { token, userId } = await request.json();
 
     if (!token || !userId) {
       return NextResponse.json(
-        { success: false, message: "Missing token or userId" },
+        { error: "Missing token or userId" },
         { status: 400 }
       );
     }
 
-    console.log(
-      "[API] Registering device token:",
-      token.substring(0, 10) + "..."
-    );
+    // Here you would typically store the token in your database
+    // associated with the user ID, checking for duplicates
 
-    // Forward the request to your backend
-    const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/token/register`;
+    // For now, we'll just return success
+    // In a real implementation, you would call your backend API
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (backendUrl) {
+      try {
+        const response = await fetch(
+          `${backendUrl}/notifications/token/register`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userId}`,
+            },
+            body: JSON.stringify({ token }),
+          }
+        );
 
-    const response = await fetch(backendUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userId}`,
-      },
-      body: JSON.stringify({ token }),
-    });
+        if (!response.ok) {
+          // If the backend returns an error, check if it's because the token is already registered
+          const errorData = await response.json();
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        "[API] Error registering token with backend:",
-        response.status,
-        errorText
-      );
+          // If it's a duplicate token error, we can still return success
+          if (errorData.error === "Token already registered") {
+            return NextResponse.json({
+              success: true,
+              message: "Token already registered",
+            });
+          }
 
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Failed to register device with backend",
-          error: errorText,
-        },
-        { status: response.status }
-      );
+          throw new Error("Failed to register token with backend");
+        }
+      } catch (error) {
+        console.error("Error calling backend:", error);
+        throw error;
+      }
     }
 
-    const data = await response.json();
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("[API] Error registering device:", error);
+    console.error("Error registering device:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Internal server error",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: "Failed to register device" },
       { status: 500 }
     );
   }

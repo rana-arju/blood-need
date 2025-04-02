@@ -1,73 +1,38 @@
-// Service Worker Registration Script
+// This file is loaded via a script tag in the HTML
 (() => {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", async () => {
-      try {
-        console.log("[SW] Registering service worker...");
+  // Only register in production or if explicitly enabled
+  const shouldRegister =
+    window.location.hostname !== "localhost" ||
+    localStorage.getItem("enable_sw_on_localhost") === "true";
 
-        // Register the service worker
-        const registration = await navigator.serviceWorker.register(
-          "/firebase-messaging-sw.js",
-          {
-            scope: "/",
-            updateViaCache: "none",
-          }
-        );
+  if ("serviceWorker" in navigator && shouldRegister) {
+    // Wait for the page to load
+    window.addEventListener("load", () => {
+      const swUrl = "/firebase-messaging-sw.js";
 
-        console.log(
-          "[SW] Service worker registered successfully:",
-          registration.scope
-        );
-
-        // Store the registration globally
-        window.swRegistration = registration;
-
-        // Dispatch event for other components to know service worker is registered
-        window.dispatchEvent(
-          new CustomEvent("swRegistered", { detail: registration })
-        );
-
-        // Check if service worker is already active
-        if (registration.active) {
-          console.log("[SW] Service worker already active");
-          window.dispatchEvent(
-            new CustomEvent("swActivated", { detail: registration })
-          );
-        }
-        // Otherwise wait for it to activate
-        else if (registration.installing) {
+      navigator.serviceWorker
+        .register(swUrl)
+        .then((registration) => {
           console.log(
-            "[SW] Service worker is installing, waiting for activation..."
+            "[SW] Registration successful, scope is:",
+            registration.scope
           );
+          window.swRegistration = registration;
 
-          registration.installing.addEventListener("statechange", (event) => {
-            if (event.target.state === "activated") {
-              console.log("[SW] Service worker activated");
-              window.dispatchEvent(
-                new CustomEvent("swActivated", { detail: registration })
-              );
-            }
-          });
-        }
-      } catch (error) {
-        console.error("[SW] Service worker registration failed:", error);
-      }
-    });
-
-    // Listen for messages from the service worker
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      if (event.data && event.data.type === "SW_ACTIVATED") {
-        console.log(
-          "[SW] Service worker is now active and controlling the page"
-        );
-        window.dispatchEvent(
-          new CustomEvent("swActivated", {
-            detail: navigator.serviceWorker.controller,
-          })
-        );
-      }
+          // Dispatch event that SW is registered
+          window.dispatchEvent(
+            new CustomEvent("swRegistered", {
+              detail: { registration },
+            })
+          );
+        })
+        .catch((error) => {
+          console.error("[SW] Registration failed:", error);
+        });
     });
   } else {
-    console.log("[SW] Service workers are not supported");
+    console.log(
+      "[SW] Service workers are not supported or disabled on localhost"
+    );
   }
 })();

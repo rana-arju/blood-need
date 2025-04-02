@@ -13,6 +13,7 @@ import type { Notification } from "@/contexts/notification-context";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import moment from "moment";
+import NotificationButton from "./notification-button";
 
 export function NotificationList() {
   const {
@@ -214,7 +215,6 @@ function NotificationItem({
             )}
           />
         </div>
-
         <div className="flex-1 min-w-0">
           <h4
             className={cn(
@@ -231,7 +231,7 @@ function NotificationItem({
 
           <div className="flex items-center justify-between mt-2">
             <span className="text-xs text-muted-foreground">
-              {moment(notification.createdAt).format('LLL')}
+              {moment(notification.createdAt).format("LLL")}
             </span>
 
             <div className="flex items-center gap-2">

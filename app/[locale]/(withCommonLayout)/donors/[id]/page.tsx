@@ -7,7 +7,6 @@ import DonorDetailSkeleton from "@/components/Donor/DonorDetailSkeleton";
 import DonorStructuredData from "@/components/structured-data/DonorStructuredData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { getLocationName } from "@/utils/locationUtils";
 
 export async function generateMetadata({
   params,
@@ -36,17 +35,7 @@ export default async function DonorPage({
     // Fetch donor data
     const donor = await getDonorById(id);
 
-    // Resolve location names for better display
-    donor.user.division = await getLocationName(
-      "division",
-      donor.user.division
-    );
-    donor.user.district = await getLocationName(
-      "district",
-      donor.user.district
-    );
-    donor.user.upazila = await getLocationName("upazila", donor.user.upazila);
-
+ 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL || "https://blood-need.vercel.app";
 

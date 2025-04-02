@@ -14,14 +14,22 @@ import {
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { useNotificationSubscription } from "@/utils/pushNotifications";
+import { useNotifications } from "@/contexts/notification-context";
 
 export default function NotificationPermission() {
   const t = useTranslations("NotificationPermission");
   const [showDialog, setShowDialog] = useState(false);
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const { isSubscribed, isLoading, subscribe } = useNotificationSubscription();
+  const [isRequesting, setIsRequesting] = useState(false);
+
+  // Use the context hook
+  const {
+    notificationsEnabled,
+    isLoading,
+    permissionGranted,
+    enableNotifications,
+  } = useNotifications();
 
   // Check if user has already interacted with the permission dialog
   useEffect(() => {
@@ -34,7 +42,7 @@ export default function NotificationPermission() {
     // If user hasn't interacted and permission isn't granted, show dialog after delay
     if (
       !hasInteractedBefore &&
-      !isSubscribed &&
+      !notificationsEnabled &&
       Notification.permission !== "granted"
     ) {
       const timer = setTimeout(() => {
@@ -43,19 +51,22 @@ export default function NotificationPermission() {
 
       return () => clearTimeout(timer);
     }
-  }, [userId, isSubscribed]);
+  }, [userId, notificationsEnabled]);
 
   const handleRequestPermission = async () => {
-    if (!userId) {
-      toast.error("You must be logged in to enable notifications");
+    if (!userId || isRequesting) {
       return;
     }
 
     try {
-      const success = await subscribe();
+      setIsRequesting(true);
 
-      if (success) {
+      const result = await enableNotifications();
+
+      if (result.success) {
         toast.success("Notifications enabled");
+      } else {
+        toast.error(t("enableError"));
       }
 
       // Mark as interacted regardless of outcome
@@ -64,6 +75,8 @@ export default function NotificationPermission() {
     } catch (error) {
       console.error("Error requesting notification permission:", error);
       toast.error(t("enableError"));
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -73,7 +86,7 @@ export default function NotificationPermission() {
   };
 
   // Don't render anything if user is not logged in, already subscribed, or permission is already granted
-  if (!userId || isSubscribed || Notification.permission === "granted") {
+  if (!userId || notificationsEnabled || permissionGranted) {
     return null;
   }
 

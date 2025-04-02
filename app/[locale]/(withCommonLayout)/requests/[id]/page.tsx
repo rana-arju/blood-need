@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { constructMetadata } from "@/lib/seo-config";
 import { generateBloodRequestSchema } from "@/lib/schema";
-import { getLocationName } from "@/utils/locationUtils";
 // Define RobotsInfo and Robots types manually
 
 async function getBloodRequestDetails(id: string) {
@@ -34,18 +33,13 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       `${bloodRequest.data.blood} ${t("bloodDonation")}`,
       t("urgentBloodRequest"),
       t("bloodDonorNeeded"),
-      (bloodRequest.data.district = await getLocationName(
-        "district",
-        bloodRequest.data.district
-      )),
-      (bloodRequest.data.division = await getLocationName(
-        "division",
-        bloodRequest.data.division
-      )),
-      (bloodRequest.data.upazila = await getLocationName(
-        "upazila",
-        bloodRequest.data.upazila
-      )),
+
+      bloodRequest.data.district,
+
+      bloodRequest.data.division,
+
+      bloodRequest.data.upazila,
+
       bloodRequest.data.address,
 
       t("saveLife"),

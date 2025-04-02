@@ -23,7 +23,6 @@ import {
   Info,
 } from "lucide-react";
 import Link from "next/link";
-import { getLocationName } from "@/utils/locationUtils";
 import { useSession } from "next-auth/react";
 import { createNewDonation, singleDonation } from "@/services/donation";
 import { toast } from "sonner";
@@ -84,18 +83,7 @@ export function BloodRequestDetails({ id, locale }: BloodRequestDetailsProps) {
         const data = await getBloodRequestById(id);
         const requestData = data?.data;
 
-        requestData.division = await getLocationName(
-          "division",
-          requestData.division
-        );
-        requestData.district = await getLocationName(
-          "district",
-          requestData.district
-        );
-        requestData.upazila = await getLocationName(
-          "upazila",
-          requestData.upazila
-        );
+  
         setRequest(requestData);
       } catch (err: any) {
         setError(err.message);

@@ -21,6 +21,15 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { registerServiceWorker } from "@/utils/register-service-worker";
 
+// Define window interface for our custom properties
+declare global {
+  interface Window {
+    swRegistration?: ServiceWorkerRegistration;
+    swActivated?: boolean;
+    notificationToastId?: string;
+  }
+}
+
 export interface Notification {
   id: string;
   title: string;
@@ -119,6 +128,14 @@ export function NotificationProvider({
       const isEnabled = isGranted && stored === "true";
       setNotificationsEnabled(isEnabled);
 
+      const hasInteractedBefore = localStorage.getItem(
+        "notification-permission-interacted"
+      );
+      if (hasInteractedBefore === "true" && !isGranted) {
+        console.log("User previously denied permission");
+        return;
+      }
+
       if (isEnabled && userId) {
         await registerForPushNotifications();
       }
@@ -130,7 +147,10 @@ export function NotificationProvider({
   // Register for push notifications
   const registerForPushNotifications = useCallback(async () => {
     if (!userId) return { success: false, error: "User not logged in" };
-    if (registeringPromiseRef.current) return registeringPromiseRef.current;
+    if (registeringPromiseRef.current) {
+      console.log("Registration already in progress");
+      return registeringPromiseRef.current;
+    }
 
     const register = async () => {
       try {
@@ -187,7 +207,8 @@ export function NotificationProvider({
             setNotifications((prev) => [newNotification, ...prev]);
             setUnreadCount((prev) => prev + 1);
 
-            toast.success(newNotification.title, {
+            // Store the toast ID as a string
+            const toastId = toast.success(newNotification.title, {
               description: newNotification.body,
               action: newNotification.url ? (
                 <a
@@ -200,6 +221,9 @@ export function NotificationProvider({
                 </a>
               ) : undefined,
             });
+
+            // Convert to string if it's a number
+            window.notificationToastId = toastId?.toString();
           }
         });
 
@@ -236,6 +260,9 @@ export function NotificationProvider({
         throw new Error("Failed to register FCM token");
       }
 
+      // Store token in localStorage for later use
+      localStorage.setItem("fcm_token", token);
+
       return true;
     } catch (error) {
       console.error("Error registering FCM token:", error);
@@ -250,6 +277,11 @@ export function NotificationProvider({
     try {
       setIsLoading(true);
 
+      if (isLoading) {
+        console.log("Permission request already in progress");
+        return false;
+      }
+
       // Request browser permission
       const permission = await Notification.requestPermission();
       const granted = permission === "granted";
@@ -261,6 +293,7 @@ export function NotificationProvider({
         if (result.success) {
           setNotificationsEnabled(true);
           localStorage.setItem("notificationsEnabled", "true");
+          localStorage.setItem("notification-permission-interacted", "true");
           return true;
         }
       }
@@ -296,20 +329,26 @@ export function NotificationProvider({
       }
 
       // Unregister from backend
-      try {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/token/remove`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userId}`,
-            },
-            body: JSON.stringify({ token: localStorage.getItem("fcm_token") }),
-          }
-        );
-      } catch (error) {
-        console.error("Error unregistering token:", error);
+      const fcmToken = localStorage.getItem("fcm_token");
+      if (fcmToken) {
+        try {
+          await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/token/remove`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userId}`,
+              },
+              body: JSON.stringify({ token: fcmToken }),
+            }
+          );
+
+          // Remove token from localStorage
+          localStorage.removeItem("fcm_token");
+        } catch (error) {
+          console.error("Error unregistering token:", error);
+        }
       }
 
       setIsLoading(false);
