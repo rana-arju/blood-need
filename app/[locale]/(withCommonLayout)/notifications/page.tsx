@@ -2,14 +2,11 @@
 
 import NotificationButton from "@/components/notification/notification-button";
 import { NotificationList } from "@/components/notification/NotificationList";
-import { Button } from "@/components/ui/button";
 import { useNotifications } from "@/contexts/notification-context";
-import { Bell } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 export default function NotificationsPage() {
-  const { permissionGranted, requestPermission, isLoading } =
-    useNotifications();
+  useNotifications();
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
 
@@ -25,7 +22,6 @@ export default function NotificationsPage() {
         </div>
       )}
 
-  
       <NotificationButton />
 
       <NotificationList />

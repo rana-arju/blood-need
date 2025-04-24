@@ -89,7 +89,6 @@ export default async function RootLayout({
           <NextIntlClientProvider messages={messages}>
             <SessionProvider session={session}>
               <NotificationProvider>
-                {/* Notification permission prompt */}
                 <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
