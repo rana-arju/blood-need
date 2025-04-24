@@ -87,35 +87,7 @@ export const requestNotificationPermission = async (): Promise<
   }
 };
 
-// Function to register FCM token with backend
-export const registerFCMToken = async (
-  token: string,
-  userId: string
-): Promise<boolean> => {
-  try {
-    const response = await fetch("/api/notifications/register-device", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token, userId }),
-    });
 
-    if (response.ok) {
-      console.log("FCM token registered with server");
-      return true;
-    } else {
-      console.error(
-        "Failed to register FCM token with server:",
-        response.status
-      );
-      return false;
-    }
-  } catch (error) {
-    console.error("Error registering FCM token with server:", error);
-    return false;
-  }
-};
 
 // Function to set up foreground message handler
 export const setupForegroundMessageHandler = (

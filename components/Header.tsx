@@ -18,7 +18,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import InstallPWA from "./InstallPWA";
-import { useNotificationSubscription } from "@/utils/pushNotifications";
 import { usePathname, useRouter } from "next/navigation";
 import { OptimizedImage } from "./OptimizedImage";
 import { NotificationBadge } from "./notification/NotificationBadge";
@@ -32,18 +31,13 @@ export default function Header() {
   const { data: session } = useSession();
   const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations("common");
-  const { isSubscribed, subscribe } = useNotificationSubscription();
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  useEffect(() => {
-    if (session?.user?.id && !isSubscribed) {
-      subscribe();
-    }
-  }, [session, isSubscribed, subscribe]);
+
   const handleSignOut = async () => {
     const data = await signOut({
       redirect: false,
