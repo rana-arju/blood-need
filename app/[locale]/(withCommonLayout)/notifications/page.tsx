@@ -2,11 +2,10 @@
 
 import NotificationButton from "@/components/notification/notification-button";
 import { NotificationList } from "@/components/notification/NotificationList";
-import { useNotifications } from "@/contexts/notification-context";
+
 import { useSession } from "next-auth/react";
 
 export default function NotificationsPage() {
-  useNotifications();
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
 
