@@ -25,36 +25,7 @@ export default function NotificationsPage() {
         </div>
       )}
 
-      {isLoggedIn && permissionGranted === false && (
-        <div className="bg-muted p-4 rounded-lg mb-6">
-          <div className="flex items-start gap-4">
-            <div className="rounded-full bg-primary/10 p-2">
-              <Bell className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-medium">Enable Notifications</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Get notified about blood donation requests, events, and
-                important updates.
-              </p>
-              <Button
-                className="mt-4"
-                onClick={requestPermission}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></span>
-                    Enabling...
-                  </>
-                ) : (
-                  "Enable Notifications"
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+  
       <NotificationButton />
 
       <NotificationList />

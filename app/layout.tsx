@@ -21,7 +21,6 @@ import { Suspense } from "react";
 import LoadingDrop from "@/components/LoadingDrop";
 import { ContactWidget } from "@/components/contact/ContactWidget";
 import { NotificationProvider } from "@/contexts/notification-context";
-import NotificationWrapper from "@/components/notification/NotificationWrapper";
 
 export const viewport = generateViewport();
 
@@ -90,6 +89,7 @@ export default async function RootLayout({
           <NextIntlClientProvider messages={messages}>
             <SessionProvider session={session}>
               <NotificationProvider>
+                {/* Notification permission prompt */}
                 <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
