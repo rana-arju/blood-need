@@ -31,7 +31,7 @@ const EducationalResources = () => {
   }
 
   const handleReadMore = (path: string) => {
-    router.push(`/${locale}/learn/${path}`)
+    router.push(`https://bloodneed.com/${locale}/learn/${path}`);
   }
 
   return (
@@ -91,7 +91,7 @@ const EducationalResources = () => {
                   </CardContent>
                   <CardFooter>
                     <Button
-                      onClick={() => handleReadMore("blood-donation-101")}
+                      onClick={() => handleReadMore("about-blood-donation")}
                       className="w-full"
                     >
                       {t("basics.readMore")}

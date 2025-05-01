@@ -3,6 +3,7 @@
   A life-saving web platform where people can request or donate blood with ease. Built with ❤️ using Next.js, Tailwind CSS, and modern web technologies.
 </p>
 
+> 🧠 Note: **Only a small part of the entire project code is kept here. The rest of the code is kept in a private repo**
 ## 📖 Project Overview
 
 **Blood Need** is a community-driven platform that connects blood donors with people in urgent need. This is the **frontend application**, designed to be fast, mobile-responsive, multilingual, and accessible to everyone.
@@ -118,7 +119,7 @@ npm run dev
 
 💼 **Full-Stack Web Developer (MERN & Next.js)**  
 📍 **Cox’s Bazar, Bangladesh**  
-🌐 **[Portfolio Website](https://rana-arju.dev)**  
+🌐 **[Portfolio Website](https://rana-arju.vercel.app)**  
 🐙 **[GitHub](https://github.com/rana-arju)**  
 📧 **Email**: [arjurana20@gmail.com](mailto:arjurana20@gmail.com)
 

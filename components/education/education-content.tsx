@@ -36,7 +36,7 @@ export default function EducationContent() {
               </CardContent>
               <CardFooter>
                 <DescriptiveLink
-                  href="/learn/blood-donation-101"
+                  href="https://bloodneed.com/learn/blood-donation-101"
                   ariaLabel="Learn about blood donation basics, eligibility criteria and donation process"
                   className="w-full"
                 >
@@ -56,7 +56,7 @@ export default function EducationContent() {
               </CardContent>
               <CardFooter>
                 <DescriptiveLink
-                  href="/learn/blood-types"
+                  href="https://bloodneed.com/learn/blood-types"
                   ariaLabel="Learn about different blood types and their compatibility for transfusions"
                   className="w-full"
                 >
@@ -76,7 +76,7 @@ export default function EducationContent() {
               </CardContent>
               <CardFooter>
                 <DescriptiveLink
-                  href="/learn/preparation"
+                  href="https://bloodneed.com/learn/preparation"
                   ariaLabel="Learn how to prepare for your blood donation for a smooth experience"
                   className="w-full"
                 >

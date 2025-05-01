@@ -21,7 +21,7 @@ export default function QuickLinksSection() {
       title: t("awareness.title"),
       description: t("awareness.description"),
       icon: <AlertTriangle className="w-6 h-6" />,
-      href: "/awareness",
+      href: "https://bloodneed.com/awareness",
       color:
         "bg-orange-500/10 text-orange-500 dark:bg-orange-500/20 dark:text-orange-400",
       hoverColor: "group-hover:bg-orange-500 group-hover:text-white",
@@ -30,7 +30,7 @@ export default function QuickLinksSection() {
       title: t("faq.title"),
       description: t("faq.description"),
       icon: <HelpCircle className="w-6 h-6" />,
-      href: "/faq",
+      href: "https://bloodneed.com/faq",
       color:
         "bg-blue-500/10 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400",
       hoverColor: "group-hover:bg-blue-500 group-hover:text-white",
@@ -39,7 +39,7 @@ export default function QuickLinksSection() {
       title: t("privacy.title"),
       description: t("privacy.description"),
       icon: <Shield className="w-6 h-6" />,
-      href: "/privacy",
+      href: "https://bloodneed.com/privacy",
       color:
         "bg-green-500/10 text-green-500 dark:bg-green-500/20 dark:text-green-400",
       hoverColor: "group-hover:bg-green-500 group-hover:text-white",
@@ -48,7 +48,7 @@ export default function QuickLinksSection() {
       title: t("about.title"),
       description: t("about.description"),
       icon: <Users className="w-6 h-6" />,
-      href: "/about",
+      href: "https://bloodneed.com/about",
       color:
         "bg-purple-500/10 text-purple-500 dark:bg-purple-500/20 dark:text-purple-400",
       hoverColor: "group-hover:bg-purple-500 group-hover:text-white",
@@ -57,7 +57,7 @@ export default function QuickLinksSection() {
       title: t("whyDonate.title"),
       description: t("whyDonate.description"),
       icon: <Award className="w-6 h-6" />,
-      href: "/why-give-blood",
+      href: "https://bloodneed.com/why-give-blood",
       color:
         "bg-amber-500/10 text-amber-500 dark:bg-amber-500/20 dark:text-amber-400",
       hoverColor: "group-hover:bg-amber-500 group-hover:text-white",
@@ -66,7 +66,7 @@ export default function QuickLinksSection() {
       title: t("impact.title"),
       description: t("impact.description"),
       icon: <ChartNoAxesCombined className="w-6 h-6" />,
-      href: "/donation-impact",
+      href: "https://bloodneed.com/donation-impact",
       color:
         "bg-cyan-500/10 text-cyan-500 dark:bg-cyan-500/20 dark:text-cyan-400",
       hoverColor: "group-hover:bg-cyan-500 group-hover:text-white",
